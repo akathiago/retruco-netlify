@@ -1,0 +1,3041 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RETRUCO</title>
+    <meta name="description" content="Retruco. Una historia bien criolla.">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Retruco">
+    <meta property="og:description" content="Una historia bien criolla.">
+    <meta property="og:image" content="https://retruco.xyz/imagenes/hero-01.png">
+    <meta property="og:url" content="https://retruco.xyz">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Retruco">
+    <meta name="twitter:description" content="Una historia bien criolla.">
+    <meta name="twitter:image" content="https://retruco.xyz/imagenes/hero-01.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        @font-face {
+            font-family: 'Trevor';
+            src: url('fuentes/TREVOR.TTF') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Rodriguez Ornament';
+            src: url('fuentes/RoodrigueZ ornament.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
+
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+            50% { transform: translateY(-15px) rotate(calc(var(--r, 0deg) + 2deg)); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0) rotate(var(--r, 0deg)); }
+            25% { transform: translateX(-3px) rotate(calc(var(--r, 0deg) - 1deg)); }
+            75% { transform: translateX(3px) rotate(calc(var(--r, 0deg) + 1deg)); }
+        }
+
+        @keyframes tape-swing {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        @keyframes stamp {
+            0% { transform: scale(3) rotate(-15deg); opacity: 0; }
+            50% { transform: scale(1.1) rotate(-15deg); opacity: 1; }
+            100% { transform: scale(1) rotate(-15deg); opacity: 1; }
+        }
+
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(43, 184, 205, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(43, 184, 205, 0.6); }
+        }
+
+        @keyframes bounce-arrow {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(15px); }
+            60% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            cursor: pointer;
+            animation: bounce-arrow 2s infinite;
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-indicator:hover {
+            opacity: 0.7;
+        }
+
+        .scroll-indicator svg {
+            width: 40px;
+            height: 40px;
+            fill: var(--paper);
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --concrete-1: #0a1a24;
+            --concrete-2: #0f2535;
+            --concrete-3: #1a3545;
+            --rust: #2bb8cd;
+            --rust-dark: #1a8fa5;
+            --blood: #0e7490;
+            --caution: #7dd4e4;
+            --graffiti: #5eead4;
+            --paper: #e0f7fa;
+            --paper-dark: #b2ebf2;
+            --ink: #0a1a24;
+            --blue-ink: #164e63;
+            --cyan-bright: #22d3ee;
+            --cyan-glow: rgba(43, 184, 205, 0.5);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--concrete-1);
+            color: var(--paper);
+            overflow-x: hidden;
+            cursor: url("imagenes/Cursor.png"), auto;
+        }
+
+        a, button, .btn, .char-card, .play-btn, .social-link, .menu-btn, .nav-logo {
+            cursor: url("imagenes/Cursor.png"), pointer;
+        }
+
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+        }
+
+        .nav-logo {
+            height: 45px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .nav-logo.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        .nav-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-social .social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--ink);
+            border: 2px solid var(--paper);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            color: var(--paper);
+            text-decoration: none;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--rust);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--rust);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .menu-btn span {
+            width: 30px;
+            height: 3px;
+            background: var(--rust);
+            transition: all 0.3s ease;
+        }
+
+        /* HERO */
+        #hero {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url('imagenes/hero-01.png') center center / cover no-repeat;
+        }
+
+        /* Prison bars effect - hidden on desktop, shown on mobile */
+        .prison-bars {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent 0px,
+                transparent 100px,
+                rgba(20,20,20,0.4) 100px,
+                rgba(20,20,20,0.4) 108px
+            );
+            pointer-events: none;
+            display: none;
+        }
+
+        /* Concrete texture - hidden on desktop, shown on mobile */
+        .concrete-texture {
+            position: absolute;
+            inset: 0;
+            opacity: 0.3;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20 L25 22 L23 28 L18 25 Z' fill='%23333' opacity='0.3'/%3E%3Cpath d='M60 40 L68 42 L65 50 L58 47 Z' fill='%23333' opacity='0.2'/%3E%3Cpath d='M80 70 L85 75 L80 80 L75 75 Z' fill='%23333' opacity='0.25'/%3E%3Cpath d='M30 80 L38 82 L35 90 L28 87 Z' fill='%23333' opacity='0.2'/%3E%3C/svg%3E");
+            pointer-events: none;
+            display: none;
+        }
+
+        /* HERO CONTENT */
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            max-width: 1400px;
+            padding: 120px 60px 60px;
+            align-items: center;
+        }
+
+        .hero-content-centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            grid-template-columns: none;
+            padding: 100px 40px 60px;
+        }
+
+        .hero-poster-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-poster-main {
+            max-width: 90%;
+            max-height: 85vh;
+            width: auto;
+            height: auto;
+            border: 5px solid var(--rust);
+            box-shadow:
+                0 0 50px rgba(43, 184, 205, 0.3),
+                0 20px 60px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-poster-main:hover {
+            transform: scale(1.02);
+        }
+
+        .hero-left {
+            position: relative;
+        }
+
+        /* LOGO as cutout paper */
+        .logo-container {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .main-logo {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* Tape pieces */
+        .tape {
+            position: absolute;
+            width: 80px;
+            height: 30px;
+            background: rgba(255, 235, 180, 0.85);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            z-index: 5;
+        }
+
+        .tape::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 10px,
+                rgba(0,0,0,0.03) 10px,
+                rgba(0,0,0,0.03) 11px
+            );
+        }
+
+        .tape-1 {
+            top: -15px;
+            left: 20%;
+            transform: rotate(-12deg);
+            animation: tape-swing 3s ease-in-out infinite;
+        }
+
+        .tape-2 {
+            top: -10px;
+            right: 15%;
+            transform: rotate(8deg);
+            animation: tape-swing 3s ease-in-out infinite reverse;
+        }
+
+        /* Prison Note */
+        .prison-note {
+            background: #ffffff;
+            padding: 0;
+            position: relative;
+            transform: rotate(-1deg);
+            box-shadow:
+                8px 8px 20px rgba(0,0,0,0.4),
+                inset 0 0 50px rgba(0,0,0,0.02);
+            margin-bottom: 40px;
+            max-width: 450px;
+            border: 1px solid #ddd;
+            /* Lined paper effect */
+            background-image:
+                linear-gradient(#e8e8e8 1px, transparent 1px);
+            background-size: 100% 28px;
+            background-position: 0 60px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .prison-note:hover {
+            transform: rotate(-1deg) scale(1.05);
+            box-shadow:
+                12px 12px 30px rgba(0,0,0,0.5),
+                inset 0 0 50px rgba(0,0,0,0.02);
+        }
+
+        .prison-note::before {
+            content: '';
+            position: absolute;
+            left: 35px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(200, 80, 80, 0.3);
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            border-bottom: 1px dashed #ddd;
+            background: rgba(0,0,0,0.02);
+        }
+
+        .note-date, .note-cell {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .note-cell {
+            color: #8b0000;
+            font-weight: 600;
+        }
+
+        .note-content {
+            padding: 25px 25px 25px 50px;
+        }
+
+        .note-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            text-decoration: underline;
+            text-decoration-color: #8b0000;
+            text-underline-offset: 4px;
+        }
+
+        .note-divider {
+            width: 60px;
+            height: 2px;
+            background: #8b0000;
+            margin: 15px 0;
+        }
+
+        .note-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+
+        .highlight-text {
+            color: #8b0000;
+            font-weight: 600;
+            font-style: italic;
+            margin-top: 15px;
+        }
+
+        .note-tear {
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: #ffffff;
+            clip-path: polygon(
+                0% 0%, 3% 80%, 6% 20%, 9% 90%, 12% 10%, 15% 70%,
+                18% 30%, 21% 85%, 24% 15%, 27% 75%, 30% 25%, 33% 80%,
+                36% 20%, 39% 90%, 42% 10%, 45% 70%, 48% 35%, 51% 85%,
+                54% 15%, 57% 75%, 60% 25%, 63% 80%, 66% 20%, 69% 90%,
+                72% 10%, 75% 70%, 78% 30%, 81% 85%, 84% 15%, 87% 75%,
+                90% 25%, 93% 80%, 96% 20%, 100% 0%
+            );
+        }
+
+        /* Stain effect */
+        .prison-note::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(ellipse, rgba(139, 90, 43, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: rotate(15deg);
+        }
+
+        .prison-note-large {
+            max-width: 550px;
+            transform: rotate(1deg);
+        }
+
+        /* CTA Buttons */
+        .cta-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            padding: 18px 40px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--rust);
+            color: var(--paper);
+            box-shadow: 6px 6px 0 var(--ink);
+        }
+
+        .btn-primary:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0 var(--ink);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--paper);
+            border: 3px solid var(--paper);
+            box-shadow: 5px 5px 0 var(--rust);
+        }
+
+        .btn-secondary:hover {
+            background: var(--paper);
+            color: var(--ink);
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0 var(--rust);
+        }
+
+        /* HERO RIGHT - César */
+        .hero-right {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cesar-container {
+            position: relative;
+            --r: 2deg;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .cesar-img {
+            width: 100%;
+            max-width: 550px;
+            filter: drop-shadow(10px 10px 0 rgba(0,0,0,0.6));
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-poster {
+            max-width: 650px;
+            border: 5px solid var(--rust);
+            box-shadow:
+                0 0 40px rgba(43, 184, 205, 0.5),
+                12px 12px 0 var(--ink);
+            border-radius: 8px;
+        }
+
+        /* Logo TP en Hero - Desktop */
+        .hero-logo-desktop {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 550px;
+            width: 90%;
+            z-index: 20;
+            filter: drop-shadow(4px 4px 15px rgba(0, 0, 0, 0.5));
+            transition: transform 0.4s ease, filter 0.4s ease;
+        }
+
+        .hero-logo-desktop:hover {
+            transform: translateX(-50%) scale(1.05);
+            filter: drop-shadow(8px 8px 25px rgba(43, 184, 205, 0.6));
+        }
+
+        /* Hero Mobile Images - Hidden on desktop */
+        .hero-mobile-images {
+            display: none;
+        }
+
+        /* Logo TP en Hero - Mobile */
+        .hero-logo-tp {
+            max-width: 300px;
+            width: 85%;
+            margin-bottom: 25px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        filter 0.4s ease;
+            filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.4));
+        }
+
+        .hero-logo-tp:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(6px 6px 15px rgba(43, 184, 205, 0.5));
+        }
+
+        /* Hero Image Mobile - Oculta por defecto */
+        .hero-img-mobile {
+            display: none;
+        }
+
+        /* WANTED stamp */
+        .wanted-stamp {
+            position: absolute;
+            top: -30px;
+            right: -20px;
+            font-family: 'Trevor', sans-serif;
+            font-size: 3rem;
+            color: #ff0000;
+            border: 6px solid #ff0000;
+            padding: 5px 25px;
+            transform: rotate(-15deg);
+            opacity: 0.9;
+            animation: stamp 0.5s ease-out forwards;
+            animation-delay: 1s;
+            opacity: 0;
+            z-index: 10;
+        }
+
+        /* Graffiti scribbles */
+        .graffiti {
+            position: absolute;
+            font-family: 'Kalam', cursive;
+            font-weight: 700;
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        .graffiti-1 {
+            bottom: 10%;
+            left: -10%;
+            font-size: 2rem;
+            color: var(--graffiti);
+            transform: rotate(-10deg);
+        }
+
+        .graffiti-2 {
+            top: 20%;
+            right: -5%;
+            font-size: 1.5rem;
+            color: var(--caution);
+            transform: rotate(15deg);
+        }
+
+        /* BANNER YA DISPONIBLE */
+        #banner-disponible {
+            width: 100%;
+            background: var(--concrete-1);
+            text-align: center;
+            padding: 0;
+            position: relative;
+        }
+
+        .banner-disponible-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .btn-descargar {
+            position: absolute;
+            bottom: calc(25% + 40px);
+            left: 30%;
+            transform: translateX(-50%);
+            font-family: 'Trevor', sans-serif;
+            font-size: 3.5rem;
+            letter-spacing: 5px;
+            color: #fff !important;
+            background: #1a2a4a !important;
+            padding: 35px 100px;
+            border: 4px solid #00d4ff;
+            box-shadow: 6px 6px 0 #00d4ff;
+            text-decoration: none;
+            z-index: 100;
+            display: block;
+            transition: all 0.2s ease;
+        }
+
+        .btn-descargar:hover {
+            transform: translate(calc(-50% - 3px), -3px);
+            box-shadow: 9px 9px 0 #00d4ff;
+        }
+
+        /* ABOUT SECTION */
+        #about {
+            padding: 150px 60px;
+            position: relative;
+            background: var(--concrete-2);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-tag {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            color: var(--rust);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .section-title {
+            font-family: 'Trevor', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            letter-spacing: 5px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--rust);
+        }
+
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-img {
+            width: 100%;
+            border: 5px solid var(--ink);
+            box-shadow: 15px 15px 0 var(--rust);
+            transform: rotate(-2deg);
+            transition: transform 0.4s ease;
+        }
+
+        .about-img:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        /* Pin */
+        .pin {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: radial-gradient(circle at 30% 30%, #ff4444, #aa0000);
+            border-radius: 50%;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .pin::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .pin-1 { top: -12px; left: 30px; }
+        .pin-2 { top: -12px; right: 30px; }
+
+        .about-content {
+            font-size: 1.15rem;
+            line-height: 2;
+        }
+
+        .about-content p {
+            margin-bottom: 25px;
+        }
+
+        .highlight {
+            background: linear-gradient(to top, var(--rust) 40%, transparent 40%);
+            padding: 0 4px;
+            font-weight: 600;
+        }
+
+        /* CHARACTERS */
+        #characters {
+            padding: 150px 60px;
+            background: linear-gradient(to bottom, var(--concrete-2), var(--concrete-1));
+            position: relative;
+        }
+
+        /* Corkboard texture */
+        .corkboard {
+            position: absolute;
+            inset: 100px 40px;
+            background: #8b6914;
+            border: 15px solid #4a3608;
+            box-shadow:
+                inset 0 0 50px rgba(0,0,0,0.3),
+                0 10px 30px rgba(0,0,0,0.5);
+            z-index: 0;
+        }
+
+        .corkboard::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='1.5' fill='%23705010' opacity='0.5'/%3E%3Ccircle cx='30' cy='25' r='1' fill='%23604008' opacity='0.4'/%3E%3Ccircle cx='50' cy='45' r='1.5' fill='%23705010' opacity='0.5'/%3E%3Ccircle cx='20' cy='50' r='1' fill='%23604008' opacity='0.4'/%3E%3Ccircle cx='45' cy='15' r='1' fill='%23604008' opacity='0.3'/%3E%3C/svg%3E");
+        }
+
+        .characters-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-top: 60px;
+        }
+
+        .char-card {
+            background: var(--paper);
+            border: 3px solid var(--ink);
+            position: relative;
+            transform: rotate(var(--r, 0deg));
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .char-card:nth-child(1) { --r: -3deg; }
+        .char-card:nth-child(2) { --r: 2deg; }
+        .char-card:nth-child(3) { --r: -1deg; }
+        .char-card:nth-child(4) { --r: 3deg; }
+        .char-card:nth-child(5) { --r: -2deg; }
+
+        .char-card:hover {
+            transform: rotate(0deg) scale(1.08) translateY(-10px);
+            z-index: 100;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .char-card .pin {
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .char-img-container {
+            overflow: hidden;
+            border-bottom: 3px solid var(--ink);
+            background: #ddd;
+        }
+
+        .char-img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: contain;
+            background: linear-gradient(135deg, #e8e8e8, #d0d0d0);
+            transition: transform 0.4s ease;
+        }
+
+        .char-card:hover .char-img {
+            transform: scale(1.1);
+        }
+
+        .char-info {
+            padding: 20px 15px;
+            text-align: center;
+        }
+
+        .char-name {
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.5rem;
+            color: var(--ink);
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .char-role {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            color: var(--rust);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* SCREENSHOTS */
+        #screenshots {
+            padding: 150px 60px;
+            background: var(--concrete-2);
+            position: relative;
+        }
+
+        .screenshots-container {
+            max-width: 1200px;
+            margin: 60px auto 0;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .screenshot-item {
+            position: relative;
+            overflow: hidden;
+            border: 4px solid var(--rust);
+            box-shadow: 8px 8px 0 var(--ink);
+            transition: all 0.3s ease;
+        }
+
+        .screenshot-item:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0 var(--ink);
+        }
+
+        .screenshot-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .screenshot-item:hover .screenshot-img {
+            transform: scale(1.05);
+        }
+
+        /* Gallery Lightbox */
+        .gallery-lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gallery-lightbox.active {
+            display: flex;
+        }
+
+        .gallery-content {
+            max-width: 90%;
+            max-height: 85%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gallery-image {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+            border: 4px solid var(--rust);
+            box-shadow: 0 0 50px rgba(43, 184, 205, 0.3);
+        }
+
+        .gallery-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 50px;
+            color: var(--paper);
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            z-index: 10001;
+        }
+
+        .gallery-close:hover {
+            color: var(--rust);
+        }
+
+        .gallery-prev, .gallery-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 40px;
+            color: var(--paper);
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--rust);
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10001;
+        }
+
+        .gallery-prev {
+            left: 20px;
+        }
+
+        .gallery-next {
+            right: 20px;
+        }
+
+        .gallery-prev:hover, .gallery-next:hover {
+            background: var(--rust);
+            color: var(--ink);
+        }
+
+        .gallery-counter {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--paper);
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+        }
+
+        /* CTA SECTION */
+        #cta {
+            padding: 40px 30px;
+            background: var(--rust);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-stripes {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 30px,
+                rgba(0,0,0,0.05) 30px,
+                rgba(0,0,0,0.05) 60px
+            );
+        }
+
+        .cta-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .donate-bg-pattern {
+            position: absolute;
+            inset: 0;
+            background: url('imagenes/fondoretrucoweb.png') center center / cover no-repeat;
+            pointer-events: none;
+        }
+
+        #cta .section-title {
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            color: var(--paper);
+            position: relative;
+            z-index: 2;
+            background: var(--concrete-2);
+            padding: 25px 50px;
+            border: 5px solid var(--ink);
+            outline: 3px solid var(--paper);
+            outline-offset: -12px;
+            transform: rotate(-1deg);
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #cta .section-title:hover {
+            transform: rotate(1deg) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .plata-rain {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            animation: plata-fall linear forwards;
+        }
+
+        @keyframes plata-fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        /* Donate Images Row */
+        .donate-images-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 60px 0 40px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .donate-img {
+            max-width: 400px;
+            width: 100%;
+            border: 4px solid var(--paper);
+            box-shadow: 8px 8px 0 var(--ink);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+
+        .donate-img:hover {
+            transform: scale(1.15);
+            box-shadow: 12px 12px 0 var(--ink);
+            z-index: 10;
+        }
+
+        /* Donate Card */
+        .donate-card {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--paper);
+            border: 4px solid var(--ink);
+            padding: 40px;
+            position: relative;
+            text-align: left;
+            box-shadow: 8px 8px 0 var(--ink);
+            transform: rotate(1deg);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .donate-card:hover {
+            transform: rotate(0deg) translateY(-5px);
+            box-shadow: 12px 12px 0 var(--ink);
+        }
+
+        .donate-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--rust), var(--rust), var(--rust));
+        }
+
+        .donate-card-header {
+            margin-bottom: 20px;
+        }
+
+        .donate-tag {
+            display: inline-block;
+            background: var(--rust);
+            color: var(--paper);
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            padding: 5px 15px;
+            margin-bottom: 10px;
+        }
+
+        .donate-card-title {
+            font-family: 'Trevor', sans-serif;
+            font-size: 2rem;
+            color: var(--ink);
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .donate-card-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            color: var(--ink);
+            line-height: 1.7;
+            margin-bottom: 25px;
+            opacity: 0.8;
+        }
+
+        /* Benefits Grid */
+        .donate-benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: rgba(43, 184, 205, 0.1);
+            border: 2px solid rgba(43, 184, 205, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            background: rgba(43, 184, 205, 0.2);
+            border-color: var(--rust);
+            transform: translateX(5px);
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+        }
+
+        .benefit-icon-img {
+            width: 34px;
+            height: 34px;
+            object-fit: contain;
+        }
+
+        .benefit-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            color: var(--ink);
+        }
+
+        /* Donate Button */
+        .btn-donate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            padding: 20px 30px;
+            background: linear-gradient(135deg, var(--rust) 0%, var(--rust-dark) 100%);
+            border: 3px solid var(--ink);
+            box-shadow: 5px 5px 0 var(--ink);
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            color: var(--paper);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-donate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-donate:hover::before {
+            left: 100%;
+        }
+
+        .btn-donate:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 8px 8px 0 var(--ink);
+            background: linear-gradient(135deg, var(--rust) 0%, var(--rust) 100%);
+        }
+
+        .btn-donate-icon {
+            font-size: 1.8rem;
+        }
+
+        .btn-donate-icon-img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .btn-donate-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-donate:hover .btn-donate-arrow {
+            transform: translateX(5px);
+        }
+
+        /* Rewards Section */
+        .donate-rewards-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 2px dashed rgba(255,255,255,0.2);
+        }
+
+        .rewards-title {
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.5rem;
+            color: var(--paper);
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .donate-rewards-img {
+            max-width: 500px;
+            width: 100%;
+            border: 4px solid var(--paper);
+            box-shadow:
+                0 0 0 4px var(--ink),
+                8px 8px 0 var(--ink);
+            transition: transform 0.3s ease;
+        }
+
+        .donate-rewards-img:hover {
+            transform: scale(1.02) rotate(-1deg);
+        }
+
+        .cta-title {
+            font-family: 'Trevor', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--paper);
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            text-shadow: 4px 4px 0 var(--ink);
+        }
+
+        .cta-text {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .newsletter-input {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            padding: 18px 25px;
+            background: var(--paper);
+            border: 3px solid var(--ink);
+            min-width: 300px;
+            box-shadow: 4px 4px 0 var(--ink);
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            box-shadow: 6px 6px 0 var(--ink);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .social-link {
+            width: 55px;
+            height: 55px;
+            background: var(--ink);
+            border: 3px solid var(--paper);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-link svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--paper);
+        }
+
+        .social-link:hover {
+            background: var(--paper);
+            transform: translateY(-5px) rotate(5deg);
+        }
+
+        .social-link:hover svg {
+            fill: var(--ink);
+        }
+
+        .social-link:hover img {
+            filter: brightness(0) saturate(100%);
+        }
+
+        /* CHARACTER CREATOR */
+        #character-creator {
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .creator-link {
+            display: block;
+            position: relative;
+        }
+
+        .creator-img {
+            width: 100%;
+            display: block;
+        }
+
+        .creator-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .creator-btn {
+            font-family: 'Trevor', sans-serif;
+            font-size: clamp(1.6rem, 5vw, 2.8rem);
+            letter-spacing: 5px;
+            color: var(--paper);
+            background: var(--ink);
+            padding: 28px 65px;
+            border: 5px solid var(--paper);
+            position: relative;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .creator-btn::before {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border: 2px solid var(--paper);
+            pointer-events: none;
+        }
+
+        .creator-btn:hover {
+            transform: scale(1.05);
+            background: var(--concrete-2);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .gracias-text {
+            font-family: 'Trevor', sans-serif;
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            letter-spacing: 3px;
+            color: var(--paper);
+            text-align: center;
+            padding: 25px;
+            background: var(--ink);
+            margin: 0;
+        }
+
+        /* CREDITS */
+        #credits {
+            padding: 80px 60px;
+            background: var(--concrete-1);
+            text-align: center;
+        }
+
+        .credits-img {
+            max-width: 450px;
+            width: 100%;
+            border: 3px solid var(--concrete-3);
+            opacity: 0.9;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--concrete-1);
+            padding: 60px;
+            border-top: 5px solid var(--rust);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-logo {
+            height: 50px;
+            opacity: 0.8;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .footer-studio {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 1px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .footer-links a {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--rust);
+        }
+
+        .footer-copy {
+            width: 100%;
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+        }
+
+        /* SECTION PERSONAJES */
+        .section-personajes {
+            position: relative;
+            width: 100%;
+            background: var(--concrete-1);
+            display: block;
+            overflow: hidden;
+        }
+
+        /* Desktop: ocultar characters cards, mostrar personajes */
+        #characters {
+            display: none;
+        }
+
+        .personajes-fondo {
+            position: relative;
+            z-index: 1;
+            display: block;
+            width: 100%;
+        }
+
+        .personaje-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            z-index: 2;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+            transform-origin: bottom center;
+            pointer-events: none;
+        }
+
+        .personaje-layer:hover {
+            transform: scale(1.08);
+            filter: drop-shadow(0 0 30px rgba(43, 184, 205, 0.6));
+            z-index: 10;
+        }
+
+        /* Hitboxes invisibles para cada personaje - posiciones absolutas */
+        .personaje-hitbox {
+            position: absolute;
+            z-index: 5;
+            cursor: pointer;
+        }
+
+        .personaje-hitbox[data-char="bignone"] {
+            left: 13%;
+            top: 27%;
+            width: 22%;
+            height: 58%;
+        }
+
+        .personaje-hitbox[data-char="cesar"] {
+            left: 38%;
+            top: 26%;
+            width: 18%;
+            height: 59%;
+        }
+
+        .personaje-hitbox[data-char="dario"] {
+            left: 53%;
+            top: 25%;
+            width: 20%;
+            height: 60%;
+        }
+
+        .personaje-hitbox[data-char="xiao"] {
+            left: 68%;
+            top: 28%;
+            width: 19%;
+            height: 57%;
+        }
+
+        /* Hitboxes para objetos */
+        .personaje-hitbox[data-char="estrelladavid"] {
+            left: 11%;
+            top: 76%;
+            width: 10%;
+            height: 12%;
+        }
+
+        .personaje-hitbox[data-char="plata"] {
+            left: 14%;
+            top: 76%;
+            width: 20%;
+            height: 18%;
+        }
+
+        .personaje-hitbox[data-char="fernet"] {
+            left: 35%;
+            top: 76%;
+            width: 15%;
+            height: 14%;
+        }
+
+        .personaje-hitbox[data-char="uzi"] {
+            left: 43%;
+            top: 77%;
+            width: 12%;
+            height: 17%;
+        }
+
+        .personaje-hitbox[data-char="sapphirus"] {
+            left: 54%;
+            top: 76%;
+            width: 10%;
+            height: 14%;
+        }
+
+        .personaje-hitbox[data-char="encendedor"] {
+            left: 65%;
+            top: 87%;
+            width: 5%;
+            height: 8%;
+        }
+
+        .personaje-hitbox[data-char="mandarinas"] {
+            left: 71%;
+            top: 72%;
+            width: 12%;
+            height: 16%;
+        }
+
+        .personaje-hitbox[data-char="donsatur"] {
+            left: 79%;
+            top: 75%;
+            width: 12%;
+            height: 17%;
+        }
+
+        .personaje-hitbox[data-char="laverde"] {
+            left: 57%;
+            top: 74%;
+            width: 12%;
+            height: 18%;
+        }
+
+        .personaje-hitbox[data-char="bignone"]:hover ~ .personaje-layer[data-char="bignone"],
+        .personaje-hitbox[data-char="cesar"]:hover ~ .personaje-layer[data-char="cesar"],
+        .personaje-hitbox[data-char="dario"]:hover ~ .personaje-layer[data-char="dario"],
+        .personaje-hitbox[data-char="xiao"]:hover ~ .personaje-layer[data-char="xiao"],
+        .personaje-hitbox[data-char="estrelladavid"]:hover ~ .personaje-layer[data-char="estrelladavid"],
+        .personaje-hitbox[data-char="plata"]:hover ~ .personaje-layer[data-char="plata"],
+        .personaje-hitbox[data-char="fernet"]:hover ~ .personaje-layer[data-char="fernet"],
+        .personaje-hitbox[data-char="uzi"]:hover ~ .personaje-layer[data-char="uzi"],
+        .personaje-hitbox[data-char="sapphirus"]:hover ~ .personaje-layer[data-char="sapphirus"],
+        .personaje-hitbox[data-char="encendedor"]:hover ~ .personaje-layer[data-char="encendedor"],
+        .personaje-hitbox[data-char="mandarinas"]:hover ~ .personaje-layer[data-char="mandarinas"],
+        .personaje-hitbox[data-char="donsatur"]:hover ~ .personaje-layer[data-char="donsatur"],
+        .personaje-hitbox[data-char="laverde"]:hover ~ .personaje-layer[data-char="laverde"] {
+            transform: scale(1.08);
+            filter: drop-shadow(0 0 30px rgba(43, 184, 205, 0.6));
+            z-index: 10;
+        }
+
+        /* MODAL PERSONAJE */
+        .char-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .char-modal.active {
+            display: flex;
+        }
+
+        .char-modal-content {
+            background: #ffffff;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            transform: rotate(-1deg);
+            box-shadow: 12px 12px 30px rgba(0,0,0,0.5);
+            background-image: linear-gradient(#e8e8e8 1px, transparent 1px);
+            background-size: 100% 28px;
+            background-position: 0 60px;
+            animation: modalIn 0.3s ease-out;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: rotate(-1deg) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: rotate(-1deg) scale(1);
+            }
+        }
+
+        .char-modal-content::before {
+            content: '';
+            position: absolute;
+            left: 35px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(200, 80, 80, 0.3);
+        }
+
+        .char-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px dashed #ddd;
+            background: rgba(0,0,0,0.02);
+        }
+
+        .char-modal-name {
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.5rem;
+            color: #1a1a1a;
+            letter-spacing: 2px;
+        }
+
+        .char-modal-close {
+            font-size: 2rem;
+            color: #8b0000;
+            background: none;
+            border: none;
+            cursor: pointer;
+            line-height: 1;
+            transition: transform 0.2s ease;
+        }
+
+        .char-modal-close:hover {
+            transform: scale(1.2);
+        }
+
+        .char-modal-body {
+            padding: 25px 25px 25px 50px;
+        }
+
+        .char-modal-role {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            color: #8b0000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .char-modal-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .char-modal-tear {
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: #ffffff;
+            clip-path: polygon(
+                0% 0%, 3% 80%, 6% 20%, 9% 90%, 12% 10%, 15% 70%,
+                18% 30%, 21% 85%, 24% 15%, 27% 75%, 30% 25%, 33% 80%,
+                36% 20%, 39% 90%, 42% 10%, 45% 70%, 48% 35%, 51% 85%,
+                54% 15%, 57% 75%, 60% 25%, 63% 80%, 66% 20%, 69% 90%,
+                72% 10%, 75% 70%, 78% 30%, 81% 85%, 84% 15%, 87% 75%,
+                90% 25%, 93% 80%, 96% 20%, 100% 0%
+            );
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1100px) {
+            .characters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .hero-bg {
+                background: #87CEEB;
+            }
+
+            .prison-bars,
+            .concrete-texture {
+                display: block;
+            }
+
+            .hero-logo-desktop {
+                display: none;
+            }
+
+            /* Hero mobile: hero-01.png como fondo */
+            #hero {
+                background: url('imagenes/hero-01.png') center center / cover no-repeat;
+                min-height: 100vh;
+                align-items: flex-start;
+                justify-content: center;
+                padding-top: 70px;
+            }
+
+            #hero .hero-bg,
+            #hero .prison-bars,
+            #hero .concrete-texture {
+                display: none;
+            }
+
+            .hero-mobile-images {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 20px;
+            }
+
+            .hero-img-mobile {
+                display: none;
+            }
+
+            .hero-logo-tp {
+                max-width: 420px;
+                width: 95%;
+                filter: drop-shadow(4px 4px 15px rgba(0, 0, 0, 0.6));
+            }
+
+            .hero-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 0;
+            }
+
+            .hero-left {
+                display: flex;
+                align-items: flex-start;
+                justify-content: center;
+                width: 100%;
+            }
+
+            /* Ocultar elementos en mobile */
+            .hero-left .prison-note {
+                display: none;
+            }
+
+            .hero-right {
+                display: none;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .donate-images-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .donate-img {
+                max-width: 100%;
+            }
+
+            .donate-card {
+                padding: 25px;
+                transform: rotate(0deg);
+            }
+
+            .donate-benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .donate-card-title {
+                font-size: 1.6rem;
+            }
+
+            .corkboard {
+                inset: 80px 20px;
+            }
+
+            .characters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            nav {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--concrete-1);
+                flex-direction: column;
+                padding: 30px;
+                gap: 25px;
+                border-top: 3px solid var(--rust);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-btn {
+                display: flex;
+            }
+
+            /* Mobile: mostrar characters cards, ocultar personajes desktop */
+            #characters {
+                display: block;
+            }
+
+            .section-personajes {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .btn-descargar {
+                font-size: 1rem;
+                padding: 12px 25px;
+                letter-spacing: 2px;
+                border: 2px solid #00d4ff;
+                box-shadow: 3px 3px 0 #00d4ff;
+                left: 30%;
+                bottom: 22%;
+            }
+
+            .btn-descargar:hover {
+                transform: translate(calc(-50% - 2px), -2px);
+                box-shadow: 5px 5px 0 #00d4ff;
+            }
+
+            .screenshots-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .characters-grid {
+                grid-template-columns: 1fr;
+                max-width: 280px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .char-card:nth-child(1) { order: 4; } /* Xiao -> 4to */
+            .char-card:nth-child(2) { order: 3; } /* Darío -> 3ro */
+            .char-card:nth-child(3) { order: 2; } /* Bignone -> 2do */
+            .char-card:nth-child(4) { order: 1; } /* César -> 1ro */
+
+            .cta-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            #about, #characters, #screenshots, #cta {
+                padding: 100px 25px;
+            }
+
+            .donate-bg-pattern {
+                background-size: 1000px;
+                background-repeat: repeat;
+            }
+
+            #cta .section-title {
+                font-size: clamp(2.5rem, 12vw, 4rem);
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+            }
+
+            .creator-btn {
+                font-size: 1rem;
+                letter-spacing: 2px;
+                padding: 12px 20px;
+                border: none;
+            }
+
+            .creator-btn::before {
+                display: none;
+            }
+
+            #character-creator {
+                min-height: 50vh;
+            }
+
+            .creator-img {
+                width: 100%;
+                height: 50vh;
+                object-fit: cover;
+                object-position: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a href="#">
+            <img src="imagenes/logoretruco.png" alt="RETRUCO" class="nav-logo">
+        </a>
+        <div class="nav-social">
+            <a href="https://discord.gg/4hAAKVZWTT" target="_blank" class="social-link" aria-label="Discord">
+                <svg viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg>
+            </a>
+            <a href="https://tiktok.com/@undergroundd.prod" target="_blank" class="social-link" aria-label="TikTok">
+                <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/undergroundd.prod/" target="_blank" class="social-link" aria-label="Instagram">
+                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://undergroundd.itch.io/retruco" target="_blank" class="social-link" aria-label="Itch.io">
+                <img src="imagenes/undergroundlogoreal-01.png" alt="Itch.io" style="width: 32px; height: 32px; object-fit: contain;">
+            </a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="hero-bg"></div>
+        <div class="prison-bars"></div>
+        <div class="concrete-texture"></div>
+
+        <img src="imagenes/logotp.png" alt="Logo TP" class="hero-logo-desktop">
+
+        <div class="hero-content">
+            <div class="hero-left">
+                <div class="hero-mobile-images">
+                    <img src="imagenes/logotp.png" alt="Logo TP" class="hero-logo-tp">
+                    <img src="imagenes/hero-01.png" alt="César" class="hero-img-mobile">
+                </div>
+                <div class="prison-note">
+                    <div class="note-header">
+                        <span class="note-date">Día 1</span>
+                        <span class="note-cell">Celda 47-B</span>
+                    </div>
+                    <div class="note-content">
+                        <p class="note-title">En Buenos Aires, la cárcel es solo el comienzo del quilombo.</p>
+                        <div class="note-divider"></div>
+                        <p class="note-text">César era un pibe común. Laburaba, se rescataba, trataba de zafar.</p>
+                        <p class="note-text">Pero un día todo se fue al carajo y terminó adentro.</p>
+                        <p class="note-text">Ahora tiene que sobrevivir en el sistema más corrupto del país.</p>
+                        <p class="note-text highlight-text">Cada decisión cuenta. No hay vuelta atrás.</p>
+                    </div>
+                    <div class="note-tear"></div>
+                </div>
+
+
+            </div>
+
+            <div class="hero-right">
+                <div class="cesar-container">
+                    <img src="imagenes/poster.png" alt="RETRUCO - Una Historia Bien Criolla" class="cesar-img hero-poster">
+                </div>
+            </div>
+        </div>
+
+        <a href="#about" class="scroll-indicator" aria-label="Scroll hacia abajo">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+            </svg>
+        </a>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="section-header">
+            <h2 class="section-title">UNA HISTORIA BIEN CRIOLLA</h2>
+        </div>
+
+        <div class="about-grid">
+            <div class="about-image">
+                <div class="pin pin-1"></div>
+                <div class="pin pin-2"></div>
+                <img src="imagenes/cesarsentado.png" alt="César en la celda" class="about-img">
+            </div>
+
+            <div class="prison-note prison-note-large">
+                <div class="note-content">
+                    <p class="note-title">En Buenos Aires, no te aburrís nunca.</p>
+                    <div class="note-divider"></div>
+                    <p class="note-text"><strong>César</strong> vuelve a su Buenos Aires querido después de escapar de la cárcel en China, donde cayó en cana en extrañas circunstancias.</p>
+                    <p class="note-text">Nada es igual.</p>
+                    <p class="note-text">Al regresar, el presidente le encaja una misión casi suicida. Imposible de rechazar.</p>
+                    <p class="note-text highlight-text">Cada decisión cuenta. No hay vuelta atrás.</p>
+                </div>
+                <div class="note-tear"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BANNER YA DISPONIBLE -->
+    <section id="banner-disponible">
+        <img src="imagenes/yadisponible.png" alt="Ya Disponible" class="banner-disponible-img">
+        <a href="https://undergroundd.itch.io/retruco" target="_blank" class="btn-descargar">DESCARGAR</a>
+    </section>
+
+    <!-- SCREENSHOTS -->
+    <section id="screenshots">
+        <div class="section-header">
+            <h2 class="section-title">EL JUEGO</h2>
+        </div>
+
+        <div class="screenshots-container">
+            <div class="screenshots-grid">
+                <div class="screenshot-item" onclick="openGallery(0)">
+                    <img src="imagenes/screenshot1.png" alt="Screenshot 1" class="screenshot-img">
+                </div>
+                <div class="screenshot-item" onclick="openGallery(1)">
+                    <img src="imagenes/screenshot2.png" alt="Screenshot 2" class="screenshot-img">
+                </div>
+                <div class="screenshot-item" onclick="openGallery(2)">
+                    <img src="imagenes/screenshot3.png" alt="Screenshot 3" class="screenshot-img">
+                </div>
+                <div class="screenshot-item" onclick="openGallery(3)">
+                    <img src="imagenes/screenshot4.png" alt="Screenshot 4" class="screenshot-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHARACTERS -->
+    <section id="characters">
+        <div class="corkboard"></div>
+
+        <div class="characters-container">
+            <div class="section-header">
+                <h2 class="section-title">LOS PERSONAJES</h2>
+            </div>
+
+            <div class="characters-grid">
+                <div class="char-card" onclick="openCharModal('xiao')">
+                    <div class="pin"></div>
+                    <div class="char-img-container">
+                        <img src="imagenes/xiao.png" alt="Xiao" class="char-img">
+                    </div>
+                    <div class="char-info">
+                        <h3 class="char-name">XIAO</h3>
+                        <p class="char-role">El Chino</p>
+                    </div>
+                </div>
+
+                <div class="char-card" onclick="openCharModal('dario')">
+                    <div class="pin"></div>
+                    <div class="char-img-container">
+                        <img src="imagenes/dario.png" alt="Darío" class="char-img">
+                    </div>
+                    <div class="char-info">
+                        <h3 class="char-name">DARÍO</h3>
+                        <p class="char-role">El Misterioso</p>
+                    </div>
+                </div>
+
+                <div class="char-card" onclick="openCharModal('bignone')">
+                    <div class="pin"></div>
+                    <div class="char-img-container">
+                        <img src="imagenes/bignone.png" alt="Bignone" class="char-img">
+                    </div>
+                    <div class="char-info">
+                        <h3 class="char-name">BIGNONE</h3>
+                        <p class="char-role">Impredecible</p>
+                    </div>
+                </div>
+
+                <div class="char-card" onclick="openCharModal('cesar')">
+                    <div class="pin"></div>
+                    <div class="char-img-container">
+                        <img src="imagenes/cesar.png" alt="César" class="char-img">
+                    </div>
+                    <div class="char-info">
+                        <h3 class="char-name">CÉSAR</h3>
+                        <p class="char-role">El Protagonista</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION PERSONAJES (Desktop) -->
+    <section class="section-personajes">
+        <img src="imagenes/fondopersonajes.png" alt="Fondo Personajes" class="personajes-fondo">
+        <!-- Hitboxes invisibles - Personajes -->
+        <div class="personaje-hitbox" data-char="bignone" onclick="openCharModal('bignone')"></div>
+        <div class="personaje-hitbox" data-char="cesar" onclick="openCharModal('cesar')"></div>
+        <div class="personaje-hitbox" data-char="dario" onclick="openCharModal('dario')"></div>
+        <div class="personaje-hitbox" data-char="xiao" onclick="openCharModal('xiao')"></div>
+        <!-- Hitboxes invisibles - Objetos -->
+        <div class="personaje-hitbox" data-char="estrelladavid" onclick="openCharModal('estrelladavid')"></div>
+        <div class="personaje-hitbox" data-char="plata" onclick="openCharModal('plata')"></div>
+        <div class="personaje-hitbox" data-char="fernet" onclick="openCharModal('fernet')"></div>
+        <div class="personaje-hitbox" data-char="uzi" onclick="openCharModal('uzi')"></div>
+        <div class="personaje-hitbox" data-char="sapphirus" onclick="openCharModal('sapphirus')"></div>
+        <div class="personaje-hitbox" data-char="encendedor" onclick="openCharModal('encendedor')"></div>
+        <div class="personaje-hitbox" data-char="mandarinas" onclick="openCharModal('mandarinas')"></div>
+        <div class="personaje-hitbox" data-char="donsatur" onclick="openCharModal('donsatur')"></div>
+        <div class="personaje-hitbox" data-char="laverde" onclick="openCharModal('laverde')"></div>
+        <!-- Imágenes de personajes -->
+        <img src="imagenes/bignonepersonaje_Mesa de trabajo 1.png" alt="Bignone" class="personaje-layer" data-char="bignone">
+        <img src="imagenes/cesarpersonaje_Mesa de trabajo 1.png" alt="César" class="personaje-layer" data-char="cesar">
+        <img src="imagenes/dariopersonaje_Mesa de trabajo 1.png" alt="Dario" class="personaje-layer" data-char="dario">
+        <img src="imagenes/xiaopersonaje_Mesa de trabajo 1.png" alt="Xiao" class="personaje-layer" data-char="xiao">
+        <!-- Imágenes de objetos -->
+        <img src="imagenes/estrelladavid.png" alt="Estrella de David" class="personaje-layer" data-char="estrelladavid">
+        <img src="imagenes/plata_Mesa de trabajo 1.png" alt="Plata" class="personaje-layer" data-char="plata">
+        <img src="imagenes/fernet_Mesa de trabajo 1.png" alt="Fernet" class="personaje-layer" data-char="fernet">
+        <img src="imagenes/uzi.png" alt="Uzi" class="personaje-layer" data-char="uzi">
+        <img src="imagenes/sapphirus.png" alt="Sapphirus" class="personaje-layer" data-char="sapphirus">
+        <img src="imagenes/encendedor.png" alt="Encendedor" class="personaje-layer" data-char="encendedor">
+        <img src="imagenes/mandarinas.png" alt="Mandarinas" class="personaje-layer" data-char="mandarinas">
+        <img src="imagenes/donsatur.png" alt="Don Satur" class="personaje-layer" data-char="donsatur">
+        <img src="imagenes/laverde.png" alt="La Verde" class="personaje-layer" data-char="laverde">
+    </section>
+
+    <!-- MODAL PERSONAJE -->
+    <div class="char-modal" id="charModal">
+        <div class="char-modal-content">
+            <div class="char-modal-header">
+                <span class="char-modal-name" id="charModalName">NOMBRE</span>
+                <button class="char-modal-close" onclick="closeCharModal()">&times;</button>
+            </div>
+            <div class="char-modal-body">
+                <p class="char-modal-role" id="charModalRole">Rol</p>
+                <p class="char-modal-text" id="charModalText">Historia del personaje...</p>
+            </div>
+            <div class="char-modal-tear"></div>
+        </div>
+    </div>
+
+    <!-- GALLERY LIGHTBOX -->
+    <div class="gallery-lightbox" id="galleryLightbox">
+        <button class="gallery-close" onclick="closeGallery()">&times;</button>
+        <button class="gallery-prev" onclick="changeSlide(-1)">&#10094;</button>
+        <button class="gallery-next" onclick="changeSlide(1)">&#10095;</button>
+        <div class="gallery-content">
+            <img src="" alt="Screenshot" class="gallery-image" id="galleryImage">
+        </div>
+        <div class="gallery-counter">
+            <span id="galleryCounter">1 / 4</span>
+        </div>
+    </div>
+
+    <!-- ALFREDITO + CARDS -->
+    <div style="position: relative; padding: 0; margin: 0; background: #0a0a0a; line-height: 0; overflow: hidden;">
+        <img src="imagenes/alfredito.png" alt="Alfredito" style="width: 100%; height: auto; display: block;">
+        <style>
+            .btn-crear {
+                position: absolute;
+                bottom: 410px;
+                left: 2%;
+                z-index: 15;
+                text-decoration: none;
+                font-family: 'Trevor', sans-serif;
+                font-size: 2.6rem;
+                letter-spacing: 5px;
+                color: #fff;
+                background: #1a2a4a;
+                padding: 35px 55px;
+                border: 4px solid #00d4ff;
+                box-shadow: 6px 6px 0 #00d4ff;
+                display: inline-block;
+                transition: all 0.2s ease;
+            }
+            .btn-crear:hover {
+                transform: translate(-3px, -3px);
+                box-shadow: 9px 9px 0 #00d4ff;
+            }
+            .cards-track {
+                display: flex;
+                gap: 15px;
+                width: max-content;
+            }
+            .card-wrap {
+                position: relative;
+                flex-shrink: 0;
+            }
+            .card-wrap img {
+                width: 120px;
+                border-radius: 5px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+                transition: transform 0.3s ease;
+                cursor: pointer;
+            }
+            .card-wrap:hover img {
+                transform: translateY(-15px) scale(1.1);
+            }
+            .card-bubble {
+                display: none;
+                position: absolute;
+                bottom: calc(100% + 12px);
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--paper, #f5f0e1);
+                border: 3px solid var(--ink, #1a1a2e);
+                box-shadow: 5px 5px 0 var(--ink, #1a1a2e);
+                padding: 12px 16px;
+                min-width: 180px;
+                max-width: 220px;
+                z-index: 50;
+                pointer-events: none;
+                text-align: center;
+            }
+            .card-bubble::after {
+                content: '';
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                border: 8px solid transparent;
+                border-top-color: var(--ink, #1a1a2e);
+            }
+            .card-bubble.show {
+                display: block;
+            }
+            .card-bubble-name {
+                font-family: 'Trevor', sans-serif;
+                font-size: 0.85rem;
+                color: var(--rust, #00d4ff);
+                letter-spacing: 2px;
+                margin-bottom: 4px;
+            }
+            .card-bubble-msg {
+                font-family: 'Montserrat', sans-serif;
+                font-size: 0.75rem;
+                color: var(--ink, #1a1a2e);
+                line-height: 1.4;
+            }
+
+            @media (max-width: 600px) {
+                .btn-crear {
+                    bottom: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    font-size: 1rem;
+                    letter-spacing: 2px;
+                    padding: 12px 25px;
+                    border: 2px solid #00d4ff;
+                    box-shadow: 3px 3px 0 #00d4ff;
+                    white-space: nowrap;
+                    text-align: center;
+                }
+                .btn-crear:hover {
+                    box-shadow: 5px 5px 0 #00d4ff;
+                }
+                .cards-track {
+                    display: none;
+                }
+            }
+        </style>
+        <a href="retrucocharacter/indexcharacter.html" class="btn-crear">CREÁ TU PERSONAJE</a>
+        <div style="position: absolute; bottom: 5%; left: 0; right: 0; overflow: visible; z-index: 10; padding: 20px 0;">
+            <div class="cards-track" id="cardsTrack">
+                <div class="card-wrap" data-name="Donante 1" data-msg="Aguante RETRUCO!"><img src="imagenes/cards/marcofigura1.png" alt="Card"></div>
+                <div class="card-wrap" data-name="Donante 2" data-msg="El mejor juego argentino"><img src="imagenes/cards/marcofigura2.png" alt="Card"></div>
+                <div class="card-wrap" data-name="Donante 3" data-msg="Vamos por más!"><img src="imagenes/cards/marcofigura3.png" alt="Card"></div>
+                <div class="card-wrap" data-name="Donante 4" data-msg="Truco, quiero retruco!"><img src="imagenes/cards/marcofigura4.png" alt="Card"></div>
+                <div class="card-wrap" data-name="Donante 5" data-msg="Crack total"><img src="imagenes/cards/marcofigura5.png" alt="Card"></div>
+                <div class="card-wrap" data-name="Donante 6" data-msg="Juegazo papá"><img src="imagenes/cards/marcofigura6.png" alt="Card"></div>
+                <div class="card-wrap" data-name="Donante 7" data-msg="Argentina carajo!"><img src="imagenes/cards/marcofigura7.png" alt="Card"></div>
+                <div class="card-wrap" data-name="Donante 8" data-msg="Lo mejor que vi"><img src="imagenes/cards/marcofigura8.png" alt="Card"></div>
+                <div class="card-wrap" data-name="Donante 9" data-msg="Éxitos loco!"><img src="imagenes/cards/marcofigura9.png" alt="Card"></div>
+                <div class="card-wrap" data-name="Donante 10" data-msg="Dale que va!"><img src="imagenes/cards/marcofigura10.png" alt="Card"></div>
+                <div class="card-wrap" data-name="Donante 11" data-msg="Genios totales"><img src="imagenes/cards/marcofigura11.png" alt="Card"></div>
+                <div class="card-wrap" data-name="Donante 12" data-msg="Quiero ser NPC"><img src="imagenes/cards/marcofigura12.png" alt="Card"></div>
+            </div>
+        </div>
+        <script>
+            (function() {
+                const track = document.getElementById('cardsTrack');
+                const cards = Array.from(track.children);
+                // Duplicar las cartas x4 para el loop
+                for (let i = 0; i < 4; i++) {
+                    cards.forEach(c => track.appendChild(c.cloneNode(true)));
+                }
+                let pos = 0;
+                let speed = 1;
+                let paused = false;
+                const setWidth = cards.length * (120 + 15);
+
+                // Click en carta → burbuja
+                track.addEventListener('click', function(e) {
+                    const wrap = e.target.closest('.card-wrap');
+                    if (!wrap) return;
+                    // Crear o toggle burbuja
+                    let bubble = wrap.querySelector('.card-bubble');
+                    if (!bubble) {
+                        bubble = document.createElement('div');
+                        bubble.className = 'card-bubble';
+                        bubble.innerHTML = '<div class="card-bubble-name">' + wrap.dataset.name + '</div><div class="card-bubble-msg">"' + wrap.dataset.msg + '"</div>';
+                        wrap.appendChild(bubble);
+                    }
+                    bubble.classList.toggle('show');
+                });
+
+                function animate() {
+                    if (!paused) {
+                        pos -= speed;
+                        if (Math.abs(pos) >= setWidth) {
+                            pos += setWidth;
+                        }
+                        track.style.transform = 'translateX(' + pos + 'px)';
+                    }
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            })();
+        </script>
+    </div>
+
+    <!-- FAQ -->
+    <section id="faq" class="faq-section" style="position: relative; line-height: 0; overflow: hidden; margin: 0; padding: 0; font-size: 0;">
+        <img src="imagenes/footer_Mesa de trabajo 1.png" alt="" class="faq-bg-img" style="width: 100%; height: auto; display: block;">
+        <div class="faq-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; padding: 15% 20px 40px; z-index: 2; line-height: 1.5;">
+            <div style="max-width: 850px; width: 100%; flex-shrink: 0;">
+                <!-- Título con recuadro estilo RETRUCO -->
+                <div class="faq-title-card">
+                    <div class="faq-title-pin"></div>
+                    <h2 class="faq-title-text">PREGUNTAS FRECUENTES</h2>
+                </div>
+            </div>
+
+            <div style="max-width: 850px; width: 100%; overflow-y: auto; flex: 1; padding-bottom: 20px;" class="faq-scroll">
+            <div class="faq-list">
+                <div class="faq-item" onclick="this.classList.toggle('open')">
+                    <div class="faq-question">
+                        <span class="faq-q-text">¿Qué es ReTruco?</span>
+                        <span class="faq-arrow">▸</span>
+                    </div>
+                    <div class="faq-answer">ReTruco es una aventura distinta a cualquier otra. Te sumerge en una versión loca, satírica y bien argenta de Buenos Aires, donde la política, las situaciones cómicas del día a día y el humor absurdo están a la orden del día.<br><br>El proyecto toma mucha inspiración del espíritu artístico de South Park, mezclado con mecánicas clásicas de Run &amp; Gun, Beat 'Em Up y RPG, para dispararte nostalgia retro directo al cerebro.<br><br>Es acción, sátira, barrio, política y delirio en formato videojuego.</div>
+                </div>
+                <div class="faq-item" onclick="this.classList.toggle('open')">
+                    <div class="faq-question">
+                        <span class="faq-q-text">¿Hay demo disponible?</span>
+                        <span class="faq-arrow">▸</span>
+                    </div>
+                    <div class="faq-answer">¡Sí! Ya podés jugar una demo gratuita y probar el delirio de ReTruco antes de que salga completo.</div>
+                </div>
+                <div class="faq-item" onclick="this.classList.toggle('open')">
+                    <div class="faq-question">
+                        <span class="faq-q-text">¿El juego es gratis?</span>
+                        <span class="faq-arrow">▸</span>
+                    </div>
+                    <div class="faq-answer">ReTruco va a ser 100% gratuito para toda la comunidad. Por eso necesitamos tu colaboración: tu aporte nos ayuda a cubrir la publicación del juego en Steam, gastos de producción y costos de distribución.<br><br>No estás pagando el juego: estás ayudando a que el proyecto exista y llegue más lejos.</div>
+                </div>
+                <div class="faq-item" onclick="this.classList.toggle('open')">
+                    <div class="faq-question">
+                        <span class="faq-q-text">¿Cómo puedo apoyar el proyecto?</span>
+                        <span class="faq-arrow">▸</span>
+                    </div>
+                    <div class="faq-answer">Apoyá el proyecto y entrá al juego:<br><br>💸 Donación de $5.000 ARS → Tu nombre en los créditos del juego<br>🎮 Donación de $10.000 ARS → Aparecés como NPC dentro del videojuego<br><br>Convertite en parte del lore de ReTruco.</div>
+                </div>
+                <div class="faq-item" onclick="this.classList.toggle('open')">
+                    <div class="faq-question">
+                        <span class="faq-q-text">¿Puedo crear mi propio personaje?</span>
+                        <span class="faq-arrow">▸</span>
+                    </div>
+                    <div class="faq-answer">¡Sí! Usá nuestro creador de personajes para armar tu avatar con distintos tonos de piel, pelos, ropa y accesorios.</div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    <style>
+        .faq-scroll::-webkit-scrollbar { width: 6px; }
+        .faq-scroll::-webkit-scrollbar-track { background: transparent; }
+        .faq-scroll::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.3); border-radius: 3px; }
+        .faq-scroll::-webkit-scrollbar-thumb:hover { background: rgba(0,212,255,0.5); }
+        /* FAQ Title Card — pinned note style */
+        .faq-title-card {
+            background: var(--paper);
+            border: 4px solid var(--ink);
+            box-shadow: 8px 8px 0 var(--ink);
+            padding: 20px 40px;
+            display: inline-block;
+            position: sticky;
+            top: 20px;
+            transform: rotate(-1.5deg);
+            margin-bottom: 50px;
+            margin-left: 20px;
+            z-index: 10;
+        }
+        .faq-title-pin {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--rust);
+            border: 3px solid var(--ink);
+            border-radius: 50%;
+            box-shadow: 2px 2px 0 var(--ink);
+        }
+        .faq-title-text {
+            font-family: 'Trevor', sans-serif;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            color: var(--ink);
+            letter-spacing: 5px;
+            margin: 0;
+        }
+
+        /* FAQ Items */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .faq-item {
+            background: var(--paper);
+            border: 3px solid var(--ink);
+            box-shadow: 5px 5px 0 var(--ink);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: rotate(var(--r, 0deg));
+        }
+        .faq-item:nth-child(odd) { --r: -0.4deg; }
+        .faq-item:nth-child(even) { --r: 0.4deg; }
+
+        .faq-item:hover {
+            transform: rotate(0deg) translateX(6px);
+            box-shadow: 8px 8px 0 var(--ink);
+        }
+        .faq-item.open {
+            transform: rotate(0deg) translateX(6px);
+            border-color: var(--rust);
+            box-shadow: 8px 8px 0 var(--rust);
+        }
+
+        .faq-question {
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+        .faq-q-text {
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.1rem;
+            color: var(--ink);
+            letter-spacing: 1px;
+            flex: 1;
+        }
+        .faq-arrow {
+            color: var(--rust);
+            font-size: 1.3rem;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+        .faq-item.open .faq-arrow {
+            transform: rotate(90deg);
+        }
+
+        .faq-answer {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.92rem;
+            color: #444;
+            line-height: 1.7;
+            max-height: 0;
+            padding: 0 22px;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+        .faq-item.open .faq-answer {
+            max-height: 500px;
+            padding: 0 22px 18px;
+            border-top: 2px dashed var(--ink);
+        }
+
+        @media (max-width: 600px) {
+            .faq-section {
+                line-height: 1.5 !important;
+                font-size: 1rem !important;
+            }
+            .faq-bg-img {
+                display: none !important;
+            }
+            .faq-overlay {
+                position: relative !important;
+                padding: 40px 15px 40px !important;
+                background: url('imagenes/footer_Mesa de trabajo 1.png') center center / cover no-repeat;
+            }
+            .faq-title-card { padding: 15px 25px; margin-left: 10px; margin-bottom: 20px; }
+            .faq-title-text { letter-spacing: 3px; font-size: 1.3rem; }
+            .faq-q-text { font-size: 0.85rem; }
+            .faq-item { box-shadow: 3px 3px 0 var(--ink); border-width: 2px; }
+            .faq-item.open { box-shadow: 3px 3px 0 var(--rust); }
+            .faq-question { padding: 12px 14px; }
+            .faq-answer { font-size: 0.8rem; padding: 0 14px; }
+            .faq-item.open .faq-answer { padding: 0 14px 12px; }
+        }
+    </style>
+
+    <!-- CTA / DONACIONES -->
+    <section id="cta">
+        <div class="cta-stripes"></div>
+        <div class="donate-bg-pattern"></div>
+        <div class="cta-container">
+            <div class="section-header">
+                <h2 class="section-title">APOYÁ EL PROYECTO</h2>
+            </div>
+
+            <div class="donate-images-row">
+                <img src="imagenes/npcjuego..png" alt="NPC del juego" class="donate-img">
+                <img src="imagenes/mencion creditos.png" alt="Recompensas" class="donate-img">
+            </div>
+
+            <div class="donate-card">
+                <div class="donate-card-header">
+                    <span class="donate-tag">CROWDFUNDING</span>
+                    <h3 class="donate-card-title">Hacé posible RETRUCO</h3>
+                </div>
+
+                <p class="donate-card-text">
+                    César se cansó de laburar solo. Ayudanos a terminar el juego
+                    y llevate recompensas exclusivas.
+                </p>
+
+                <div class="donate-benefits-grid">
+                    <div class="benefit-item">
+                        <img src="imagenes/empanada.png" alt="Empanada" class="benefit-icon-img">
+                        <span class="benefit-text">Aparecé como NPC</span>
+                    </div>
+                    <div class="benefit-item">
+                        <img src="imagenes/cigarro.png" alt="Cigarro" class="benefit-icon-img">
+                        <span class="benefit-text">Créditos finales</span>
+                    </div>
+                    <div class="benefit-item">
+                        <img src="imagenes/ddl.png" alt="DDL" class="benefit-icon-img">
+                        <span class="benefit-text">Acceso anticipado</span>
+                    </div>
+                    <div class="benefit-item">
+                        <img src="imagenes/don.png" alt="Don" class="benefit-icon-img">
+                        <span class="benefit-text">Contenido exclusivo</span>
+                    </div>
+                </div>
+
+                <a href="https://cafecito.app/retrucoeljuego" target="_blank" class="btn btn-donate">
+                    <img src="imagenes/1000pe.png" alt="1000 pesos" class="btn-donate-icon-img">
+                    <span class="btn-donate-text">DONAR AHORA</span>
+                    <span class="btn-donate-arrow">→</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        // Smooth scroll personalizado (más suave)
+        function smoothScrollTo(targetPosition, duration = 1500) {
+            const startPosition = window.pageYOffset;
+            const distance = targetPosition - startPosition;
+            let startTime = null;
+
+            function easeInOutCubic(t) {
+                return t < 0.5
+                    ? 4 * t * t * t
+                    : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
+
+            function animation(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const progress = Math.min(timeElapsed / duration, 1);
+                const ease = easeInOutCubic(progress);
+
+                window.scrollTo(0, startPosition + distance * ease);
+
+                if (timeElapsed < duration) {
+                    requestAnimationFrame(animation);
+                }
+            }
+
+            requestAnimationFrame(animation);
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(a.getAttribute('href'));
+                if (target) {
+                    smoothScrollTo(target.offsetTop, 1200);
+                }
+            });
+        });
+
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0) rotate(var(--r, 0deg))';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.char-card, .about-img, .donate-card, .donate-img').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(40px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Parallax on hero + Nav logo visibility
+        const navLogo = document.querySelector('.nav-logo');
+        const heroSection = document.getElementById('hero');
+        const cesarContainer = document.querySelector('.cesar-container');
+
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const heroHeight = heroSection.offsetHeight;
+
+            // Mostrar logo cuando pase el hero
+            if (scrolled >= heroHeight - 100) {
+                navLogo.classList.add('visible');
+            } else {
+                navLogo.classList.remove('visible');
+            }
+
+            // Parallax effect (solo en mobile donde el contenido es visible)
+            if (cesarContainer && window.innerWidth <= 900 && scrolled < window.innerHeight) {
+                cesarContainer.style.transform = `translateY(${scrolled * 0.15}px) rotate(2deg)`;
+            }
+        });
+
+        // Gallery Lightbox
+        const galleryImages = [
+            'imagenes/screenshot1.png',
+            'imagenes/screenshot2.png',
+            'imagenes/screenshot3.png',
+            'imagenes/screenshot4.png'
+        ];
+        let currentSlide = 0;
+
+        function openGallery(index) {
+            currentSlide = index;
+            updateGallery();
+            document.getElementById('galleryLightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGallery() {
+            document.getElementById('galleryLightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide >= galleryImages.length) currentSlide = 0;
+            if (currentSlide < 0) currentSlide = galleryImages.length - 1;
+            updateGallery();
+        }
+
+        function updateGallery() {
+            document.getElementById('galleryImage').src = galleryImages[currentSlide];
+            document.getElementById('galleryCounter').textContent = (currentSlide + 1) + ' / ' + galleryImages.length;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('galleryLightbox').classList.contains('active')) return;
+            if (e.key === 'Escape') closeGallery();
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Close on background click
+        document.getElementById('galleryLightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'galleryLightbox') closeGallery();
+        });
+
+        // Character Hover Effect
+        function hoverChar(character, isHovering) {
+            const layer = document.getElementById('layer' + character.charAt(0).toUpperCase() + character.slice(1));
+            if (layer) {
+                if (isHovering) {
+                    layer.classList.add('hovered');
+                } else {
+                    layer.classList.remove('hovered');
+                }
+            }
+        }
+
+        // Lluvia de plata en hover de "APOYÁ EL PROYECTO"
+        const ctaTitle = document.querySelector('#cta .section-title');
+        let isRaining = false;
+
+        function createPlataRain() {
+            if (isRaining) return;
+            isRaining = true;
+
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const plata = document.createElement('img');
+                    plata.src = 'imagenes/plata_Mesa de trabajo 1.png';
+                    plata.className = 'plata-rain';
+                    plata.style.left = Math.random() * 100 + 'vw';
+                    plata.style.top = '-150px';
+                    plata.style.width = (250 + Math.random() * 150) + 'px';
+                    plata.style.animationDuration = (2 + Math.random() * 2) + 's';
+                    document.body.appendChild(plata);
+
+                    setTimeout(() => {
+                        plata.remove();
+                    }, 4000);
+                }, i * 100);
+            }
+
+            setTimeout(() => {
+                isRaining = false;
+            }, 2500);
+        }
+
+        if (ctaTitle) {
+            ctaTitle.addEventListener('mouseenter', createPlataRain);
+        }
+
+        // Character Modal
+        const charData = {
+            xiao: {
+                name: 'XIAO',
+                role: 'El Chino',
+                text: 'Xiao llegó a Buenos Aires buscando una nueva vida, pero encontró algo muy diferente. Con su pasado misterioso en las calles de Shanghai, aprendió a moverse entre las sombras. En el pabellón, su silencio es su mayor arma. Nadie sabe exactamente qué negocios lo trajeron hasta acá, pero todos saben que es mejor no meterse con él.'
+            },
+            dario: {
+                name: 'DARÍO',
+                role: 'El Cerebro',
+                text: 'Pese a ser opuestos, podés pensar que es el amigo de César. Estás en lo correcto, pero la confianza depositada en él es la que provoca el 90% de los quilombos, siempre. Aunque no deja de ser el cerebro de las operaciones.'
+            },
+            aliado: {
+                name: 'ALIADO',
+                role: 'El Compañero',
+                text: 'Todo el mundo necesita alguien que le cuide las espaldas en este lugar. Este es de los pocos en los que podés confiar. No hace preguntas, no juzga, y cuando las papas queman, está ahí. En un mundo donde la traición es moneda corriente, un aliado así vale oro.'
+            },
+            chino: {
+                name: 'CHINO',
+                role: 'El Estratega',
+                text: 'Le dicen Chino pero nadie sabe bien por qué. Lo que sí saben es que el tipo piensa tres jugadas adelante. En el truco es imbatible, y en la vida del pabellón aplica la misma lógica. Nunca muestra sus cartas hasta que es demasiado tarde para el otro.'
+            },
+            chino2: {
+                name: 'CHINO 2',
+                role: 'El Segundo',
+                text: 'Siempre a la sombra del otro Chino, pero no te confundas: este tiene sus propios planes. Más callado, más paciente, y según algunos, más peligroso. Observa y aprende, esperando su momento.'
+            },
+            littleboogie: {
+                name: 'LITTLE BOOGIE',
+                role: 'El Rítmico',
+                text: 'En otro mundo, Little Boogie hubiera sido músico. Acá adentro, el ritmo lo lleva en la sangre igual. Siempre tarareando algo, siempre moviéndose al compás de una melodía que solo él escucha. Pero no te dejes engañar por su aire despistado: cuando hay quilombo, sabe exactamente dónde pararse.'
+            },
+            momo: {
+                name: 'MOMO',
+                role: 'El Pesado',
+                text: 'Momo no necesita hablar para hacerse respetar. Su presencia física impone silencio. Dicen que antes de caer fue patova en los boliches más pesados del conurbano. Ahora usa esa experiencia para mantener el orden... a su manera.'
+            },
+            abraham: {
+                name: 'ABRAHAM',
+                role: 'El Veterano',
+                text: 'Abraham lleva más años adentro que muchos afuera. Vio caer a los más duros, sobrevivió a las peores épocas. Ahora pasa sus días jugando al truco y dando consejos que nadie pidió pero todos necesitan. Su palabra tiene peso porque la ganó con el tiempo.'
+            },
+            wachin2: {
+                name: 'WACHIN',
+                role: 'Veterano del Pabellón',
+                text: 'El Wachin original ya no está, pero su legado vive en este. Heredó el apodo, el respeto y también los problemas. Trata de estar a la altura de una leyenda que nunca conoció, y eso a veces lo lleva a tomar decisiones arriesgadas.'
+            },
+            bignone: {
+                name: 'BIGNONE',
+                role: 'El Viejo Exaltado',
+                text: '¿Debe ser el presidente? ¿Está cuerdo como para hacerlo? La verdad es que no, pero por algún motivo está ahí, molestando siempre. En algún momento podemos sacar lo bueno del viejo exaltado este.'
+            },
+            cesar: {
+                name: 'CÉSAR',
+                role: 'El Protagonista',
+                text: 'César era un pibe común de Buenos Aires. Laburaba, se rescataba, trataba de zafar como podía. Pero un viaje a China le cambió la vida para siempre. Cayó en cana en circunstancias que todavía no entiende del todo. Ahora, de vuelta en su ciudad, tiene que sobrevivir a un sistema corrupto y cumplir una misión que no pidió. Cada decisión que tome puede ser la última.'
+            },
+            uzi: {
+                name: 'UZI',
+                role: 'El Fierro',
+                text: 'El arma judía que reina en el bajo mundo de los porteños. Eficaz, rápida, pero traicionera; clásica de sus raíces.'
+            },
+            mandarinas: {
+                name: 'MANDARINAS',
+                role: 'La Fruta Prohibida',
+                text: 'La fruta favorita de la gente de bien y de Wa-Chin, probablemente robadas de algún patio con vecino.'
+            },
+            plata: {
+                name: 'PLATA',
+                role: 'El Combustible',
+                text: 'Pesos, dólares, lo que venga. La guita mueve todo adentro: compra protección, silencio, favores y hasta libertad anticipada si sabés a quién dársela. Sin plata no sos nadie, con plata... bueno, seguís siendo un preso, pero uno con opciones.'
+            },
+            encendedor: {
+                name: 'ENCENDEDOR',
+                role: 'La Chispa',
+                text: 'Un simple encendedor BIC. Sirve para prender un pucho, calentar una lata, o empezar un incendio si las cosas se ponen feas. En el lugar correcto y el momento indicado, hasta lo más simple puede cambiar todo.'
+            },
+            estrelladavid: {
+                name: 'ESTRELLA DE DAVID',
+                role: 'El Símbolo',
+                text: 'Mmmh... todavía no hablemos de esto.'
+            },
+            fernet: {
+                name: 'FERNET BRANCA',
+                role: 'El Néctar Cordobés',
+                text: 'Difícil encontrar uno lleno. Agua para César, y tanto un peligro como un poder en los piquetes.'
+            },
+            sapphirus: {
+                name: 'SAPPHIRUS',
+                role: 'El Perfume',
+                text: '¿Para qué? Olor a casa de vieja, a ropa limpia, y junto al encendedor el origen del bondi que te imagines y cuando lo imagines.'
+            },
+            donsatur: {
+                name: 'DON SATUR',
+                role: 'Las Galletitas',
+                text: 'Un paquete de galletitas Don Satur. El sabor de la infancia, de las meriendas con la vieja, de una vida que quedó afuera. Acá adentro, compartir unas galletitas es un gesto de humanidad en medio del caos.'
+            },
+            laverde: {
+                name: 'LA VERDE',
+                role: 'El Faso',
+                text: 'Bolsitas ziploc con marihuana. La moneda más estable del pabellón. Se fuma para relajar, se vende para sobrevivir, se intercambia por favores. El que controla la verde tiene poder, pero también tiene problemas. Siempre hay alguien que la quiere.'
+            }
+        };
+
+        function openCharModal(character) {
+            const data = charData[character];
+            if (!data) return;
+
+            document.getElementById('charModalName').textContent = data.name;
+            document.getElementById('charModalRole').textContent = data.role;
+            document.getElementById('charModalText').textContent = data.text;
+            document.getElementById('charModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCharModal() {
+            document.getElementById('charModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on background click
+        document.getElementById('charModal').addEventListener('click', (e) => {
+            if (e.target.id === 'charModal') closeCharModal();
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('charModal').classList.contains('active')) {
+                closeCharModal();
+            }
+        });
+
+    </script>
+
+</body>
+</html>

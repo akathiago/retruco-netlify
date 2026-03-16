@@ -1,0 +1,2310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>RETRUCO - Creá tu personaje</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+    <link rel="manifest" href="../favicon/site.webmanifest">
+    <link rel="shortcut icon" href="../favicon/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rust: #2bb8cd;
+            --rust-dark: #1a8fa5;
+            --paper: #e0f7fa;
+            --ink: #0a1a24;
+            --concrete-1: #0a1a24;
+            --concrete-2: #0f2535;
+            --concrete-3: #1a3545;
+            --glow: rgba(43, 184, 205, 0.5);
+            --glow-strong: rgba(43, 184, 205, 0.8);
+
+            --title-xl: clamp(3rem, 8vw, 6rem);
+            --title-md: clamp(2rem, 5vw, 3.5rem);
+            --heading: 1.5rem;
+            --body-lg: 1.15rem;
+            --body: 1rem;
+            --small: 0.9rem;
+
+            /* Mobile-specific */
+            --tap-target: 44px;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+        }
+
+        /* Support for dvh with fallback */
+        @supports (height: 100dvh) {
+            :root {
+                --app-height: 100dvh;
+            }
+        }
+        @supports not (height: 100dvh) {
+            :root {
+                --app-height: 100vh;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--concrete-1) url('assets/fondo/fondopatron_Mesa de trabajo 1.png') center/cover;
+            height: var(--app-height, 100vh);
+            color: var(--paper);
+            overflow: hidden;
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x pan-y;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        /* South Park Back Arrow */
+        .sp-back-arrow {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--concrete-2);
+            border: 4px solid var(--ink);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 4px 4px 0 var(--paper);
+            transition: all 0.15s ease;
+            text-decoration: none;
+            color: var(--paper);
+        }
+
+        .sp-back-arrow svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .sp-back-arrow:hover {
+            background: var(--concrete-3);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--paper);
+        }
+
+        .sp-back-arrow:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--paper);
+        }
+
+        /* Background texture */
+        .bg-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 20% 30%, var(--glow) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(43, 184, 205, 0.2) 0%, transparent 35%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 0.3rem;
+            text-align: center;
+        }
+
+        .logo {
+            font-family: 'Anton', sans-serif;
+            font-size: var(--title-md);
+            letter-spacing: 5px;
+            color: var(--paper);
+            text-shadow: 4px 4px 0 var(--ink), 0 0 30px var(--glow);
+            display: inline-block;
+            position: relative;
+        }
+
+        .logo::before {
+            content: 'CHARACTER CREATOR';
+            position: absolute;
+            bottom: -1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Montserrat', sans-serif;
+            font-size: var(--small);
+            font-weight: 600;
+            letter-spacing: 4px;
+            color: var(--rust);
+            white-space: nowrap;
+        }
+
+        /* Main layout */
+        .app-container {
+            position: relative;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 30px;
+            padding: 20px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100vh;
+        }
+
+        /* Character viewport - Prison mugshot style */
+        .viewport-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .viewport-container {
+            position: relative;
+            background: var(--concrete-2);
+            border: 5px solid var(--ink);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow:
+                8px 8px 0 var(--ink),
+                0 0 60px var(--glow);
+            transform: rotate(-1deg);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            aspect-ratio: 9 / 16;
+            height: 100%;
+            margin-top: 0;
+        }
+
+        .viewport-container:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        /* Mugshot ruler */
+        .mugshot-ruler {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 19px,
+                    var(--paper) 19px,
+                    var(--paper) 20px
+                );
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        /* Category badge */
+        .category-badge {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: var(--rust);
+            color: var(--ink);
+            padding: 8px 20px;
+            font-family: 'Anton', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            border: 3px solid var(--ink);
+            box-shadow: 4px 4px 0 var(--ink);
+            transform: rotate(-3deg);
+            z-index: 20;
+        }
+
+        .camera {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: center center;
+            overflow: hidden;
+            padding: 20px;
+            position: relative;
+        }
+
+        .viewport-fondo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .viewport-fondo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .camera.zoom-full {
+            transform: scale(1);
+        }
+
+        .camera.zoom-head {
+            transform: scale(1.3) translateY(60px);
+        }
+
+        .camera.zoom-torso {
+            transform: scale(1.1) translateY(15px);
+        }
+
+        .camera.zoom-legs {
+            transform: scale(1.2) translateY(-50px);
+        }
+
+        .character-stage {
+            position: relative;
+            height: 65%;
+            aspect-ratio: 3721 / 4500;
+            filter: drop-shadow(8px 8px 0 rgba(0,0,0,0.5));
+        }
+
+        .character-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .character-layer img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .character-layer.changing img {
+            animation: partSwap 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes partSwap {
+            0% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.05); filter: brightness(1.3); }
+            100% { transform: scale(1); filter: brightness(1); }
+        }
+
+        @keyframes toneFade {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .character-layer.tone-change img {
+            animation: toneFade 0.3s ease-out;
+        }
+
+        /* Controls panel */
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            height: 100%;
+            min-width: 0;
+        }
+
+        /* Category tabs - styled like prison file tabs */
+        .category-tabs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 5px;
+        }
+
+        .category-tab {
+            padding: 10px 6px;
+            background: var(--concrete-3);
+            border: 2px solid var(--ink);
+            border-radius: 6px;
+            color: var(--paper);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 3px 3px 0 var(--ink);
+            transform: translateY(0);
+        }
+
+        .category-tab .icon {
+            font-size: 1.1rem;
+        }
+
+        .category-tab:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 var(--ink);
+            background: var(--concrete-2);
+        }
+
+        .category-tab.active {
+            background: var(--rust);
+            color: var(--ink);
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 var(--ink);
+        }
+
+        /* Options container - Prison note style */
+        .options-container {
+            background: #ffffff;
+            border: 3px solid var(--ink);
+            border-radius: 8px;
+            padding: 15px 10px 20px;
+            box-shadow: 6px 6px 0 var(--ink);
+            transform: rotate(0.5deg);
+            position: relative;
+            /* Lined paper effect */
+            background-image: linear-gradient(#e8e8e8 1px, transparent 1px);
+            background-size: 100% 28px;
+            background-position: 0 20px;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            overflow: hidden;
+        }
+
+        .options-container::before {
+            content: '';
+            position: absolute;
+            left: 45px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255, 100, 100, 0.3);
+        }
+
+        .options-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #ccc;
+        }
+
+        .options-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            color: var(--ink);
+        }
+
+        .options-count {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #666;
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 2px solid #ddd;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-auto-rows: 120px;
+            gap: 12px;
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 8px 15px 20px 35px;
+            min-height: 0;
+        }
+
+        .options-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .options-grid::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        .options-grid::-webkit-scrollbar-thumb {
+            background: var(--rust);
+            border-radius: 4px;
+        }
+
+        .option-card {
+            background: #f8f8f8;
+            border: 3px solid var(--ink);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            position: relative;
+            box-shadow: 3px 3px 0 var(--ink);
+            height: 100%;
+        }
+
+        .option-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        .option-card:hover {
+            transform: translate(-2px, -2px) rotate(-2deg);
+            box-shadow: 5px 5px 0 var(--ink);
+            background: #fff;
+        }
+
+        .option-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .option-card.selected {
+            border-color: var(--rust);
+            background: var(--paper);
+            box-shadow:
+                5px 5px 0 var(--ink),
+                0 0 20px var(--glow);
+            transform: translate(-2px, -2px);
+        }
+
+        .option-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 24px;
+            height: 24px;
+            background: var(--rust);
+            border: 2px solid var(--ink);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--ink);
+        }
+
+        /* Skin tone cards */
+        .option-card.skin-tone {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .skin-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid var(--ink);
+            box-shadow: 2px 2px 0 var(--ink);
+        }
+
+        .skin-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--ink);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Action buttons */
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+            margin-top: auto;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: 3px solid var(--ink);
+            border-radius: 8px;
+            font-family: 'Anton', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-secondary {
+            background: var(--concrete-2);
+            color: var(--paper);
+            box-shadow: 4px 4px 0 var(--rust);
+        }
+
+        .btn-secondary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--rust);
+        }
+
+        .btn-primary {
+            background: var(--rust);
+            color: var(--ink);
+            box-shadow: 4px 4px 0 var(--ink);
+        }
+
+        .btn-primary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--ink);
+        }
+
+        /* Download options */
+        .download-group {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .scale-select {
+            width: 100%;
+            padding: 10px;
+            background: var(--concrete-3);
+            border: 3px solid var(--ink);
+            border-radius: 8px;
+            color: var(--paper);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 3px 3px 0 var(--ink);
+        }
+
+        .scale-select:focus {
+            outline: none;
+            border-color: var(--rust);
+        }
+
+        /* Decorative tape */
+        .tape {
+            position: absolute;
+            width: 120px;
+            height: 30px;
+            background: rgba(255, 235, 180, 0.85);
+            z-index: 25;
+        }
+
+        .tape-top-right {
+            top: -10px;
+            right: 30px;
+            transform: rotate(35deg);
+        }
+
+        .tape-bottom-left {
+            bottom: -10px;
+            left: 30px;
+            transform: rotate(-25deg);
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-1deg); }
+            50% { transform: translateY(-10px) rotate(-1deg); }
+        }
+
+        /* Pulse glow */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 8px 8px 0 var(--ink), 0 0 30px var(--glow); }
+            50% { box-shadow: 8px 8px 0 var(--ink), 0 0 50px var(--glow-strong); }
+        }
+
+        .viewport-container {
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        /* Entrance animations */
+        .fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) rotate(-1deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotate(-1deg);
+            }
+        }
+
+        .stagger-1 { animation-delay: 0.1s; opacity: 0; }
+        .stagger-2 { animation-delay: 0.2s; opacity: 0; }
+        .stagger-3 { animation-delay: 0.3s; opacity: 0; }
+        .stagger-4 { animation-delay: 0.4s; opacity: 0; }
+
+        /* ===========================================
+           MOBILE RESPONSIVE STYLES
+           =========================================== */
+
+        /* Tablet breakpoint - minor adjustments */
+        @media (max-width: 900px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                padding: 40px 20px;
+            }
+
+            .viewport-container {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .camera {
+                min-height: 450px;
+            }
+
+            .category-tabs {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .category-tab {
+                padding: 10px 4px;
+                font-size: 0.6rem;
+            }
+
+            .category-tab .icon {
+                font-size: 1rem;
+            }
+        }
+
+        /* iPad Air specific (820x1180) */
+        @media (min-width: 769px) and (max-width: 850px) {
+            .app-container {
+                display: flex;
+                flex-direction: column;
+                grid-template-columns: unset;
+                padding: 20px;
+                gap: 15px;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            .viewport-wrapper {
+                flex-shrink: 0;
+                height: 50vh;
+                min-height: 50vh;
+            }
+
+            .viewport-container {
+                max-width: 100%;
+                width: 100%;
+                height: 100%;
+                margin: 0 auto;
+                aspect-ratio: unset;
+            }
+
+            .camera {
+                min-height: unset;
+                height: 100%;
+            }
+
+            .character-stage {
+                height: 90%;
+            }
+
+            .controls-panel {
+                flex: 1;
+                min-height: 0;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .options-container {
+                flex: 1;
+                min-height: 0;
+                height: auto;
+                overflow: hidden;
+            }
+
+            .options-grid {
+                overflow-y: auto;
+                padding-bottom: 80px;
+            }
+
+            .actions {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 15px 20px;
+                background: linear-gradient(to top, var(--concrete-1) 80%, transparent);
+                z-index: 50;
+                margin: 0;
+            }
+        }
+
+        /* Mobile breakpoint - complete redesign */
+        @media (max-width: 768px) {
+            /* Hide back arrow on mobile or reposition */
+            .sp-back-arrow {
+                top: calc(10px + var(--safe-top));
+                left: 10px;
+                width: 44px;
+                height: 44px;
+            }
+
+            /* Hide header on mobile for more space */
+            header {
+                display: none;
+            }
+
+            /* Main container - vertical stack */
+            .app-container {
+                display: flex;
+                flex-direction: column;
+                grid-template-columns: unset;
+                gap: 0;
+                padding: 0;
+                padding-top: var(--safe-top);
+                padding-bottom: 0;
+                height: var(--app-height, 100vh);
+                max-width: 100%;
+                overflow: hidden;
+            }
+
+            /* Viewport wrapper - fixed height ratio */
+            .viewport-wrapper {
+                flex-shrink: 0;
+                height: auto;
+                max-height: 52vh;
+                min-height: 200px;
+                padding: 8px;
+                padding-top: calc(8px + var(--safe-top));
+            }
+
+            .viewport-wrapper.fade-in-up {
+                animation: none;
+                opacity: 1;
+            }
+
+            .viewport-container {
+                max-width: none;
+                width: 100%;
+                height: 100%;
+                max-height: 100%;
+                aspect-ratio: unset;
+                transform: none;
+                border-radius: 12px;
+                border-width: 3px;
+                box-shadow: 4px 4px 0 var(--ink), 0 0 30px var(--glow);
+                animation: none;
+            }
+
+            .viewport-container:hover {
+                transform: none;
+            }
+
+            .camera {
+                padding: 0;
+                align-items: stretch;
+                justify-content: stretch;
+            }
+
+            .character-stage {
+                height: 100%;
+                width: 100%;
+                aspect-ratio: unset;
+            }
+
+            /* Adjust zoom levels for mobile viewport */
+            .camera.zoom-legs .character-stage {
+                transform: none;
+            }
+
+            .camera.zoom-head .character-stage {
+                transform: none;
+            }
+
+            .camera.zoom-torso .character-stage {
+                transform: none;
+            }
+
+            .camera.zoom-full .character-stage {
+                transform: none;
+            }
+
+            /* Controls panel - flex grow */
+            .controls-panel {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                min-height: 0;
+                overflow: hidden;
+                padding: 0 8px;
+            }
+
+            /* Category tabs - horizontal scroll pills */
+            .category-tabs {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                overflow-y: hidden;
+                gap: 8px;
+                padding: 8px 4px;
+                margin: 0 -8px;
+                padding-left: 12px;
+                padding-right: 12px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                flex-shrink: 0;
+            }
+
+            .category-tabs::-webkit-scrollbar {
+                display: none;
+            }
+
+            .category-tab {
+                flex: 0 0 auto;
+                min-width: var(--tap-target);
+                padding: 8px 14px;
+                flex-direction: row;
+                gap: 6px;
+                font-size: 0.7rem;
+                border-radius: 20px;
+                white-space: nowrap;
+                box-shadow: 2px 2px 0 var(--ink);
+            }
+
+            .category-tab .icon {
+                font-size: 1rem;
+            }
+
+            .category-tab:hover {
+                transform: none;
+                box-shadow: 2px 2px 0 var(--ink);
+            }
+
+            .category-tab:active {
+                transform: scale(0.95);
+                box-shadow: 1px 1px 0 var(--ink);
+            }
+
+            .category-tab.active {
+                transform: none;
+                box-shadow: 2px 2px 0 var(--ink);
+            }
+
+            /* Options container - flex grow with scroll */
+            .options-container {
+                flex: 1;
+                height: auto;
+                min-height: 0;
+                border-radius: 12px 12px 0 0;
+                border-width: 2px;
+                border-bottom: none;
+                padding: 10px 8px 0 8px;
+                margin: 0 -8px;
+                transform: none;
+                box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+            }
+
+            .options-container::before {
+                display: none;
+            }
+
+            .options-header {
+                padding: 0 8px 8px;
+                margin-bottom: 8px;
+            }
+
+            .options-title {
+                font-size: 1rem;
+            }
+
+            .options-count {
+                font-size: 0.7rem;
+                padding: 4px 10px;
+            }
+
+            /* Options grid - 3 columns, scrollable */
+            .options-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                grid-auto-rows: minmax(80px, 100px);
+                gap: 8px;
+                padding: 4px 8px 100px 8px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                overscroll-behavior-y: contain;
+                -webkit-overflow-scrolling: touch;
+                touch-action: pan-y;
+            }
+
+            .option-card {
+                border-width: 2px;
+                border-radius: 8px;
+                padding: 6px;
+                box-shadow: 2px 2px 0 var(--ink);
+                min-height: var(--tap-target);
+            }
+
+            .option-card:hover {
+                transform: none;
+                box-shadow: 2px 2px 0 var(--ink);
+            }
+
+            .option-card:active {
+                transform: scale(0.95);
+                box-shadow: 1px 1px 0 var(--ink);
+                background: #fff;
+            }
+
+            .option-card.selected {
+                transform: none;
+                box-shadow: 2px 2px 0 var(--ink), 0 0 12px var(--glow);
+            }
+
+            .option-card.selected::after {
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
+                top: 4px;
+                right: 4px;
+            }
+
+            /* Skin tone cards */
+            .option-card.skin-tone {
+                padding: 8px 4px;
+            }
+
+            .skin-preview {
+                width: 40px;
+                height: 40px;
+            }
+
+            .skin-label {
+                font-size: 0.6rem;
+            }
+
+            /* Actions - sticky bottom */
+            .actions {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                padding: 12px;
+                padding-bottom: calc(12px + var(--safe-bottom));
+                background: linear-gradient(to top, var(--concrete-1) 80%, transparent);
+                z-index: 50;
+                margin: 0;
+            }
+
+            .actions.fade-in-up {
+                animation: none;
+                opacity: 1;
+            }
+
+            .btn {
+                flex: 1;
+                padding: 14px 16px;
+                min-height: var(--tap-target);
+                font-size: 0.85rem;
+                border-radius: 10px;
+                box-shadow: 3px 3px 0 var(--ink);
+            }
+
+            .btn:active {
+                transform: scale(0.97);
+                box-shadow: 1px 1px 0 var(--ink);
+            }
+
+            /* Disable hover transforms on touch */
+            .btn-secondary:hover,
+            .btn-primary:hover {
+                transform: none;
+            }
+        }
+
+        /* Small phones - iPhone SE (375x667) and similar */
+        @media (max-width: 390px) {
+            .category-tab {
+                padding: 6px 10px;
+                font-size: 0.65rem;
+            }
+
+            .category-tab .icon {
+                font-size: 0.9rem;
+            }
+
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: minmax(80px, 100px);
+            }
+
+            .viewport-wrapper {
+                max-height: 50vh;
+                min-height: 180px;
+            }
+
+            .viewport-container {
+                padding-top: 0;
+            }
+
+            .camera {
+                padding: 0;
+                align-items: stretch;
+            }
+
+            .character-stage {
+                height: 100%;
+                width: 100%;
+            }
+
+            /* Adjust zoom levels for small screens */
+            .camera.zoom-head {
+                transform: scale(1.3) translateY(-5%);
+            }
+
+            .camera.zoom-torso {
+                transform: scale(1.1) translateY(5%);
+            }
+
+            .camera.zoom-legs {
+                transform: scale(1.2) translateY(-15%);
+            }
+
+            .camera.zoom-full {
+                transform: none;
+            }
+        }
+
+        /* Very short screens (iPhone SE landscape-ish heights) */
+        @media (max-height: 700px) and (orientation: portrait) {
+            .viewport-wrapper {
+                max-height: 48vh;
+                min-height: 160px;
+            }
+
+            .options-container {
+                padding: 6px 6px 0 6px;
+            }
+
+            .options-header {
+                padding: 0 6px 4px;
+                margin-bottom: 4px;
+            }
+
+            .options-title {
+                font-size: 0.9rem;
+            }
+
+            .options-grid {
+                grid-auto-rows: minmax(70px, 90px);
+                gap: 6px;
+                padding: 4px 6px 90px 6px;
+            }
+
+            .category-tabs {
+                padding: 6px 4px;
+                gap: 6px;
+            }
+
+            .actions {
+                padding: 10px;
+                gap: 8px;
+            }
+
+            .btn {
+                padding: 12px 14px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Landscape phone */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .app-container {
+                flex-direction: row;
+                padding: 8px;
+                padding-left: calc(8px + var(--safe-left));
+                padding-right: calc(8px + var(--safe-right));
+            }
+
+            .viewport-wrapper {
+                max-height: none;
+                height: 100%;
+                width: 40%;
+                flex-shrink: 0;
+                padding: 0;
+                padding-top: 0;
+            }
+
+            .controls-panel {
+                flex: 1;
+                padding: 0 8px;
+            }
+
+            .category-tabs {
+                flex-wrap: wrap;
+                overflow-x: visible;
+                justify-content: center;
+            }
+
+            .options-container {
+                border-radius: 12px;
+                border: 2px solid var(--ink);
+                margin: 0;
+            }
+
+            .options-grid {
+                grid-template-columns: repeat(4, 1fr);
+                grid-auto-rows: 70px;
+                padding-bottom: 80px;
+            }
+
+            .actions {
+                padding: 8px;
+                padding-left: calc(8px + var(--safe-left));
+                padding-right: calc(8px + var(--safe-right));
+                padding-bottom: calc(8px + var(--safe-bottom));
+            }
+        }
+
+        /* Touch feedback utility */
+        @media (hover: none) and (pointer: coarse) {
+            .option-card,
+            .category-tab,
+            .btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
+
+        /* Download Modal - Clean Design */
+        .download-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--concrete-1);
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .download-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 500px;
+            height: 100%;
+            padding: 20px;
+            padding-top: 60px;
+            gap: 20px;
+        }
+
+        /* Preview Section */
+        .modal-preview-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            min-height: 0;
+            width: 100%;
+        }
+
+        .preview-frame {
+            position: relative;
+            height: 100%;
+            max-height: 75vh;
+            border: 5px solid var(--ink);
+            border-radius: 12px;
+            background: var(--concrete-2);
+            box-shadow: 8px 8px 0 var(--ink);
+            overflow: hidden;
+        }
+
+        .preview-frame img {
+            display: block;
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* Controls Section */
+        .modal-controls {
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        /* Action Buttons */
+        .modal-actions {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .modal-btn {
+            width: 56px;
+            height: 56px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Anton', sans-serif;
+            font-size: 1rem;
+            border-radius: 12px;
+            letter-spacing: 2px;
+            border: 3px solid var(--ink);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .modal-btn-download {
+            background: var(--rust);
+            color: var(--ink);
+            box-shadow: 4px 4px 0 var(--ink);
+        }
+
+        .modal-btn-download:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--ink);
+        }
+
+        .modal-btn-download:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--ink);
+        }
+
+        .modal-btn-share {
+            background: var(--concrete-2);
+            color: var(--paper);
+            box-shadow: 4px 4px 0 var(--ink);
+        }
+
+        .modal-btn-share:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--ink);
+            background: var(--concrete-3);
+        }
+
+        .modal-btn-share:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--ink);
+        }
+
+        #shareWhatsApp:hover {
+            background: #25D366;
+            color: white;
+        }
+
+        #shareInstagram:hover {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+
+        #shareTikTok:hover {
+            background: #000;
+            color: white;
+        }
+
+        /* Close X button */
+        .modal-close-x {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            background: var(--concrete-2);
+            border: 3px solid var(--ink);
+            border-radius: 8px;
+            color: var(--paper);
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 3px 3px 0 var(--ink);
+            z-index: 10;
+        }
+
+        .modal-close-x:hover {
+            background: var(--rust);
+            color: var(--ink);
+        }
+
+        .modal-close-x:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 var(--ink);
+        }
+
+
+        /* Modal animations */
+        .download-modal.active .modal-content {
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Modal - Mobile */
+        @media (max-width: 800px) {
+            .modal-content {
+                padding: 15px;
+                padding-top: 55px;
+                padding-bottom: calc(15px + var(--safe-bottom));
+                max-width: 100%;
+                gap: 15px;
+            }
+
+            .preview-frame {
+                max-height: 70vh;
+                border-width: 4px;
+                box-shadow: 6px 6px 0 var(--ink);
+            }
+
+            .modal-actions {
+                flex-direction: row;
+                gap: 12px;
+            }
+
+            .modal-btn {
+                width: 52px;
+                height: 52px;
+            }
+
+            .modal-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .modal-close-x {
+                top: calc(10px + var(--safe-top));
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-texture"></div>
+    <div class="noise"></div>
+
+    <!-- Flecha de navegación estilo South Park -->
+    <a href="../index.html" class="sp-back-arrow" id="backArrow">
+        <svg viewBox="0 0 24 24" fill="none">
+            <path d="M15 19L8 12L15 5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+
+    <main class="app-container">
+        <div class="viewport-wrapper fade-in-up stagger-1">
+            <div class="viewport-container">
+                <div class="camera" id="camera">
+                    <div class="viewport-fondo" id="viewportFondo"></div>
+                    <div class="character-stage" id="characterStage">
+                        <!-- Layers inserted by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="category-tabs fade-in-up stagger-2">
+                <button class="category-tab active" data-category="tonos" data-zoom="torso">
+                    <span class="icon">🎨</span>
+                    <span>Piel</span>
+                </button>
+                <button class="category-tab" data-category="cabeza" data-zoom="head">
+                    <span class="icon">💇</span>
+                    <span>Pelo</span>
+                </button>
+                <button class="category-tab" data-category="ojos" data-zoom="head">
+                    <span class="icon">👁️</span>
+                    <span>Ojos</span>
+                </button>
+                <button class="category-tab" data-category="boca" data-zoom="head">
+                    <span class="icon">👄</span>
+                    <span>Boca</span>
+                </button>
+                <button class="category-tab" data-category="torso" data-zoom="torso">
+                    <span class="icon">👕</span>
+                    <span>Torso</span>
+                </button>
+                <button class="category-tab" data-category="piernas" data-zoom="legs">
+                    <span class="icon">👖</span>
+                    <span>Piernas</span>
+                </button>
+                <button class="category-tab" data-category="extras" data-zoom="torso">
+                    <span class="icon">✨</span>
+                    <span>Extras</span>
+                </button>
+                <button class="category-tab" data-category="fondo" data-zoom="torso">
+                    <span class="icon">🖼️</span>
+                    <span>Fondo</span>
+                </button>
+            </div>
+
+            <div class="options-container fade-in-up stagger-3">
+                <div class="options-header">
+                    <span class="options-title" id="optionsTitle">TONO DE PIEL</span>
+                    <span class="options-count" id="optionsCount">4 opciones</span>
+                </div>
+                <div class="options-grid" id="optionsGrid">
+                    <!-- Options inserted by JS -->
+                </div>
+            </div>
+
+            <div class="actions fade-in-up stagger-4">
+                <button class="btn btn-secondary" id="btnRandom">
+                    <span>🎲</span>
+                    RANDOM
+                </button>
+                <button class="btn btn-primary" id="btnDownload">
+                    <span>📥</span>
+                    DESCARGAR
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Download Modal -->
+    <div class="download-modal" id="downloadModal">
+        <button class="modal-close-x" id="modalCloseX">&times;</button>
+        <div class="modal-content">
+            <div class="modal-preview-section">
+                <div class="preview-frame">
+                    <img id="modalPreview" src="" alt="Preview">
+                </div>
+            </div>
+            <div class="modal-controls">
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-download" id="modalDownloadBtn" title="Descargar">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                    </button>
+                    <button class="modal-btn modal-btn-share" id="shareWhatsApp" title="Enviar por WhatsApp">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                    </button>
+                    <button class="modal-btn modal-btn-share" id="shareInstagram" title="Compartir en Instagram">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                        </svg>
+                    </button>
+                    <button class="modal-btn modal-btn-share" id="shareTikTok" title="Compartir en TikTok">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Asset configuration
+        const ASSETS = {
+            tonos: {
+                title: 'TONO DE PIEL',
+                badge: 'PIEL',
+                items: ['normal', 'marronazo', 'argentino', 'chino', 'africano', 'reptiliano'],
+                colors: ['#e8a87c', '#8b5a3c', '#f5d0b5', '#f9e4c8', '#3d2b1f', '#5a8a5e']
+            },
+            cabeza: {
+                title: 'PELO',
+                badge: 'PELO',
+                items: ['ninguno', 'pelo1', 'pelo2', 'pelo3', 'pelo4', 'pelo5', 'pelo6', 'pelo7', 'pelo8', 'pelo9', 'pelo10', 'pelo11', 'pelo12', 'pelo13', 'pelo14', 'pelo15', 'pelo16', 'pelo17', 'pelo18', 'pelo19', 'pelo20', 'pelo21', 'pelo22', 'pelo23', 'pelo24', 'pelo25', 'pelo26', 'pelo27', 'pelo28', 'pelo29', 'pelo30', 'pelo31', 'pelo32', 'pelo33', 'pelo34', 'pelo35', 'pelo36'],
+                hasPreview: true,
+                previewFolder: 'pelo'
+            },
+            ojos: {
+                title: 'OJOS',
+                badge: 'OJOS',
+                items: ['ojos1', 'ojos2', 'ojos3', 'ojos4', 'ojos5', 'ojos6', 'ojos7', 'ojos8'],
+                hasPreview: true,
+                previewFolder: 'ojos'
+            },
+            boca: {
+                title: 'BOCA',
+                badge: 'BOCA',
+                items: ['boca0', 'boca1', 'boca2', 'boca3', 'boca4', 'boca6', 'boca7', 'boca8', 'boca9', 'boca10', 'boca11', 'boca12', 'boca13', 'boca14', 'boca15', 'boca16', 'boca17', 'boca18', 'boca19', 'boca20', 'boca21', 'boca22', 'boca23', 'boca24'],
+                hasPreview: true,
+                previewFolder: 'boca',
+                previewSuffix: ''
+            },
+            torso: {
+                title: 'TORSO',
+                badge: 'TORSO',
+                items: ['ninguno', 'torso1', 'torso2', 'torso3', 'torso4', 'torso5', 'torso6', 'torso7', 'torso8', 'torso9', 'torso10', 'torso11', 'torso12', 'torso13', 'torso14', 'torso15', 'torso16', 'torso17', 'torso18', 'torso19', 'torso20', 'torso21', 'torso22', 'torso23', 'torso24', 'torso25', 'torso26', 'torso27', 'torso28', 'torso29', 'torso30', 'torso31', 'torso32', 'torso33', 'torso34', 'torso35', 'torso36'],
+                hasPreview: true,
+                previewFolder: 'torso'
+            },
+            piernas: {
+                title: 'PIERNAS',
+                badge: 'PIERNAS',
+                items: ['piernas1', 'piernas2', 'piernas3', 'piernas4', 'piernas5', 'piernas6', 'piernas7', 'piernas8', 'piernas9', 'piernas10', 'piernas11', 'piernas12'],
+                hasPreview: true,
+                previewFolder: 'piernas'
+            },
+            extras: {
+                title: 'EXTRAS',
+                badge: 'EXTRAS',
+                items: ['ninguno', 'extra1', 'extra2', 'extra3', 'extra4', 'extra5', 'extra6', 'extra7', 'extra8', 'extra9', 'extra10', 'extra11', 'extra12', 'extra13', 'extra14', 'extra15', 'extra16', 'extra17', 'extra18', 'extra19', 'extra20', 'extra21', 'extra22', 'extra23', 'extra24'],
+                multiSelect: true,
+                hasPreview: true,
+                previewFolder: 'extras'
+            },
+            fondo: {
+                title: 'FONDO',
+                badge: 'FONDO',
+                items: ['fondocielo', 'fondopersonajes', 'fondopatron_Mesa de trabajo 1', 'fondo9dejulio_Mesa de trabajo 1']
+            }
+        };
+
+        // Current selections
+        function randomItem(arr) {
+            const filtered = arr.filter(i => i !== 'ninguno');
+            return filtered[Math.floor(Math.random() * filtered.length)];
+        }
+        let selections = {
+            fondo: randomItem(ASSETS.fondo.items),
+            tonos: randomItem(ASSETS.tonos.items),
+            cabeza: randomItem(ASSETS.cabeza.items),
+            ojos: randomItem(ASSETS.ojos.items),
+            boca: randomItem(ASSETS.boca.items),
+            torso: randomItem(ASSETS.torso.items),
+            piernas: randomItem(ASSETS.piernas.items),
+            extras: []
+        };
+
+        // Nota: piernas usa assets/piernas/{item}.png para el personaje
+        // pero assets/preview/{item}_preview.png para las miniaturas
+
+        let currentCategory = 'tonos';
+
+        // DOM Elements
+        const camera = document.getElementById('camera');
+        const characterStage = document.getElementById('characterStage');
+        const optionsGrid = document.getElementById('optionsGrid');
+        const optionsTitle = document.getElementById('optionsTitle');
+        const optionsCount = document.getElementById('optionsCount');
+        const categoryTabs = document.querySelectorAll('.category-tab');
+
+        // Initialize character layers
+        function initCharacter() {
+            characterStage.innerHTML = `
+                <div class="character-layer" id="layer-extras" style="z-index: 20;"></div>
+                <div class="character-layer" id="layer-cuerpo" style="z-index: 1;"></div>
+                <div class="character-layer" id="layer-piernas" style="z-index: 2;"></div>
+                <div class="character-layer" id="layer-torso" style="z-index: 3;"></div>
+                <div class="character-layer" id="layer-manos" style="z-index: 10;"></div>
+                <div class="character-layer" id="layer-cabeza" style="z-index: 11;"></div>
+                <div class="character-layer" id="layer-ojos" style="z-index: 12;"></div>
+                <div class="character-layer" id="layer-boca" style="z-index: 21;"></div>
+            `;
+            updateCharacter();
+        }
+
+        // Update character appearance
+        function updateCharacter(changedPart = null) {
+            const tono = selections.tonos;
+
+            // Fondo - ocupa todo el viewport
+            const viewportFondo = document.getElementById('viewportFondo');
+            if (selections.fondo === 'ninguno') {
+                viewportFondo.innerHTML = '';
+            } else {
+                viewportFondo.innerHTML = `<img src="assets/fondo/${selections.fondo}.png" alt="fondo">`;
+            }
+
+            updateLayer('cuerpo', `assets/tonos/tono${tono}_cuerpo.png`, false);
+            updateLayer('manos', `assets/tonos/tono${tono}_cabezaymanos.png`, false);
+
+            // Fade sutil para cambio de tono
+            if (changedPart === 'tonos') {
+                const cuerpoLayer = document.getElementById('layer-cuerpo');
+                const manosLayer = document.getElementById('layer-manos');
+                cuerpoLayer.classList.add('tone-change');
+                manosLayer.classList.add('tone-change');
+                setTimeout(() => {
+                    cuerpoLayer.classList.remove('tone-change');
+                    manosLayer.classList.remove('tone-change');
+                }, 300);
+            }
+            if (selections.torso === 'ninguno') {
+                const torsoLayer = document.getElementById('layer-torso');
+                if (torsoLayer) torsoLayer.innerHTML = '';
+            } else {
+                updateLayer('torso', `assets/torso/${selections.torso}.png`, changedPart === 'torso');
+            }
+            updateLayer('piernas', `assets/piernas/${selections.piernas}.png`, changedPart === 'piernas');
+            updateLayer('ojos', `assets/ojos/${selections.ojos}.png`, changedPart === 'ojos');
+            updateLayer('boca', `assets/boca/${selections.boca}.png`, changedPart === 'boca');
+            if (selections.cabeza === 'ninguno') {
+                const cabezaLayer = document.getElementById('layer-cabeza');
+                if (cabezaLayer) cabezaLayer.innerHTML = '';
+            } else {
+                updateLayer('cabeza', `assets/cabeza/${selections.cabeza}.png`, changedPart === 'cabeza');
+            }
+
+            // Extras - múltiples
+            const extrasLayer = document.getElementById('layer-extras');
+            if (selections.extras.length === 0) {
+                extrasLayer.innerHTML = '';
+            } else {
+                extrasLayer.innerHTML = selections.extras.map(extra =>
+                    `<img src="assets/extras/${extra}.png" alt="${extra}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">`
+                ).join('');
+                if (changedPart === 'extras') {
+                    extrasLayer.classList.add('changing');
+                    setTimeout(() => extrasLayer.classList.remove('changing'), 400);
+                }
+            }
+        }
+
+        function updateLayer(layerId, src, animate = false) {
+            const layer = document.getElementById(`layer-${layerId}`);
+            if (layer) {
+                if (animate) {
+                    layer.classList.add('changing');
+                    setTimeout(() => layer.classList.remove('changing'), 400);
+                }
+                layer.innerHTML = `<img src="${src}" alt="${layerId}">`;
+            }
+        }
+
+        // Render options for current category
+        function renderOptions() {
+            const category = ASSETS[currentCategory];
+            optionsTitle.textContent = category.title;
+            if (category.multiSelect) {
+                const selected = selections[currentCategory].length;
+                optionsCount.textContent = selected > 0 ? `${selected}/3 — podés elegir hasta tres opciones` : `podés elegir hasta tres opciones`;
+            } else {
+                optionsCount.textContent = `${category.items.length} opciones`;
+            }
+
+            if (currentCategory === 'tonos') {
+                optionsGrid.innerHTML = category.items.map((item, index) => `
+                    <div class="option-card skin-tone ${selections.tonos === item ? 'selected' : ''}"
+                         data-value="${item}">
+                        <div class="skin-preview" style="background-color: ${category.colors[index]}"></div>
+                        <span class="skin-label">${item}</span>
+                    </div>
+                `).join('');
+            } else if (category.multiSelect) {
+                // Multi-select para extras
+                optionsGrid.innerHTML = category.items.map(item => {
+                    if (item === 'ninguno') {
+                        return `
+                            <div class="option-card ${selections[currentCategory].length === 0 ? 'selected' : ''}"
+                                 data-value="${item}">
+                                <span style="font-size: 2rem; color: #999;">✕</span>
+                            </div>
+                        `;
+                    }
+                    const isSelected = selections[currentCategory].includes(item);
+                    const previewFolder = category.previewFolder || currentCategory;
+                    const previewSuffix = category.previewSuffix !== undefined ? category.previewSuffix : '_preview';
+                    const imgSrc = category.hasPreview
+                        ? `assets/preview/${previewFolder}/${item}${previewSuffix}.png`
+                        : `assets/${currentCategory}/${item}.png`;
+                    return `
+                        <div class="option-card ${isSelected ? 'selected' : ''}"
+                             data-value="${item}">
+                            <img src="${imgSrc}" alt="${currentCategory} ${item}">
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                optionsGrid.innerHTML = category.items.map(item => {
+                    if (item === 'ninguno') {
+                        return `
+                            <div class="option-card ${selections[currentCategory] === item ? 'selected' : ''}"
+                                 data-value="${item}">
+                                <span style="font-size: 2rem; color: #999;">✕</span>
+                            </div>
+                        `;
+                    }
+                    const previewFolder = category.previewFolder || currentCategory;
+                    const previewSuffix = category.previewSuffix !== undefined ? category.previewSuffix : '_preview';
+                    const imgSrc = category.hasPreview
+                        ? `assets/preview/${previewFolder}/${item}${previewSuffix}.png`
+                        : `assets/${currentCategory}/${item}.png`;
+                    return `
+                        <div class="option-card ${selections[currentCategory] === item ? 'selected' : ''}"
+                             data-value="${item}">
+                            <img src="${imgSrc}" alt="${currentCategory} ${item}">
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Add click handlers
+            optionsGrid.querySelectorAll('.option-card').forEach(card => {
+                card.addEventListener('click', () => selectOption(card.dataset.value));
+            });
+        }
+
+        // Select an option
+        function selectOption(value) {
+            const category = ASSETS[currentCategory];
+
+            if (category.multiSelect) {
+                if (value === 'ninguno') {
+                    selections[currentCategory] = [];
+                } else {
+                    // Toggle en array
+                    const index = selections[currentCategory].indexOf(value);
+                    if (index > -1) {
+                        selections[currentCategory].splice(index, 1);
+                    } else {
+                        // Limitar a 3 extras máximo
+                        if (selections[currentCategory].length >= 3) return;
+                        selections[currentCategory].push(value);
+                    }
+                }
+
+                optionsGrid.querySelectorAll('.option-card').forEach(card => {
+                    card.classList.toggle('selected', selections[currentCategory].includes(card.dataset.value));
+                });
+
+                // Actualizar contador
+                const selected = selections[currentCategory].length;
+                optionsCount.textContent = selected > 0 ? `${selected} seleccionados` : `${category.items.length} opciones`;
+            } else {
+                selections[currentCategory] = value;
+
+                optionsGrid.querySelectorAll('.option-card').forEach(card => {
+                    card.classList.toggle('selected', card.dataset.value === value.toString());
+                });
+            }
+
+            updateCharacter(currentCategory);
+        }
+
+        // Change category
+        function changeCategory(category, zoom) {
+            currentCategory = category;
+
+            categoryTabs.forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.category === category);
+            });
+
+            camera.className = 'camera';
+            if (zoom) {
+                camera.classList.add(`zoom-${zoom}`);
+            }
+
+            renderOptions();
+        }
+
+        // Random character
+        function randomize() {
+            // Random extras (0, 1 o 2) solo de extra1, extra2, extra7
+            const allowedRandomExtras = ['extra1', 'extra2', 'extra7'];
+            const shuffled = allowedRandomExtras.sort(() => Math.random() - 0.5);
+            const numExtras = Math.floor(Math.random() * 3); // 0, 1 o 2
+            const randomExtras = shuffled.slice(0, numExtras);
+
+            selections = {
+                fondo: ASSETS.fondo.items[Math.floor(Math.random() * ASSETS.fondo.items.length)],
+                tonos: ASSETS.tonos.items[Math.floor(Math.random() * ASSETS.tonos.items.length)],
+                cabeza: ASSETS.cabeza.items[Math.floor(Math.random() * ASSETS.cabeza.items.length)],
+                ojos: ASSETS.ojos.items[Math.floor(Math.random() * ASSETS.ojos.items.length)],
+                boca: ASSETS.boca.items[Math.floor(Math.random() * ASSETS.boca.items.length)],
+                torso: ASSETS.torso.items[Math.floor(Math.random() * ASSETS.torso.items.length)],
+                piernas: ASSETS.piernas.items[Math.floor(Math.random() * ASSETS.piernas.items.length)],
+                extras: randomExtras
+            };
+
+            document.querySelectorAll('.character-layer').forEach(layer => {
+                layer.classList.add('changing');
+                setTimeout(() => layer.classList.remove('changing'), 400);
+            });
+
+            updateCharacter();
+            renderOptions();
+        }
+
+        // Download character - 1080x1920 (IG Stories)
+        let currentImageData = null;
+
+        async function loadImage(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = () => {
+                    console.error('Error cargando:', src);
+                    resolve(null);
+                };
+                img.src = src;
+            });
+        }
+
+        // Dibuja imagen con object-fit: contain (sin distorsión)
+        function drawImageContain(ctx, img, canvasWidth, canvasHeight) {
+            const imgRatio = img.naturalWidth / img.naturalHeight;
+            const canvasRatio = canvasWidth / canvasHeight;
+
+            let drawWidth, drawHeight, offsetX, offsetY;
+
+            if (imgRatio > canvasRatio) {
+                // Imagen más ancha que el canvas - ajustar por ancho
+                drawWidth = canvasWidth;
+                drawHeight = canvasWidth / imgRatio;
+            } else {
+                // Imagen más alta que el canvas - ajustar por alto
+                drawHeight = canvasHeight;
+                drawWidth = canvasHeight * imgRatio;
+            }
+
+            offsetX = (canvasWidth - drawWidth) / 2;
+            offsetY = (canvasHeight - drawHeight) / 2;
+
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        }
+
+        // Dibuja imagen con object-fit: cover (cubre todo sin distorsión)
+        function drawImageCover(ctx, img, canvasWidth, canvasHeight) {
+            const imgRatio = img.naturalWidth / img.naturalHeight;
+            const canvasRatio = canvasWidth / canvasHeight;
+
+            let drawWidth, drawHeight, offsetX, offsetY;
+
+            if (imgRatio > canvasRatio) {
+                // Imagen más ancha - ajustar por alto y recortar ancho
+                drawHeight = canvasHeight;
+                drawWidth = canvasHeight * imgRatio;
+            } else {
+                // Imagen más alta - ajustar por ancho y recortar alto
+                drawWidth = canvasWidth;
+                drawHeight = canvasWidth / imgRatio;
+            }
+
+            offsetX = (canvasWidth - drawWidth) / 2;
+            offsetY = (canvasHeight - drawHeight) / 2;
+
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        }
+
+        async function downloadCharacter() {
+            try {
+                const baseWidth = 1080;
+                const baseHeight = 1920;
+
+                const canvas = document.createElement('canvas');
+                canvas.width = baseWidth;
+                canvas.height = baseHeight;
+                const ctx = canvas.getContext('2d');
+
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+
+                // Fondo: si hay, lo dibujamos cubriendo todo el canvas (cover)
+                if (selections.fondo !== 'ninguno') {
+                    const fondoImg = await loadImage(`assets/fondo/${selections.fondo}.png`);
+                    if (fondoImg) {
+                        drawImageCover(ctx, fondoImg, baseWidth, baseHeight);
+                    }
+                } else {
+                    // Fondo por defecto
+                    ctx.fillStyle = '#0a1a24';
+                    ctx.fillRect(0, 0, baseWidth, baseHeight);
+                }
+
+                // Layers en el mismo orden de z-index que el viewport:
+                // z-index 1: cuerpo
+                // z-index 2: piernas
+                // z-index 3: torso
+                // z-index 10: manos (cabezaymanos)
+                // z-index 11: cabeza
+                // z-index 12: ojos
+                // z-index 13: boca
+                // z-index 20: extras
+
+                const characterLayers = [
+                    { src: `assets/tonos/tono${selections.tonos}_cuerpo.png`, zIndex: 1 },
+                    { src: `assets/piernas/${selections.piernas}.png`, zIndex: 2 },
+                    selections.torso !== 'ninguno' ? { src: `assets/torso/${selections.torso}.png`, zIndex: 3 } : null,
+                    { src: `assets/tonos/tono${selections.tonos}_cabezaymanos.png`, zIndex: 10 },
+                    selections.cabeza !== 'ninguno' ? { src: `assets/cabeza/${selections.cabeza}.png`, zIndex: 11 } : null,
+                    { src: `assets/ojos/${selections.ojos}.png`, zIndex: 12 },
+                    { src: `assets/boca/${selections.boca}.png`, zIndex: 13 },
+                ].filter(Boolean);
+
+                // Agregar extras con z-index 20
+                selections.extras.forEach(extra => {
+                    characterLayers.push({ src: `assets/extras/${extra}.png`, zIndex: 20 });
+                });
+
+                // Ordenar por z-index
+                characterLayers.sort((a, b) => a.zIndex - b.zIndex);
+
+                // Dibujar cada layer del personaje con contain (sin distorsión)
+                for (const layer of characterLayers) {
+                    const img = await loadImage(layer.src);
+                    if (img) {
+                        drawImageContain(ctx, img, baseWidth, baseHeight);
+                    }
+                }
+
+                // Dibujar logo RETRUCO en el bottom middle
+                const logoImg = await loadImage('assets/logoretruco.png');
+                if (logoImg) {
+                    const logoHeight = 200;
+                    const logoWidth = (logoImg.naturalWidth / logoImg.naturalHeight) * logoHeight;
+                    const logoX = (baseWidth - logoWidth) / 2;
+                    const logoY = baseHeight - logoHeight - 50;
+                    ctx.drawImage(logoImg, logoX, logoY, logoWidth, logoHeight);
+                }
+
+                // Guardar imagen y mostrar modal
+                currentImageData = canvas.toDataURL('image/png');
+                document.getElementById('modalPreview').src = currentImageData;
+                document.getElementById('downloadModal').classList.add('active');
+            } catch (error) {
+                console.error('Error en downloadCharacter:', error);
+                alert('Error al generar la imagen: ' + error.message);
+            }
+        }
+
+        function doDownload() {
+            if (currentImageData) {
+                const link = document.createElement('a');
+                link.download = 'retruco-character.png';
+                link.href = currentImageData;
+                link.click();
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('downloadModal').classList.remove('active');
+        }
+
+        // Event listeners
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                changeCategory(tab.dataset.category, tab.dataset.zoom);
+            });
+        });
+
+        document.getElementById('btnRandom').addEventListener('click', randomize);
+        document.getElementById('btnDownload').addEventListener('click', downloadCharacter);
+        document.getElementById('modalDownloadBtn').addEventListener('click', doDownload);
+        document.getElementById('modalCloseX').addEventListener('click', closeModal);
+
+        // Función para compartir imagen
+        async function shareImage(platform) {
+            if (!currentImageData) return;
+
+            const blob = await (await fetch(currentImageData)).blob();
+            const file = new File([blob], 'retruco-character.png', { type: 'image/png' });
+
+            // Intentar Web Share API (funciona en móvil)
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Mi personaje RETRUCO',
+                        text: 'Mirá el personaje que creé en RETRUCO!'
+                    });
+                    return;
+                } catch (e) {
+                    if (e.name === 'AbortError') return; // Usuario canceló
+                }
+            }
+
+            // Fallbacks por plataforma
+            doDownload();
+
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+            if (platform === 'whatsapp') {
+                const text = encodeURIComponent('Mirá el personaje que creé en RETRUCO!');
+                if (isMobile) {
+                    window.location.href = `whatsapp://send?text=${text}`;
+                } else {
+                    window.open(`https://web.whatsapp.com/send?text=${text}`, '_blank');
+                }
+            } else if (platform === 'instagram') {
+                if (isMobile) {
+                    // Intentar abrir Instagram
+                    window.location.href = 'instagram://camera';
+                    setTimeout(() => {
+                        alert('Imagen guardada! Abrí Instagram Stories y seleccionala de tu galería.');
+                    }, 1000);
+                } else {
+                    alert('Imagen descargada! Subila a Instagram Stories desde tu celular.');
+                }
+            } else if (platform === 'tiktok') {
+                if (isMobile) {
+                    window.location.href = 'snssdk1233://';
+                    setTimeout(() => {
+                        alert('Imagen guardada! Abrí TikTok y subila desde tu galería.');
+                    }, 1000);
+                } else {
+                    alert('Imagen descargada! Subila a TikTok desde tu celular.');
+                }
+            }
+        }
+
+        // Share buttons
+        document.getElementById('shareWhatsApp').addEventListener('click', () => shareImage('whatsapp'));
+        document.getElementById('shareInstagram').addEventListener('click', () => shareImage('instagram'));
+        document.getElementById('shareTikTok').addEventListener('click', () => shareImage('tiktok'));
+
+        // Cerrar modal al hacer click afuera
+        document.getElementById('downloadModal').addEventListener('click', (e) => {
+            if (e.target.id === 'downloadModal') closeModal();
+        });
+
+        // Cerrar modal con tecla Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('downloadModal').classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Initialize
+        initCharacter();
+        renderOptions();
+
+        setTimeout(() => {
+            camera.classList.add('zoom-torso');
+        }, 100);
+
+        // ===========================================
+        // MOBILE ENHANCEMENTS
+        // ===========================================
+
+        // Fix iOS Safari viewport height (address bar)
+        function setAppHeight() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+            document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+        }
+
+        setAppHeight();
+        window.addEventListener('resize', setAppHeight);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(setAppHeight, 100);
+        });
+
+        // Prevent pull-to-refresh on mobile
+        document.body.addEventListener('touchmove', function(e) {
+            if (e.target.closest('.options-grid') || e.target.closest('.category-tabs')) {
+                // Allow scroll inside these containers
+                return;
+            }
+            // Prevent on body
+            if (document.body.scrollTop === 0) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Category tabs scroll to center active tab
+        function scrollActiveTabIntoView() {
+            const activeTab = document.querySelector('.category-tab.active');
+            const tabsContainer = document.querySelector('.category-tabs');
+            if (activeTab && tabsContainer && window.innerWidth <= 768) {
+                const tabRect = activeTab.getBoundingClientRect();
+                const containerRect = tabsContainer.getBoundingClientRect();
+                const scrollLeft = activeTab.offsetLeft - (containerRect.width / 2) + (tabRect.width / 2);
+                tabsContainer.scrollTo({
+                    left: scrollLeft,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Enhance category change for mobile
+        const originalChangeCategory = changeCategory;
+        changeCategory = function(category, zoom) {
+            originalChangeCategory(category, zoom);
+            scrollActiveTabIntoView();
+            // Scroll options grid to top
+            const grid = document.getElementById('optionsGrid');
+            if (grid) {
+                grid.scrollTop = 0;
+            }
+        };
+
+        // Touch tap on viewport to toggle zoom (mobile only)
+        const viewportContainer = document.querySelector('.viewport-container');
+        let zoomModes = ['zoom-torso', 'zoom-full', 'zoom-head', 'zoom-legs'];
+        let currentZoomIndex = 0;
+
+        viewportContainer.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                currentZoomIndex = (currentZoomIndex + 1) % zoomModes.length;
+                camera.className = 'camera ' + zoomModes[currentZoomIndex];
+            }
+        });
+
+        // Passive scroll listeners for smoother scrolling
+        document.querySelector('.options-grid')?.addEventListener('scroll', function() {}, { passive: true });
+        document.querySelector('.category-tabs')?.addEventListener('scroll', function() {}, { passive: true });
+
+        // Mobile debug toggle (add ?mobile=1 to URL to force mobile layout on desktop)
+        if (new URLSearchParams(window.location.search).get('mobile') === '1') {
+            document.body.classList.add('force-mobile');
+            const style = document.createElement('style');
+            style.textContent = `
+                .force-mobile .app-container { max-width: 390px !important; margin: 0 auto !important; }
+                @media (min-width: 769px) {
+                    .force-mobile { --app-height: 844px !important; }
+                    .force-mobile .app-container {
+                        display: flex !important;
+                        flex-direction: column !important;
+                        grid-template-columns: unset !important;
+                        gap: 0 !important;
+                        padding: 0 !important;
+                        height: var(--app-height) !important;
+                        overflow: hidden !important;
+                    }
+                    .force-mobile .viewport-wrapper {
+                        flex-shrink: 0 !important;
+                        height: auto !important;
+                        max-height: 45vh !important;
+                        min-height: 200px !important;
+                        padding: 8px !important;
+                    }
+                    .force-mobile .viewport-container {
+                        max-width: none !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                        aspect-ratio: unset !important;
+                        transform: none !important;
+                        animation: none !important;
+                    }
+                    .force-mobile .controls-panel {
+                        flex: 1 !important;
+                        display: flex !important;
+                        flex-direction: column !important;
+                        gap: 0 !important;
+                        min-height: 0 !important;
+                        overflow: hidden !important;
+                        padding: 0 8px !important;
+                    }
+                    .force-mobile .category-tabs {
+                        display: flex !important;
+                        flex-wrap: nowrap !important;
+                        overflow-x: auto !important;
+                        gap: 8px !important;
+                        padding: 8px 12px !important;
+                    }
+                    .force-mobile .category-tab {
+                        flex: 0 0 auto !important;
+                        flex-direction: row !important;
+                        border-radius: 20px !important;
+                    }
+                    .force-mobile .options-container {
+                        flex: 1 !important;
+                        height: auto !important;
+                        min-height: 0 !important;
+                        border-radius: 12px 12px 0 0 !important;
+                        transform: none !important;
+                    }
+                    .force-mobile .options-grid {
+                        grid-template-columns: repeat(3, 1fr) !important;
+                        padding-bottom: 100px !important;
+                    }
+                    .force-mobile .actions {
+                        position: fixed !important;
+                        bottom: 0 !important;
+                        left: 50% !important;
+                        transform: translateX(-50%) !important;
+                        width: 390px !important;
+                        flex-direction: row !important;
+                        padding: 12px !important;
+                        background: linear-gradient(to top, var(--concrete-1) 80%, transparent) !important;
+                        z-index: 50 !important;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            console.log('[Mobile Debug] Forced mobile layout enabled. Remove ?mobile=1 from URL to disable.');
+        }
+
+        // Log mobile detection
+        if (window.innerWidth <= 768) {
+            console.log('[Mobile] Mobile layout active. Viewport:', window.innerWidth, 'x', window.innerHeight);
+        }
+    </script>
+</body>
+</html>
