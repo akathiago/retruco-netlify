@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Te perdiste, pa | ReTruco</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="shortcut icon" href="/favicon/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Trevor';
+            src: url('/fuentes/TREVOR.TTF') format('truetype');
+            font-weight: bold;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0a1a24;
+            color: #e0f7fa;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            inset: 0;
+            opacity: 0.03;
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 35px,
+                #2bb8cd 35px,
+                #2bb8cd 36px
+            );
+            pointer-events: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+
+        .logo {
+            width: 280px;
+            max-width: 80vw;
+            margin-bottom: 40px;
+            filter: drop-shadow(0 0 30px rgba(43, 184, 205, 0.3));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(-1deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+        }
+
+        .error-code {
+            font-family: 'Trevor', sans-serif;
+            font-size: clamp(6rem, 20vw, 12rem);
+            letter-spacing: 10px;
+            color: #2bb8cd;
+            line-height: 1;
+            text-shadow: 6px 6px 0 #0a1a24, 8px 8px 0 rgba(43, 184, 205, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .message-card {
+            background: #e0f7fa;
+            border: 4px solid #0a1a24;
+            box-shadow: 8px 8px 0 #0a1a24;
+            padding: 30px 35px;
+            transform: rotate(-1.5deg);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .message-card::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22px;
+            height: 22px;
+            background: #2bb8cd;
+            border: 3px solid #0a1a24;
+            border-radius: 50%;
+            box-shadow: 2px 2px 0 #0a1a24;
+        }
+
+        .message-main {
+            font-family: 'Trevor', sans-serif;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            color: #0a1a24;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+        }
+
+        .message-sub {
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        .btn-volver {
+            display: inline-block;
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 4px;
+            color: #fff;
+            background: #1a2a4a;
+            padding: 20px 50px;
+            border: 4px solid #2bb8cd;
+            box-shadow: 6px 6px 0 #2bb8cd;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-volver:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0 #2bb8cd;
+        }
+
+        .btn-volver:active {
+            transform: translate(2px, 2px);
+            box-shadow: 3px 3px 0 #2bb8cd;
+        }
+
+        .footer-text {
+            margin-top: 50px;
+            font-size: 0.75rem;
+            color: rgba(224, 247, 250, 0.3);
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 500px) {
+            .message-card { padding: 22px 20px; }
+            .btn-volver { padding: 16px 35px; font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="content">
+        <img src="/imagenes/logoretruco.png" alt="ReTruco" class="logo">
+        <div class="error-code">404</div>
+        <div class="message-card">
+            <div class="message-main">TE FUISTE AL MAZO, PA</div>
+            <div class="message-sub">Esta página no existe. Capaz la borraron, capaz nunca existió, capaz es un complot del gobierno. Quién sabe.</div>
+        </div>
+        <a href="/" class="btn-volver">QUIERO RETRUCO</a>
+    </div>
+</body>
+</html>

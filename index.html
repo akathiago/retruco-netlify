@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETRUCO</title>
-    <meta name="description" content="Retruco. Una historia bien criolla.">
+    <title>Retruco - Una historia bien Criolla</title>
+    <meta name="description" content="ReTruco es una aventura satírica y bien argenta en Buenos Aires. Inspirado en South Park, mezcla Run &amp; Gun, Beat 'Em Up y RPG con humor absurdo, política y nostalgia retro. Acción, sátira, barrio y delirio en formato videojuego. Demo disponible, 100% gratuito.">
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Retruco">
@@ -16,12 +16,52 @@
     <meta name="twitter:title" content="Retruco">
     <meta name="twitter:description" content="Una historia bien criolla.">
     <meta name="twitter:image" content="https://retruco.xyz/imagenes/hero-01.png">
+    <!-- Canonical -->
+    <link rel="canonical" href="https://retruco.xyz">
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="msapplication-TileColor" content="#0a0a0a">
+    <!-- Apple Web App -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ReTruco">
+    <!-- Additional SEO -->
+    <meta name="author" content="Underground">
+    <meta name="keywords" content="retruco, videojuego, argentino, south park, run and gun, beat em up, rpg, buenos aires, indie game, juego gratis">
+    <meta property="og:locale" content="es_AR">
+    <meta property="og:site_name" content="ReTruco">
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "ReTruco",
+        "description": "Una aventura satírica y bien argenta en Buenos Aires. Acción, humor y delirio en formato videojuego.",
+        "url": "https://retruco.xyz",
+        "image": "https://retruco.xyz/imagenes/hero-01.png",
+        "genre": ["Run and Gun", "Beat Em Up", "RPG"],
+        "gamePlatform": "PC",
+        "operatingSystem": "Windows",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "ARS",
+            "availability": "https://schema.org/InStock"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "Underground"
+        }
+    }
+    </script>
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
     <link rel="manifest" href="favicon/site.webmanifest">
     <link rel="shortcut icon" href="favicon/favicon.ico">
 
+    <link rel="preload" href="fuentes/TREVOR.TTF" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="fuentes/RoodrigueZ ornament.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -2152,14 +2192,14 @@
     <!-- ABOUT -->
     <section id="about">
         <div class="section-header">
-            <h2 class="section-title">UNA HISTORIA BIEN CRIOLLA</h2>
+            <h1 class="section-title">UNA HISTORIA BIEN CRIOLLA</h1>
         </div>
 
         <div class="about-grid">
             <div class="about-image">
                 <div class="pin pin-1"></div>
                 <div class="pin pin-2"></div>
-                <img src="imagenes/cesarsentado.png" alt="César en la celda" class="about-img">
+                <img src="imagenes/cesarsentado.png" alt="César en la celda" class="about-img" loading="lazy">
             </div>
 
             <div class="prison-note prison-note-large">
@@ -2178,7 +2218,7 @@
 
     <!-- BANNER YA DISPONIBLE -->
     <section id="banner-disponible">
-        <img src="imagenes/yadisponible.png" alt="Ya Disponible" class="banner-disponible-img">
+        <img src="imagenes/YaDisponible.png" alt="Ya Disponible" class="banner-disponible-img" loading="lazy">
         <a href="https://undergroundd.itch.io/retruco" target="_blank" class="btn-descargar">DESCARGAR</a>
     </section>
 
@@ -2191,16 +2231,16 @@
         <div class="screenshots-container">
             <div class="screenshots-grid">
                 <div class="screenshot-item" onclick="openGallery(0)">
-                    <img src="imagenes/screenshot1.png" alt="Screenshot 1" class="screenshot-img">
+                    <img src="imagenes/screenshot1.png" alt="Screenshot 1" class="screenshot-img" loading="lazy">
                 </div>
                 <div class="screenshot-item" onclick="openGallery(1)">
-                    <img src="imagenes/screenshot2.png" alt="Screenshot 2" class="screenshot-img">
+                    <img src="imagenes/screenshot2.png" alt="Screenshot 2" class="screenshot-img" loading="lazy">
                 </div>
                 <div class="screenshot-item" onclick="openGallery(2)">
-                    <img src="imagenes/screenshot3.png" alt="Screenshot 3" class="screenshot-img">
+                    <img src="imagenes/screenshot3.png" alt="Screenshot 3" class="screenshot-img" loading="lazy">
                 </div>
                 <div class="screenshot-item" onclick="openGallery(3)">
-                    <img src="imagenes/screenshot4.png" alt="Screenshot 4" class="screenshot-img">
+                    <img src="imagenes/screenshot4.png" alt="Screenshot 4" class="screenshot-img" loading="lazy">
                 </div>
             </div>
         </div>
@@ -2219,7 +2259,7 @@
                 <div class="char-card" onclick="openCharModal('xiao')">
                     <div class="pin"></div>
                     <div class="char-img-container">
-                        <img src="imagenes/xiao.png" alt="Xiao" class="char-img">
+                        <img src="imagenes/xiao.png" alt="Xiao" class="char-img" loading="lazy">
                     </div>
                     <div class="char-info">
                         <h3 class="char-name">XIAO</h3>
@@ -2230,7 +2270,7 @@
                 <div class="char-card" onclick="openCharModal('dario')">
                     <div class="pin"></div>
                     <div class="char-img-container">
-                        <img src="imagenes/dario.png" alt="Darío" class="char-img">
+                        <img src="imagenes/dario.png" alt="Darío" class="char-img" loading="lazy">
                     </div>
                     <div class="char-info">
                         <h3 class="char-name">DARÍO</h3>
@@ -2241,7 +2281,7 @@
                 <div class="char-card" onclick="openCharModal('bignone')">
                     <div class="pin"></div>
                     <div class="char-img-container">
-                        <img src="imagenes/bignone.png" alt="Bignone" class="char-img">
+                        <img src="imagenes/bignone.png" alt="Bignone" class="char-img" loading="lazy">
                     </div>
                     <div class="char-info">
                         <h3 class="char-name">BIGNONE</h3>
@@ -2252,7 +2292,7 @@
                 <div class="char-card" onclick="openCharModal('cesar')">
                     <div class="pin"></div>
                     <div class="char-img-container">
-                        <img src="imagenes/cesar.png" alt="César" class="char-img">
+                        <img src="imagenes/cesar.png" alt="César" class="char-img" loading="lazy">
                     </div>
                     <div class="char-info">
                         <h3 class="char-name">CÉSAR</h3>
@@ -2266,7 +2306,7 @@
 
     <!-- SECTION PERSONAJES (Desktop) -->
     <section class="section-personajes">
-        <img src="imagenes/fondopersonajes.png" alt="Fondo Personajes" class="personajes-fondo">
+        <img src="imagenes/fondopersonajes.png" alt="Fondo Personajes" class="personajes-fondo" loading="lazy">
         <!-- Hitboxes invisibles - Personajes -->
         <div class="personaje-hitbox" data-char="bignone" onclick="openCharModal('bignone')"></div>
         <div class="personaje-hitbox" data-char="cesar" onclick="openCharModal('cesar')"></div>
@@ -2283,20 +2323,20 @@
         <div class="personaje-hitbox" data-char="donsatur" onclick="openCharModal('donsatur')"></div>
         <div class="personaje-hitbox" data-char="laverde" onclick="openCharModal('laverde')"></div>
         <!-- Imágenes de personajes -->
-        <img src="imagenes/bignonepersonaje_Mesa de trabajo 1.png" alt="Bignone" class="personaje-layer" data-char="bignone">
-        <img src="imagenes/cesarpersonaje_Mesa de trabajo 1.png" alt="César" class="personaje-layer" data-char="cesar">
-        <img src="imagenes/dariopersonaje_Mesa de trabajo 1.png" alt="Dario" class="personaje-layer" data-char="dario">
-        <img src="imagenes/xiaopersonaje_Mesa de trabajo 1.png" alt="Xiao" class="personaje-layer" data-char="xiao">
+        <img src="imagenes/bignonepersonaje_Mesa de trabajo 1.png" alt="Bignone" class="personaje-layer" loading="lazy" data-char="bignone">
+        <img src="imagenes/cesarpersonaje_Mesa de trabajo 1.png" alt="César" class="personaje-layer" loading="lazy" data-char="cesar">
+        <img src="imagenes/dariopersonaje_Mesa de trabajo 1.png" alt="Dario" class="personaje-layer" loading="lazy" data-char="dario">
+        <img src="imagenes/xiaopersonaje_Mesa de trabajo 1.png" alt="Xiao" class="personaje-layer" loading="lazy" data-char="xiao">
         <!-- Imágenes de objetos -->
-        <img src="imagenes/estrelladavid.png" alt="Estrella de David" class="personaje-layer" data-char="estrelladavid">
-        <img src="imagenes/plata_Mesa de trabajo 1.png" alt="Plata" class="personaje-layer" data-char="plata">
-        <img src="imagenes/fernet_Mesa de trabajo 1.png" alt="Fernet" class="personaje-layer" data-char="fernet">
-        <img src="imagenes/uzi.png" alt="Uzi" class="personaje-layer" data-char="uzi">
-        <img src="imagenes/sapphirus.png" alt="Sapphirus" class="personaje-layer" data-char="sapphirus">
-        <img src="imagenes/encendedor.png" alt="Encendedor" class="personaje-layer" data-char="encendedor">
-        <img src="imagenes/mandarinas.png" alt="Mandarinas" class="personaje-layer" data-char="mandarinas">
-        <img src="imagenes/donsatur.png" alt="Don Satur" class="personaje-layer" data-char="donsatur">
-        <img src="imagenes/laverde.png" alt="La Verde" class="personaje-layer" data-char="laverde">
+        <img src="imagenes/estrelladavid.png" alt="Estrella de David" class="personaje-layer" loading="lazy" data-char="estrelladavid">
+        <img src="imagenes/plata_Mesa de trabajo 1.png" alt="Plata" class="personaje-layer" loading="lazy" data-char="plata">
+        <img src="imagenes/fernet_Mesa de trabajo 1.png" alt="Fernet" class="personaje-layer" loading="lazy" data-char="fernet">
+        <img src="imagenes/uzi.png" alt="Uzi" class="personaje-layer" loading="lazy" data-char="uzi">
+        <img src="imagenes/sapphirus.png" alt="Sapphirus" class="personaje-layer" loading="lazy" data-char="sapphirus">
+        <img src="imagenes/encendedor.png" alt="Encendedor" class="personaje-layer" loading="lazy" data-char="encendedor">
+        <img src="imagenes/mandarinas.png" alt="Mandarinas" class="personaje-layer" loading="lazy" data-char="mandarinas">
+        <img src="imagenes/donsatur.png" alt="Don Satur" class="personaje-layer" loading="lazy" data-char="donsatur">
+        <img src="imagenes/laverde.png" alt="La Verde" class="personaje-layer" loading="lazy" data-char="laverde">
     </section>
 
     <!-- MODAL PERSONAJE -->
@@ -2329,7 +2369,7 @@
 
     <!-- ALFREDITO + CARDS -->
     <div style="position: relative; padding: 0; margin: 0; background: #0a0a0a; line-height: 0; overflow: hidden;">
-        <img src="imagenes/alfredito.png" alt="Alfredito" style="width: 100%; height: auto; display: block;">
+        <img src="imagenes/alfredito.png" alt="Alfredito" loading="lazy" style="width: 100%; height: auto; display: block;">
         <style>
             .btn-crear {
                 position: absolute;
@@ -2496,7 +2536,7 @@
 
     <!-- FAQ -->
     <section id="faq" class="faq-section" style="position: relative; line-height: 0; overflow: hidden; margin: 0; padding: 0; font-size: 0;">
-        <img src="imagenes/footer_Mesa de trabajo 1.png" alt="" class="faq-bg-img" style="width: 100%; height: auto; display: block;">
+        <img src="imagenes/footer_Mesa de trabajo 1.png" alt="" class="faq-bg-img" loading="lazy" style="width: 100%; height: auto; display: block;">
         <div class="faq-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; padding: 15% 20px 40px; z-index: 2; line-height: 1.5;">
             <div style="max-width: 850px; width: 100%; flex-shrink: 0;">
                 <!-- Título con recuadro estilo RETRUCO -->
@@ -2508,35 +2548,35 @@
 
             <div style="max-width: 850px; width: 100%; overflow-y: auto; flex: 1; padding-bottom: 20px;" class="faq-scroll">
             <div class="faq-list">
-                <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-item" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open'); this.setAttribute('aria-expanded', this.classList.contains('open'))" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">
                     <div class="faq-question">
                         <span class="faq-q-text">¿Qué es ReTruco?</span>
                         <span class="faq-arrow">▸</span>
                     </div>
                     <div class="faq-answer">ReTruco es una aventura distinta a cualquier otra. Te sumerge en una versión loca, satírica y bien argenta de Buenos Aires, donde la política, las situaciones cómicas del día a día y el humor absurdo están a la orden del día.<br><br>El proyecto toma mucha inspiración del espíritu artístico de South Park, mezclado con mecánicas clásicas de Run &amp; Gun, Beat 'Em Up y RPG, para dispararte nostalgia retro directo al cerebro.<br><br>Es acción, sátira, barrio, política y delirio en formato videojuego.</div>
                 </div>
-                <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-item" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open'); this.setAttribute('aria-expanded', this.classList.contains('open'))" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">
                     <div class="faq-question">
                         <span class="faq-q-text">¿Hay demo disponible?</span>
                         <span class="faq-arrow">▸</span>
                     </div>
                     <div class="faq-answer">¡Sí! Ya podés jugar una demo gratuita y probar el delirio de ReTruco antes de que salga completo.</div>
                 </div>
-                <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-item" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open'); this.setAttribute('aria-expanded', this.classList.contains('open'))" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">
                     <div class="faq-question">
                         <span class="faq-q-text">¿El juego es gratis?</span>
                         <span class="faq-arrow">▸</span>
                     </div>
                     <div class="faq-answer">ReTruco va a ser 100% gratuito para toda la comunidad. Por eso necesitamos tu colaboración: tu aporte nos ayuda a cubrir la publicación del juego en Steam, gastos de producción y costos de distribución.<br><br>No estás pagando el juego: estás ayudando a que el proyecto exista y llegue más lejos.</div>
                 </div>
-                <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-item" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open'); this.setAttribute('aria-expanded', this.classList.contains('open'))" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">
                     <div class="faq-question">
                         <span class="faq-q-text">¿Cómo puedo apoyar el proyecto?</span>
                         <span class="faq-arrow">▸</span>
                     </div>
                     <div class="faq-answer">Apoyá el proyecto y entrá al juego:<br><br>💸 Donación de $5.000 ARS → Tu nombre en los créditos del juego<br>🎮 Donación de $10.000 ARS → Aparecés como NPC dentro del videojuego<br><br>Convertite en parte del lore de ReTruco.</div>
                 </div>
-                <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-item" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open'); this.setAttribute('aria-expanded', this.classList.contains('open'))" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">
                     <div class="faq-question">
                         <span class="faq-q-text">¿Puedo crear mi propio personaje?</span>
                         <span class="faq-arrow">▸</span>
@@ -2689,8 +2729,8 @@
             </div>
 
             <div class="donate-images-row">
-                <img src="imagenes/npcjuego..png" alt="NPC del juego" class="donate-img">
-                <img src="imagenes/mencion creditos.png" alt="Recompensas" class="donate-img">
+                <img src="imagenes/npcjuego..png" alt="NPC del juego" class="donate-img" loading="lazy">
+                <img src="imagenes/mencion creditos.png" alt="Recompensas" class="donate-img" loading="lazy">
             </div>
 
             <div class="donate-card">
@@ -2706,25 +2746,25 @@
 
                 <div class="donate-benefits-grid">
                     <div class="benefit-item">
-                        <img src="imagenes/empanada.png" alt="Empanada" class="benefit-icon-img">
+                        <img src="imagenes/empanada.png" alt="Empanada" class="benefit-icon-img" loading="lazy">
                         <span class="benefit-text">Aparecé como NPC</span>
                     </div>
                     <div class="benefit-item">
-                        <img src="imagenes/cigarro.png" alt="Cigarro" class="benefit-icon-img">
+                        <img src="imagenes/cigarro.png" alt="Cigarro" class="benefit-icon-img" loading="lazy">
                         <span class="benefit-text">Créditos finales</span>
                     </div>
                     <div class="benefit-item">
-                        <img src="imagenes/ddl.png" alt="DDL" class="benefit-icon-img">
+                        <img src="imagenes/ddl.png" alt="DDL" class="benefit-icon-img" loading="lazy">
                         <span class="benefit-text">Acceso anticipado</span>
                     </div>
                     <div class="benefit-item">
-                        <img src="imagenes/don.png" alt="Don" class="benefit-icon-img">
+                        <img src="imagenes/don.png" alt="Don" class="benefit-icon-img" loading="lazy">
                         <span class="benefit-text">Contenido exclusivo</span>
                     </div>
                 </div>
 
                 <a href="https://cafecito.app/retrucoeljuego" target="_blank" class="btn btn-donate">
-                    <img src="imagenes/1000pe.png" alt="1000 pesos" class="btn-donate-icon-img">
+                    <img src="imagenes/1000pe.png" alt="1000 pesos" class="btn-donate-icon-img" loading="lazy">
                     <span class="btn-donate-text">DONAR AHORA</span>
                     <span class="btn-donate-arrow">→</span>
                 </a>
@@ -2858,17 +2898,6 @@
         });
 
         // Character Hover Effect
-        function hoverChar(character, isHovering) {
-            const layer = document.getElementById('layer' + character.charAt(0).toUpperCase() + character.slice(1));
-            if (layer) {
-                if (isHovering) {
-                    layer.classList.add('hovered');
-                } else {
-                    layer.classList.remove('hovered');
-                }
-            }
-        }
-
         // Lluvia de plata en hover de "APOYÁ EL PROYECTO"
         const ctaTitle = document.querySelector('#cta .section-title');
         let isRaining = false;
