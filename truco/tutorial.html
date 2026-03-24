@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ReTruco - Tutorial de Truco</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+    <link rel="shortcut icon" href="../favicon/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Trevor';
+            src: url('../fuentes/TREVOR.TTF') format('truetype');
+            font-weight: bold;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --rust: #2bb8cd;
+            --paper: #e0f7fa;
+            --ink: #0a1a24;
+            --bg: #0d2233;
+            --card-bg: #f5f0e1;
+            --gold: #c9a227;
+            --red: #e74c3c;
+            --green: #2ecc71;
+        }
+
+        body {
+            background: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 50% 0%, rgba(43,184,205,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 100%, rgba(43,184,205,0.05) 0%, transparent 60%);
+            color: var(--paper);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ====== HEADER ====== */
+        .tut-header {
+            width: 100%;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.3);
+            border-bottom: 2px solid rgba(43,184,205,0.15);
+            flex-shrink: 0;
+        }
+
+        .tut-logo { height: 28px; filter: drop-shadow(0 0 8px rgba(43,184,205,0.3)); }
+
+        .tut-back {
+            color: var(--rust);
+            text-decoration: none;
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        .tut-back:hover { opacity: 1; }
+
+        /* ====== CONTENT ====== */
+        .tut-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-y: auto;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Abraham speech */
+        .abraham-area {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .abraham-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 3px solid #8B7355;
+            box-shadow: 0 0 12px rgba(139,115,85,0.3);
+            object-fit: cover;
+            object-position: top;
+            flex-shrink: 0;
+            filter: brightness(0.15) contrast(0.8);
+            background: var(--ink);
+        }
+
+        .abraham-speech {
+            background: var(--paper);
+            color: var(--ink);
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 2px solid var(--ink);
+            box-shadow: 3px 3px 0 var(--ink);
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .abraham-speech::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 14px;
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 10px solid var(--ink);
+        }
+
+        .abraham-name {
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.5rem;
+            letter-spacing: 2px;
+            color: #8B7355;
+            margin-bottom: 4px;
+        }
+
+        /* Step title */
+        .step-title {
+            font-family: 'Trevor', sans-serif;
+            font-size: clamp(1.2rem, 5vw, 1.8rem);
+            letter-spacing: 4px;
+            color: var(--rust);
+            text-align: center;
+            margin-bottom: 16px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+        }
+
+        /* Content sections */
+        .tut-section {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .tut-section h3 {
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--rust);
+            margin-bottom: 10px;
+        }
+
+        .tut-text {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: rgba(224,247,250,0.8);
+            margin-bottom: 10px;
+        }
+
+        .tut-highlight {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .tut-important {
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        /* Card showcase */
+        .card-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin: 12px 0;
+        }
+
+        .showcase-card {
+            width: 55px;
+            height: 80px;
+            border-radius: 6px;
+            border: 2px solid #444;
+            background: var(--card-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Trevor', sans-serif;
+            position: relative;
+        }
+
+        .showcase-card.special {
+            border-color: var(--gold);
+            box-shadow: 0 0 10px rgba(201,162,39,0.3);
+        }
+
+        .showcase-num { font-size: 1.1rem; line-height: 1; }
+        .showcase-suit { font-size: 0.9rem; margin-top: 2px; }
+        .showcase-power {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--rust);
+            color: #fff;
+            font-size: 0.5rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+
+        /* Example table */
+        .example-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 0.75rem;
+        }
+
+        .example-table th {
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            color: var(--rust);
+            padding: 6px 8px;
+            border-bottom: 1px solid rgba(43,184,205,0.2);
+            text-align: left;
+        }
+
+        .example-table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: rgba(224,247,250,0.7);
+        }
+
+        /* Envido example */
+        .envido-example {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(43,184,205,0.15);
+            border-radius: 10px;
+            padding: 14px;
+            margin: 12px 0;
+        }
+
+        .envido-calc {
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.2rem;
+            color: var(--green);
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        /* Navigation */
+        .tut-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px 24px;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            flex-shrink: 0;
+        }
+
+        .btn-tut {
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            padding: 10px 20px;
+            border: 2px solid var(--rust);
+            background: var(--ink);
+            color: var(--paper);
+            box-shadow: 2px 2px 0 var(--rust);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+        }
+
+        .btn-tut:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0 var(--rust);
+        }
+
+        .btn-tut.btn-skip {
+            border-color: #666;
+            box-shadow: 2px 2px 0 #666;
+            opacity: 0.5;
+            font-size: 0.6rem;
+        }
+        .btn-tut.btn-skip:hover { opacity: 0.8; }
+
+        .btn-tut.btn-play {
+            border-color: var(--green);
+            box-shadow: 2px 2px 0 var(--green);
+            background: #0f2e1c;
+        }
+
+        /* Progress dots */
+        .progress-dots {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(43,184,205,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--rust);
+            box-shadow: 0 0 8px rgba(43,184,205,0.4);
+        }
+
+        .dot.done {
+            background: var(--green);
+        }
+
+        /* Step animation */
+        .step-container {
+            animation: fadeSlideIn 0.3s ease;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (max-width: 420px) {
+            .tut-content { padding: 15px 12px; }
+            .abraham-speech { font-size: 0.75rem; padding: 10px 12px; }
+            .abraham-avatar { width: 42px; height: 42px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tut-header">
+        <img src="../imagenes/logoretruco.png" alt="ReTruco" class="tut-logo">
+        <a href="./" class="tut-back">&larr; VOLVER</a>
+    </div>
+
+    <div class="tut-content" id="tutContent"></div>
+
+    <div class="tut-nav">
+        <button class="btn-tut btn-skip" id="btnSkip" onclick="skipAll()">SALTAR TODO</button>
+        <div class="progress-dots" id="progressDots"></div>
+        <button class="btn-tut" id="btnNext" onclick="nextStep()">SIGUIENTE &rarr;</button>
+    </div>
+
+<script src="shared.js"></script>
+<script>
+const STEPS = [
+    // Step 1: Las Cartas
+    {
+        title: 'LAS CARTAS',
+        abraham: 'Escuch\u00e1 pibe, primero lo b\u00e1sico. El truco se juega con 40 cartas espa\u00f1olas. Cada carta tiene un PODER distinto. Aprend\u00e9telas bien.',
+        render: function(el) {
+            el.innerHTML += `
+                <div class="tut-section">
+                    <h3>LAS 4 CARTAS MAS FUERTES</h3>
+                    <p class="tut-text">Estas son las que mandan. Si ten\u00e9s una de estas, sos el due\u00f1o de la mesa:</p>
+                    <div class="card-showcase">
+                        <div class="showcase-card special">
+                            <div class="showcase-num" style="color:#1a5276">1</div>
+                            <div class="showcase-suit">\u{1F5E1}\uFE0F</div>
+                            <div class="showcase-power">14</div>
+                        </div>
+                        <div class="showcase-card special">
+                            <div class="showcase-num" style="color:#1e8449">1</div>
+                            <div class="showcase-suit">\u{1FAB5}</div>
+                            <div class="showcase-power">13</div>
+                        </div>
+                        <div class="showcase-card special">
+                            <div class="showcase-num" style="color:#1a5276">7</div>
+                            <div class="showcase-suit">\u{1F5E1}\uFE0F</div>
+                            <div class="showcase-power">12</div>
+                        </div>
+                        <div class="showcase-card special">
+                            <div class="showcase-num" style="color:#c9a227">7</div>
+                            <div class="showcase-suit">\u{1FA99}</div>
+                            <div class="showcase-power">11</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tut-section">
+                    <h3>RANKING COMPLETO</h3>
+                    <table class="example-table">
+                        <tr><th>PODER</th><th>CARTAS</th></tr>
+                        <tr><td class="tut-highlight">14</td><td>1 de Espada</td></tr>
+                        <tr><td class="tut-highlight">13</td><td>1 de Basto</td></tr>
+                        <tr><td class="tut-highlight">12</td><td>7 de Espada</td></tr>
+                        <tr><td class="tut-highlight">11</td><td>7 de Oro</td></tr>
+                        <tr><td>10</td><td>Todos los 3</td></tr>
+                        <tr><td>9</td><td>Todos los 2</td></tr>
+                        <tr><td>8</td><td>1 de Copa, 1 de Oro</td></tr>
+                        <tr><td>7</td><td>Todos los 12</td></tr>
+                        <tr><td>6</td><td>Todos los 11</td></tr>
+                        <tr><td>5</td><td>Todos los 10</td></tr>
+                        <tr><td>4</td><td>7 de Copa, 7 de Basto</td></tr>
+                        <tr><td>3</td><td>Todos los 6</td></tr>
+                        <tr><td>2</td><td>Todos los 5</td></tr>
+                        <tr><td>1</td><td>Todos los 4</td></tr>
+                    </table>
+                </div>
+            `;
+        }
+    },
+    // Step 2: La Mano
+    {
+        title: 'LA MANO',
+        abraham: 'Cada mano se juega al mejor de 3 rondas. Te reparten 3 cartas, y en cada ronda tir\u00e1s una. La carta m\u00e1s fuerte gana la ronda. El primero en ganar 2 rondas gana la mano.',
+        render: function(el) {
+            el.innerHTML += `
+                <div class="tut-section">
+                    <h3>COMO SE JUEGA</h3>
+                    <p class="tut-text">
+                        1. Se reparten <span class="tut-important">3 cartas</span> a cada jugador<br>
+                        2. Cada ronda, ambos tiran <span class="tut-important">1 carta</span><br>
+                        3. La carta con m\u00e1s poder <span class="tut-important">gana la ronda</span><br>
+                        4. El primero en ganar <span class="tut-important">2 rondas</span> gana la mano<br>
+                        5. Si hay empate, gana el que es <span class="tut-highlight">mano</span> (el que reparte)
+                    </p>
+                </div>
+                <div class="tut-section">
+                    <h3>PUNTOS</h3>
+                    <p class="tut-text">
+                        Una mano normal vale <span class="tut-important">1 punto</span>.<br>
+                        Se juega hasta <span class="tut-highlight">30 puntos</span>. El primero en llegar, gana la partida.
+                    </p>
+                </div>
+                <div class="tut-section">
+                    <h3>EJEMPLO</h3>
+                    <p class="tut-text">
+                        <span class="tut-highlight">Ronda 1:</span> Vos tir\u00e1s un 3 (poder 10) vs rival tira un 12 (poder 7) \u2192 <span class="tut-important">GAN\u00c1S</span><br>
+                        <span class="tut-highlight">Ronda 2:</span> Vos tir\u00e1s un 4 (poder 1) vs rival tira un 2 (poder 9) \u2192 <span style="color:var(--red)">PERD\u00c9S</span><br>
+                        <span class="tut-highlight">Ronda 3:</span> Vos tir\u00e1s un 1 de espada (poder 14) vs lo que sea \u2192 <span class="tut-important">GAN\u00c1S LA MANO</span>
+                    </p>
+                </div>
+            `;
+        }
+    },
+    // Step 3: El Envido
+    {
+        title: 'EL ENVIDO',
+        abraham: 'Ac\u00e1 se pone bueno, pibe. El envido es una apuesta de puntos que se hace ANTES de jugar cartas (o despu\u00e9s de la primera). Se compara qui\u00e9n tiene m\u00e1s puntos de envido.',
+        render: function(el) {
+            el.innerHTML += `
+                <div class="tut-section">
+                    <h3>COMO SE CALCULA</h3>
+                    <p class="tut-text">
+                        Si ten\u00e9s <span class="tut-important">2 cartas del mismo palo</span>:<br>
+                        <span class="tut-highlight">20 + valor carta 1 + valor carta 2</span><br><br>
+                        Los valores son: 1=1, 2=2, 3=3, 4=4, 5=5, 6=6, 7=7<br>
+                        Las figuras (10, 11, 12) valen <span style="color:var(--red)">0</span> para envido.
+                    </p>
+                </div>
+                <div class="tut-section">
+                    <h3>EJEMPLO</h3>
+                    <div class="envido-example">
+                        <p class="tut-text" style="margin:0">Tu mano: 7 de Oro, 5 de Oro, 3 de Espada</p>
+                        <p class="tut-text" style="margin:4px 0 0">Dos oros \u2192 20 + 7 + 5 = </p>
+                        <div class="envido-calc">32 PUNTOS DE ENVIDO</div>
+                    </div>
+                    <div class="envido-example">
+                        <p class="tut-text" style="margin:0">Tu mano: 12 de Copa, 11 de Copa, 1 de Espada</p>
+                        <p class="tut-text" style="margin:4px 0 0">Dos copas \u2192 20 + 0 + 0 = </p>
+                        <div class="envido-calc">20 PUNTOS DE ENVIDO</div>
+                    </div>
+                </div>
+                <div class="tut-section">
+                    <h3>NIVELES DE ENVIDO</h3>
+                    <table class="example-table">
+                        <tr><th>CANTO</th><th>PUNTOS SI GANAS</th></tr>
+                        <tr><td class="tut-highlight">Envido</td><td>2 puntos</td></tr>
+                        <tr><td class="tut-highlight">Real Envido</td><td>3 puntos</td></tr>
+                        <tr><td class="tut-highlight">Falta Envido</td><td>Lo que falta para 30</td></tr>
+                    </table>
+                    <p class="tut-text" style="margin-top:8px">
+                        Se pueden encadenar: Envido \u2192 Real Envido \u2192 Falta Envido.<br>
+                        Si el rival dice <span style="color:var(--red)">NO QUIERO</span>, ganas los puntos acumulados hasta ah\u00ed.
+                    </p>
+                </div>
+            `;
+        }
+    },
+    // Step 4: El Truco
+    {
+        title: 'EL TRUCO',
+        abraham: 'El truco es el alma del juego. Cantar truco sube la apuesta de la mano. Ac\u00e1 es donde se gana de verdad... o se pierde todo.',
+        render: function(el) {
+            el.innerHTML += `
+                <div class="tut-section">
+                    <h3>COMO FUNCIONA</h3>
+                    <p class="tut-text">
+                        Pod\u00e9s cantar <span class="tut-highlight">TRUCO</span> en cualquier momento de la mano.<br>
+                        El rival puede decir:
+                    </p>
+                    <p class="tut-text">
+                        <span class="tut-important">\u00a1QUIERO!</span> \u2192 Se acepta, la mano vale m\u00e1s puntos<br>
+                        <span style="color:var(--red)">NO QUIERO</span> \u2192 Perd\u00e9s la mano pero solo vale 1 punto<br>
+                        <span class="tut-highlight">RETRUCO / VALE CUATRO</span> \u2192 Sube a\u00fan m\u00e1s la apuesta
+                    </p>
+                </div>
+                <div class="tut-section">
+                    <h3>ESCALADA</h3>
+                    <table class="example-table">
+                        <tr><th>CANTO</th><th>LA MANO VALE</th></tr>
+                        <tr><td>Sin truco</td><td>1 punto</td></tr>
+                        <tr><td class="tut-highlight">Truco</td><td>2 puntos</td></tr>
+                        <tr><td class="tut-highlight">Retruco</td><td>3 puntos</td></tr>
+                        <tr><td class="tut-highlight">Vale Cuatro</td><td>4 puntos</td></tr>
+                    </table>
+                </div>
+                <div class="tut-section">
+                    <h3>EL ARTE DEL BLUFF</h3>
+                    <p class="tut-text">
+                        \u00a1Ac\u00e1 est\u00e1 la gracia! Pod\u00e9s cantar truco con cartas malas para <span class="tut-important">asustar al rival</span>.<br>
+                        Si dice NO QUIERO, gan\u00e1s sin mostrar tus cartas.<br>
+                        Pero si dice QUIERO... <span style="color:var(--red)">mejor ten\u00e9 algo bueno</span>.
+                    </p>
+                </div>
+            `;
+        }
+    },
+    // Step 5: Ir al Mazo
+    {
+        title: 'IR AL MAZO',
+        abraham: 'A veces rajarse es de vivo, no de cobarde. Si ves que la mano viene perdida, mej\u00f3r ahorrarte los puntos.',
+        render: function(el) {
+            el.innerHTML += `
+                <div class="tut-section">
+                    <h3>CUANDO RETIRARSE</h3>
+                    <p class="tut-text">
+                        <span class="tut-highlight">IR AL MAZO</span> = rendirse de la mano actual.<br>
+                        El rival gana los puntos que valga la mano en ese momento.
+                    </p>
+                    <p class="tut-text">
+                        <span class="tut-important">Cuand\u00f3 conviene:</span><br>
+                        \u2022 Ten\u00e9s cartas muy malas y el rival cant\u00f3 truco<br>
+                        \u2022 Ya perdiste la primera ronda y tus cartas no alcanzan<br>
+                        \u2022 Es mejor perder 1-2 puntos que arriesgar 3-4
+                    </p>
+                </div>
+                <div class="tut-section">
+                    <h3>RESUMEN RAPIDO</h3>
+                    <table class="example-table">
+                        <tr><th>ACCION</th><th>QUE PASA</th></tr>
+                        <tr><td>Jugar carta</td><td>La m\u00e1s fuerte gana la ronda</td></tr>
+                        <tr><td class="tut-highlight">Envido</td><td>Apuesta de puntos por valores</td></tr>
+                        <tr><td class="tut-highlight">Truco</td><td>Sube el valor de la mano</td></tr>
+                        <tr><td>Ir al mazo</td><td>Te retir\u00e1s, rival gana</td></tr>
+                        <tr><td class="tut-important">30 puntos</td><td>\u00a1Ganaste la partida!</td></tr>
+                    </table>
+                </div>
+                <div class="tut-section" style="text-align:center; padding-top:10px;">
+                    <p class="tut-text" style="font-size:1rem; color:var(--green);">
+                        \u00a1Listo pibe! Ahora and\u00e1 a jugar.
+                    </p>
+                </div>
+            `;
+        }
+    }
+];
+
+let currentStep = 0;
+
+function renderStep() {
+    const step = STEPS[currentStep];
+    const content = document.getElementById('tutContent');
+    content.innerHTML = '';
+
+    const container = document.createElement('div');
+    container.className = 'step-container';
+
+    // Abraham speech
+    container.innerHTML = `
+        <div class="abraham-area">
+            <img src="../imagenes/alfredito.png" alt="Abraham" class="abraham-avatar">
+            <div>
+                <div class="abraham-name">ABRAHAM - EL VETERANO</div>
+                <div class="abraham-speech">${step.abraham}</div>
+            </div>
+        </div>
+        <div class="step-title">${step.title}</div>
+    `;
+
+    content.appendChild(container);
+    step.render(container);
+
+    // Update dots
+    const dots = document.getElementById('progressDots');
+    dots.innerHTML = STEPS.map((_, i) =>
+        `<div class="dot ${i === currentStep ? 'active' : i < currentStep ? 'done' : ''}"></div>`
+    ).join('');
+
+    // Update button
+    const btnNext = document.getElementById('btnNext');
+    if (currentStep === STEPS.length - 1) {
+        btnNext.textContent = '\u00a1A JUGAR!';
+        btnNext.className = 'btn-tut btn-play';
+    } else {
+        btnNext.innerHTML = 'SIGUIENTE &rarr;';
+        btnNext.className = 'btn-tut';
+    }
+
+    content.scrollTop = 0;
+}
+
+function nextStep() {
+    if (currentStep < STEPS.length - 1) {
+        currentStep++;
+        renderStep();
+    } else {
+        finishTutorial();
+    }
+}
+
+function skipAll() {
+    finishTutorial();
+}
+
+function finishTutorial() {
+    try { localStorage.setItem('tutorialComplete', 'true'); } catch(e) {}
+    window.location.href = './';
+}
+
+renderStep();
+</script>
+
+</body>
+</html>

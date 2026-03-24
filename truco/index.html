@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>ReTruco - Jugá al Truco contra Alfredito</title>
+    <title>ReTruco - Elegi tu Rival</title>
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
     <link rel="shortcut icon" href="../favicon/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -21,12 +21,9 @@
             --paper: #e0f7fa;
             --ink: #0a1a24;
             --bg: #0d2233;
-            --card-bg: #f5f0e1;
             --gold: #c9a227;
             --red: #e74c3c;
             --green: #2ecc71;
-            --table-green: #1a5c3a;
-            --table-border: #0f3d26;
         }
 
         body {
@@ -36,43 +33,24 @@
                 radial-gradient(ellipse at 50% 100%, rgba(43,184,205,0.05) 0%, transparent 60%);
             color: var(--paper);
             font-family: 'Montserrat', sans-serif;
-            height: 100vh;
-            height: 100dvh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            user-select: none;
+            min-height: 100vh;
+            min-height: 100dvh;
         }
 
         /* ====== HEADER ====== */
-        .game-header {
+        .sel-header {
             width: 100%;
-            padding: 8px 20px;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: rgba(0,0,0,0.3);
             border-bottom: 2px solid rgba(43,184,205,0.15);
-            flex-shrink: 0;
         }
 
-        .game-logo { height: 28px; filter: drop-shadow(0 0 8px rgba(43,184,205,0.3)); }
+        .sel-logo { height: 28px; filter: drop-shadow(0 0 8px rgba(43,184,205,0.3)); }
 
-        .score-display {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            font-family: 'Trevor', sans-serif;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-        }
-
-        .score-you { color: var(--green); }
-        .score-sep { color: rgba(224,247,250,0.3); }
-        .score-alf { color: var(--red); }
-        .score-num { font-size: 1.1rem; }
-
-        .back-link {
+        .sel-back {
             color: var(--rust);
             text-decoration: none;
             font-family: 'Trevor', sans-serif;
@@ -81,1380 +59,272 @@
             opacity: 0.6;
             transition: opacity 0.2s;
         }
-        .back-link:hover { opacity: 1; }
+        .sel-back:hover { opacity: 1; }
 
-        /* ====== OPPONENT AREA ====== */
-        .opponent-area {
+        /* ====== TITLE ====== */
+        .sel-title {
+            font-family: 'Trevor', sans-serif;
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
+            letter-spacing: 5px;
+            text-align: center;
+            padding: 20px 0 5px;
+            color: var(--rust);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+        }
+
+        .sel-subtitle {
+            text-align: center;
+            font-size: 0.75rem;
+            color: rgba(224,247,250,0.4);
+            letter-spacing: 2px;
+            padding-bottom: 20px;
+        }
+
+        /* ====== GRID ====== */
+        .rival-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 20px 30px;
+        }
+
+        .rival-card {
+            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(43,184,205,0.15);
+            border-radius: 12px;
+            padding: 16px 12px;
             display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 15px;
-            flex-shrink: 0;
-        }
-
-        .opponent-avatar {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            border: 3px solid var(--rust);
-            box-shadow: 0 0 15px rgba(43,184,205,0.3);
-            object-fit: cover;
-            object-position: top;
-            transition: all 0.3s ease;
-        }
-
-        .opponent-avatar.angry {
-            border-color: var(--red);
-            box-shadow: 0 0 20px rgba(231,76,60,0.4);
-            animation: shake 0.4s ease;
-        }
-
-        .opponent-avatar.happy {
-            border-color: var(--green);
-            box-shadow: 0 0 20px rgba(46,204,113,0.4);
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: rotate(0); }
-            25% { transform: rotate(-5deg); }
-            75% { transform: rotate(5deg); }
-        }
-
-        .opponent-info { flex: 1; min-width: 0; }
-
-        .opponent-top {
-            display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
         }
 
-        .opponent-name {
+        .rival-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--card-color, var(--rust));
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 0 15px rgba(43,184,205,0.15);
+        }
+
+        .rival-card:active {
+            transform: translateY(0);
+        }
+
+        .rival-card.locked {
+            cursor: default;
+            opacity: 0.4;
+            filter: grayscale(0.7);
+        }
+
+        .rival-card.locked:hover {
+            transform: none;
+            border-color: rgba(43,184,205,0.15);
+            box-shadow: none;
+        }
+
+        .rival-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 3px solid var(--card-color, var(--rust));
+            object-fit: cover;
+            object-position: top;
+            box-shadow: 0 0 12px rgba(0,0,0,0.4);
+            transition: box-shadow 0.2s;
+        }
+
+        .rival-card:hover .rival-avatar {
+            box-shadow: 0 0 20px rgba(43,184,205,0.3);
+        }
+
+        .rival-avatar.placeholder {
+            filter: brightness(0.15) contrast(0.8);
+            background: var(--ink);
+        }
+
+        .rival-name {
             font-family: 'Trevor', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.7rem;
             letter-spacing: 2px;
-            color: var(--rust);
+            color: var(--card-color, var(--rust));
+            text-align: center;
         }
 
-        .opponent-hand-mini {
+        .rival-role {
+            font-size: 0.6rem;
+            color: rgba(224,247,250,0.4);
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .rival-difficulty {
             display: flex;
             gap: 3px;
         }
 
-        .mini-card {
-            width: 18px;
-            height: 26px;
-            border-radius: 3px;
-            background: var(--ink);
-            border: 1.5px solid var(--rust);
+        .diff-skull {
+            font-size: 0.6rem;
+            opacity: 0.8;
+        }
+
+        .diff-skull.empty {
+            opacity: 0.15;
+        }
+
+        .rival-lock {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 1rem;
             opacity: 0.5;
-            transition: opacity 0.3s;
         }
 
-        .mini-card.gone { opacity: 0.12; }
-
-        /* Speech bubble */
-        .speech-bubble {
-            background: var(--paper);
-            color: var(--ink);
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 0.7rem;
-            padding: 6px 12px;
-            border-radius: 10px;
-            border: 2px solid var(--ink);
-            box-shadow: 2px 2px 0 var(--ink);
-            max-width: 200px;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            flex-shrink: 0;
-        }
-
-        .speech-bubble.show {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* ====== TABLE ====== */
-        .table-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 5px 12px;
-            min-height: 0;
-        }
-
-        .felt-table {
-            width: 100%;
-            max-width: 480px;
-            background: var(--table-green);
-            background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 25px, rgba(0,0,0,0.02) 25px, rgba(0,0,0,0.02) 26px);
-            border: 4px solid var(--table-border);
-            border-radius: 14px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5), inset 0 2px 10px rgba(0,0,0,0.3);
-            padding: 12px 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .round-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            transition: opacity 0.3s;
-        }
-
-        .round-label {
-            font-family: 'Trevor', sans-serif;
-            font-size: 0.45rem;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.2);
-            width: 12px;
-            text-align: center;
-        }
-
-        .played-slot {
-            width: 58px;
-            height: 84px;
-            border: 2px dashed rgba(255,255,255,0.08);
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .played-slot .card {
-            width: 58px;
-            height: 84px;
-            animation: cardSlam 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .played-slot .card-number { font-size: 1rem; }
-        .played-slot .card-suit { font-size: 0.9rem; margin-top: 0; }
-        .played-slot .card-corner, .played-slot .card-corner-br { display: none; }
-
-        @keyframes cardSlam {
-            0% { transform: translateY(-30px) scale(1.2) rotate(-6deg); opacity: 0; }
-            60% { transform: translateY(2px) scale(0.96); }
-            100% { transform: translateY(0) scale(1); opacity: 1; }
-        }
-
-        .vs-divider {
-            width: 2px;
-            height: 25px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 1px;
-        }
-
-        .round-badge {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            font-size: 0.45rem;
-            font-weight: 900;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 5;
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
-        }
-
-        .badge-win { background: var(--green); color: #fff; }
-        .badge-lose { background: var(--red); color: #fff; }
-        .badge-tie { background: #666; color: #fff; }
-
-        /* Envido reveal area */
-        .envido-reveal {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            padding: 8px 0;
-        }
-
-        .envido-reveal.show { display: flex; }
-
-        .envido-points {
-            text-align: center;
-        }
-
-        .envido-points-label {
+        .rival-wins {
             font-size: 0.55rem;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.4);
-            font-family: 'Trevor', sans-serif;
+            color: var(--green);
+            letter-spacing: 1px;
         }
 
-        .envido-points-value {
+        /* ====== TIER LABEL ====== */
+        .tier-label {
+            max-width: 700px;
+            margin: 10px auto 8px;
+            padding: 0 20px;
             font-family: 'Trevor', sans-serif;
-            font-size: 1.8rem;
-            animation: countUp 0.5s ease;
-        }
-
-        @keyframes countUp {
-            0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .envido-win { color: var(--green); }
-        .envido-lose { color: var(--red); }
-
-        /* ====== GAME MESSAGE ====== */
-        .game-message {
-            font-family: 'Trevor', sans-serif;
-            font-size: clamp(0.8rem, 3vw, 1.1rem);
+            font-size: 0.55rem;
             letter-spacing: 3px;
-            color: var(--rust);
+            color: rgba(224,247,250,0.2);
+        }
+
+        /* ====== TUTORIAL BUTTON ====== */
+        .tutorial-section {
             text-align: center;
-            padding: 6px 0;
-            flex-shrink: 0;
-            min-height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 10px 20px 30px;
         }
 
-        /* ====== PLAYER AREA ====== */
-        .player-area {
-            flex-shrink: 0;
-            padding: 4px 12px 6px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .player-label {
-            font-family: 'Trevor', sans-serif;
-            font-size: 0.5rem;
-            letter-spacing: 4px;
-            color: rgba(224,247,250,0.25);
-        }
-
-        .hand {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-        }
-
-        /* ====== CARDS ====== */
-        .card {
-            width: 75px;
-            height: 108px;
-            border-radius: 7px;
-            border: 2.5px solid #444;
-            box-shadow: 2px 3px 0 rgba(0,0,0,0.4);
-            position: relative;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: default;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: var(--card-bg);
-            background-image: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.3), transparent 60%);
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            inset: 3px;
-            border: 1px solid rgba(0,0,0,0.06);
-            border-radius: 4px;
-            pointer-events: none;
-        }
-
-        .card.playable {
-            cursor: pointer;
-            border-color: rgba(43,184,205,0.35);
-        }
-
-        .card.playable:hover {
-            transform: translateY(-14px) rotate(-2deg) scale(1.06);
-            box-shadow: 4px 12px 20px rgba(0,0,0,0.5);
-            border-color: var(--rust);
-            z-index: 10;
-        }
-
-        .card.playable:active {
-            transform: translateY(-4px) scale(0.97);
-        }
-
-        .card-number {
-            font-family: 'Trevor', sans-serif;
-            font-size: 1.5rem;
-            line-height: 1;
-        }
-
-        .card-suit { font-size: 1.3rem; margin-top: 2px; }
-
-        .card-corner {
-            position: absolute;
-            top: 3px;
-            left: 5px;
-            font-size: 0.45rem;
-            font-weight: 700;
-            line-height: 1.1;
-            text-align: center;
-        }
-
-        .card-corner-br {
-            position: absolute;
-            bottom: 3px;
-            right: 5px;
-            font-size: 0.45rem;
-            font-weight: 700;
-            line-height: 1.1;
-            text-align: center;
-            transform: rotate(180deg);
-        }
-
-        .suit-espadas .card-number, .suit-espadas .card-corner, .suit-espadas .card-corner-br { color: #1a5276; }
-        .suit-bastos .card-number, .suit-bastos .card-corner, .suit-bastos .card-corner-br { color: #1e8449; }
-        .suit-copas .card-number, .suit-copas .card-corner, .suit-copas .card-corner-br { color: var(--red); }
-        .suit-oros .card-number, .suit-oros .card-corner, .suit-oros .card-corner-br { color: var(--gold); }
-
-        /* ====== ACTION BAR ====== */
-        .action-bar {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            justify-content: center;
-            min-height: 48px;
-            padding: 4px 12px 12px;
-            flex-shrink: 0;
-            align-items: center;
-        }
-
-        .btn-game {
+        .btn-tutorial {
             font-family: 'Trevor', sans-serif;
             font-size: 0.75rem;
-            letter-spacing: 2px;
-            padding: 10px 20px;
-            border: 3px solid var(--rust);
-            background: var(--ink);
-            color: var(--paper);
-            box-shadow: 3px 3px 0 var(--rust);
+            letter-spacing: 3px;
+            padding: 12px 30px;
+            border: 2px solid rgba(43,184,205,0.3);
+            background: rgba(0,0,0,0.3);
+            color: var(--rust);
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .btn-game:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 5px 5px 0 var(--rust);
-        }
-
-        .btn-game:active {
-            transform: translate(1px, 1px);
-            box-shadow: 1px 1px 0 var(--rust);
-        }
-
-        .btn-game.btn-accept {
-            border-color: var(--green);
-            box-shadow: 3px 3px 0 var(--green);
-            background: #0f2e1c;
-        }
-
-        .btn-game.btn-reject {
-            border-color: var(--red);
-            box-shadow: 3px 3px 0 var(--red);
-            background: #2e0f0f;
-        }
-
-        .btn-game.btn-envido {
-            border-color: var(--gold);
-            box-shadow: 3px 3px 0 var(--gold);
-            background: #2e2a0f;
-        }
-
-        .btn-game.btn-mazo {
-            border-color: #666;
-            box-shadow: 3px 3px 0 #666;
-            font-size: 0.6rem;
-            padding: 8px 14px;
-            opacity: 0.6;
-        }
-        .btn-game.btn-mazo:hover { opacity: 1; }
-
-        /* ====== OVERLAY ====== */
-        .overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(10,26,36,0.95);
-            z-index: 1000;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .overlay.show {
-            display: flex;
-            animation: overlayIn 0.3s ease;
-        }
-
-        @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .overlay-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            object-position: top;
-            border: 4px solid;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-        }
-
-        .overlay-text {
-            font-family: 'Trevor', sans-serif;
-            font-size: clamp(1.8rem, 8vw, 3.5rem);
-            letter-spacing: 5px;
-            text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
-        }
-
-        .overlay-sub {
-            font-size: 0.85rem;
-            color: rgba(224,247,250,0.5);
-        }
-
-        .overlay-quote {
-            font-style: italic;
-            font-size: 0.8rem;
-            color: rgba(224,247,250,0.35);
-            max-width: 280px;
-            text-align: center;
-            line-height: 1.5;
-        }
-
-        .overlay .btn-game {
-            font-size: 0.9rem;
-            padding: 14px 35px;
-            margin-top: 5px;
+        .btn-tutorial:hover {
+            border-color: var(--rust);
+            background: rgba(43,184,205,0.08);
+            transform: translateY(-2px);
         }
 
         /* ====== MOBILE ====== */
         @media (max-width: 420px) {
-            .card { width: 65px; height: 94px; }
-            .card-number { font-size: 1.2rem; }
-            .card-suit { font-size: 1rem; }
-            .card-corner, .card-corner-br { display: none; }
-            .hand { gap: 6px; }
-            .opponent-avatar { width: 42px; height: 42px; }
-            .speech-bubble { font-size: 0.6rem; max-width: 150px; }
-            .btn-game { padding: 8px 14px; font-size: 0.65rem; }
-            .played-slot { width: 50px; height: 72px; }
-            .played-slot .card { width: 50px; height: 72px; }
-            .played-slot .card-number { font-size: 0.85rem; }
-            .played-slot .card-suit { font-size: 0.75rem; }
-        }
-
-        @media (max-height: 680px) {
-            .felt-table { padding: 8px; gap: 4px; }
-            .played-slot { width: 48px; height: 68px; }
-            .played-slot .card { width: 48px; height: 68px; }
-            .played-slot .card-number { font-size: 0.8rem; }
-            .played-slot .card-suit { font-size: 0.7rem; }
-            .card { width: 62px; height: 90px; }
-            .card-number { font-size: 1.15rem; }
-            .card-suit { font-size: 0.95rem; }
-            .opponent-area { padding: 5px 12px; }
-            .player-area { padding: 2px 12px 4px; }
-            .game-message { padding: 3px 0; min-height: 24px; }
+            .rival-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                padding: 0 12px 20px;
+            }
+            .rival-avatar { width: 52px; height: 52px; }
+            .rival-name { font-size: 0.6rem; }
+            .sel-title { padding: 15px 0 5px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="game-header">
-        <img src="../imagenes/logoretruco.png" alt="ReTruco" class="game-logo">
-        <div class="score-display">
-            <span class="score-you">VOS <span class="score-num" id="scorePlayer">0</span></span>
-            <span class="score-sep">—</span>
-            <span class="score-alf"><span class="score-num" id="scoreCpu">0</span> ALFREDITO</span>
-        </div>
-        <a href="../index.html" class="back-link">← SALIR</a>
+    <div class="sel-header">
+        <img src="../imagenes/logoretruco.png" alt="ReTruco" class="sel-logo">
+        <a href="../index.html" class="sel-back">&larr; VOLVER</a>
     </div>
 
-    <!-- OPPONENT -->
-    <div class="opponent-area">
-        <img src="../imagenes/alfredito.png" alt="Alfredito" class="opponent-avatar" id="alfreditoAvatar">
-        <div class="opponent-info">
-            <div class="opponent-top">
-                <div class="opponent-name">ALFREDITO</div>
-                <div class="opponent-hand-mini" id="cpuHandMini"></div>
-            </div>
-        </div>
-        <div class="speech-bubble" id="speechBubble"></div>
+    <h1 class="sel-title">ELEGI TU RIVAL</h1>
+    <p class="sel-subtitle">GANÁ PARA DESBLOQUEAR MÁS RIVALES</p>
+
+    <div id="rivalContainer"></div>
+
+    <div class="tutorial-section">
+        <a href="tutorial.html" class="btn-tutorial">&#x1F0CF; TUTORIAL - APRENDE A JUGAR</a>
     </div>
 
-    <!-- TABLE -->
-    <div class="table-area">
-        <div class="felt-table">
-            <!-- Envido reveal -->
-            <div class="envido-reveal" id="envidoReveal">
-                <div class="envido-points">
-                    <div class="envido-points-label">VOS</div>
-                    <div class="envido-points-value" id="envidoPlayerPts">--</div>
-                </div>
-                <div style="font-family:'Trevor',sans-serif; color:rgba(255,255,255,0.2); font-size:0.7rem;">VS</div>
-                <div class="envido-points">
-                    <div class="envido-points-label">ALFREDITO</div>
-                    <div class="envido-points-value" id="envidoCpuPts">--</div>
-                </div>
-            </div>
-            <!-- Rounds -->
-            <div class="round-row" id="round0">
-                <div class="round-label">1</div>
-                <div class="played-slot" id="cpuSlot0"></div>
-                <div class="vs-divider"></div>
-                <div class="played-slot" id="playerSlot0"></div>
-            </div>
-            <div class="round-row" id="round1" style="opacity:0.3">
-                <div class="round-label">2</div>
-                <div class="played-slot" id="cpuSlot1"></div>
-                <div class="vs-divider"></div>
-                <div class="played-slot" id="playerSlot1"></div>
-            </div>
-            <div class="round-row" id="round2" style="opacity:0.3">
-                <div class="round-label">3</div>
-                <div class="played-slot" id="cpuSlot2"></div>
-                <div class="vs-divider"></div>
-                <div class="played-slot" id="playerSlot2"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MESSAGE -->
-    <div class="game-message" id="gameMessage">ELEGÍ UNA CARTA</div>
-
-    <!-- PLAYER HAND -->
-    <div class="player-area">
-        <div class="player-label">TU MANO</div>
-        <div class="hand" id="playerHand"></div>
-    </div>
-
-    <!-- ACTIONS -->
-    <div class="action-bar" id="actionBar"></div>
-
-    <!-- OVERLAY -->
-    <div class="overlay" id="overlay">
-        <img src="../imagenes/alfredito.png" alt="Alfredito" class="overlay-img" id="overlayImg">
-        <div class="overlay-text" id="overlayText"></div>
-        <div class="overlay-sub" id="overlaySub"></div>
-        <div class="overlay-quote" id="overlayQuote"></div>
-        <button class="btn-game" id="overlayBtn">OTRA MANO</button>
-    </div>
-
+<script src="shared.js"></script>
 <script>
-// =====================================================
-// RETRUCO — MINIJUEGO DE TRUCO CON ENVIDO
-// =====================================================
+const progress = getTrucoProgress();
+const highestTier = progress.highestTier || 1;
+const victories = progress.victories || {};
 
-const SUITS = ['espadas', 'bastos', 'copas', 'oros'];
-const SUIT_SYMBOLS = { espadas: '🗡️', bastos: '🪵', copas: '🏆', oros: '🪙' };
-const NUMBERS = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12];
+// Group opponents by tier
+const tiers = {};
+for (const [id, opp] of Object.entries(OPPONENTS)) {
+    if (!tiers[opp.tier]) tiers[opp.tier] = [];
+    tiers[opp.tier].push({ id, ...opp });
+}
 
-// Envido values (10, 11, 12 = 0 for envido)
-const ENVIDO_VAL = { 1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 10:0, 11:0, 12:0 };
-
-const POWER = {
-    '1-espadas':14,'1-bastos':13,'7-espadas':12,'7-oros':11,
-    '3-espadas':10,'3-bastos':10,'3-copas':10,'3-oros':10,
-    '2-espadas':9,'2-bastos':9,'2-copas':9,'2-oros':9,
-    '1-copas':8,'1-oros':8,
-    '12-espadas':7,'12-bastos':7,'12-copas':7,'12-oros':7,
-    '11-espadas':6,'11-bastos':6,'11-copas':6,'11-oros':6,
-    '10-espadas':5,'10-bastos':5,'10-copas':5,'10-oros':5,
-    '7-copas':4,'7-bastos':4,
-    '6-espadas':3,'6-bastos':3,'6-copas':3,'6-oros':3,
-    '5-espadas':2,'5-bastos':2,'5-copas':2,'5-oros':2,
-    '4-espadas':1,'4-bastos':1,'4-copas':1,'4-oros':1
+const tierNames = {
+    1: 'EL PATIO',
+    2: 'EL PABELLÓN',
+    3: 'LA REJA',
+    4: 'EL CALABOZO',
+    5: 'LA CELDA DEL JEFE'
 };
 
-const TRUCO_LEVELS = [
-    { name: 'TRUCO', points: 2 },
-    { name: 'RETRUCO', points: 3 },
-    { name: 'VALE CUATRO', points: 4 }
-];
+const container = document.getElementById('rivalContainer');
 
-const ENVIDO_LEVELS = [
-    { name: 'ENVIDO', points: 2 },
-    { name: 'REAL ENVIDO', points: 3 },
-    { name: 'FALTA ENVIDO', points: 'falta' }
-];
+for (let t = 1; t <= 5; t++) {
+    const rivals = tiers[t];
+    if (!rivals) continue;
 
-// ===================== ALFREDITO =====================
-const ALF = {
-    start: ['Sentate que te enseño', 'Dale, arrancá', 'A ver qué tenés...', 'Hoy te rompo', 'Vamos de una'],
-    envido: ['¡ENVIDO!', 'Envido, ¿te animás?', 'ENVIDO papá', 'Dale, envido'],
-    realEnvido: ['¡REAL ENVIDO!', 'Real envido, sacá pecho'],
-    faltaEnvido: ['¡FALTA ENVIDO! Todo o nada', 'FALTA ENVIDO, cagón'],
-    envidoQuiero: ['Quiero, mostrá', 'Dale, quiero'],
-    envidoNoQuiero: ['Paso el envido...', 'Na, me guardo'],
-    envidoWin: ['¡MIS PUNTOS PAPÁ!', 'Jajaja envido mío', '¿Viste? Tengo flor en la mano'],
-    envidoLose: ['Uff tuviste suerte', 'Grrr...'],
-    truco: ['¡TRUCO papá!', 'TRUCAZO', '¿Querés? ¡TRUCO!', 'Te canto truco'],
-    retruco: ['¡RETRUCO!', 'RETRUCO, ¿te la bancás?'],
-    valeCuatro: ['¡VALE CUATRO!', 'VALE CUATRO o rajá'],
-    trucoQuiero: ['Quiero, dale', 'Obvio que quiero'],
-    trucoNoQuiero: ['No quiero...', 'Me guardo esta'],
-    winRound: ['¡Tomá!', 'Jajaja', 'Papá...', 'Fácil', '¿Viste?'],
-    loseRound: ['Uff', 'Zafaste', 'Hmm...', 'Bien jugada'],
-    winHand: ['¡Soy tu papá!', 'Andá a practicar', 'Más fácil que respirar'],
-    loseHand: ['La próxima no te va bien', 'Tuviste suerte', 'Grrr...'],
-    winGame: ['¡CAMPEÓN! Jajaja', 'Nunca tuviste chance'],
-    loseGame: ['REVANCHA YA', 'Hiciste trampa seguro'],
-    mazo: ['¡Ja! Cobarde', 'Así me gusta, rendite', 'Flojo...']
-};
+    const unlocked = t <= highestTier;
 
-function alfSay(cat) {
-    const lines = ALF[cat];
-    const line = lines[Math.floor(Math.random() * lines.length)];
-    const b = document.getElementById('speechBubble');
-    b.classList.remove('show');
-    setTimeout(() => { b.textContent = line; b.classList.add('show'); }, 80);
-    return line;
-}
+    const label = document.createElement('div');
+    label.className = 'tier-label';
+    label.textContent = `${unlocked ? '' : '\u{1F512} '}${tierNames[t]}`;
+    container.appendChild(label);
 
-function setMood(mood) {
-    const a = document.getElementById('alfreditoAvatar');
-    a.classList.remove('angry','happy');
-    if (mood) a.classList.add(mood);
-}
+    const grid = document.createElement('div');
+    grid.className = 'rival-grid';
 
-// ================ ENVIDO CALCULATION ================
-function calcEnvido(hand) {
-    // Group by suit
-    const bySuit = {};
-    hand.forEach(c => {
-        if (!bySuit[c.suit]) bySuit[c.suit] = [];
-        bySuit[c.suit].push(c);
-    });
+    for (const rival of rivals) {
+        const card = document.createElement(unlocked ? 'a' : 'div');
+        card.className = `rival-card${unlocked ? '' : ' locked'}`;
+        if (unlocked) card.href = `juego.html?rival=${rival.id}`;
+        card.style.setProperty('--card-color', rival.color);
 
-    let best = 0;
+        const wins = victories[rival.id] || 0;
 
-    // Check pairs of same suit (best two cards)
-    for (const suit of SUITS) {
-        const cards = bySuit[suit];
-        if (!cards) continue;
+        // Determine portrait
+        let portraitSrc = rival.portrait;
+        let isPlaceholder = rival.placeholderPortrait;
+        // For characters without portraits, use alfredito as silhouette base
+        if (isPlaceholder) portraitSrc = '../imagenes/alfredito.png';
 
-        if (cards.length >= 2) {
-            // Sort by envido value descending, pick best two
-            const vals = cards.map(c => ENVIDO_VAL[c.number]).sort((a, b) => b - a);
-            const pairScore = 20 + vals[0] + vals[1];
-            if (pairScore > best) best = pairScore;
-        }
+        card.innerHTML = `
+            ${!unlocked ? '<div class="rival-lock">\u{1F512}</div>' : ''}
+            <img src="${portraitSrc}" alt="${rival.name}" class="rival-avatar${isPlaceholder ? ' placeholder' : ''}" onerror="this.classList.add('placeholder')">
+            <div class="rival-name">${rival.name}</div>
+            <div class="rival-role">${rival.role}</div>
+            <div class="rival-difficulty">
+                ${Array.from({length: 5}, (_, i) => `<span class="diff-skull ${i < rival.difficulty ? '' : 'empty'}">\u{1F480}</span>`).join('')}
+            </div>
+            ${wins > 0 ? `<div class="rival-wins">\u2713 ${wins} victoria${wins > 1 ? 's' : ''}</div>` : ''}
+        `;
 
-        // Single card
-        cards.forEach(c => {
-            const single = ENVIDO_VAL[c.number];
-            if (single > best) best = single;
-        });
+        grid.appendChild(card);
     }
 
-    return best;
+    container.appendChild(grid);
 }
-
-// =================== GAME STATE =====================
-let playerHand = [];
-let cpuHand = [];
-let roundResults = [];
-let currentRound = 0;
-let playerScore = 0;
-let cpuScore = 0;
-
-// Truco state
-let trucoLevel = -1;
-let trucoCaller = null;
-let handPoints = 1;
-let waitingForTruco = false;
-
-// Envido state
-let envidoLevel = -1;
-let envidoCaller = null;
-let envidoPoints = 0;
-let envidoResolved = false;
-let waitingForEnvido = false;
-let envidoChain = []; // track envido chain for falta envido calc
-
-// General
-let playerTurn = true;
-let handOver = false;
-let pendingPlayerCard = null;
-let firstCardPlayed = false;
-
-// =================== DECK ===========================
-function createDeck() {
-    const deck = [];
-    for (const s of SUITS) for (const n of NUMBERS) deck.push({ number: n, suit: s, key: `${n}-${s}` });
-    return deck;
-}
-
-function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-}
-
-function getPower(c) { return POWER[c.key] || 0; }
-
-// =================== RENDER =========================
-function renderCard(card, playable) {
-    const sym = SUIT_SYMBOLS[card.suit];
-    return `<div class="card ${playable ? 'playable' : ''} suit-${card.suit}" data-key="${card.key}" ${playable ? `onclick="playCard('${card.key}')"` : ''}>
-        <div class="card-corner"><span>${card.number}</span><br>${sym}</div>
-        <div class="card-number">${card.number}</div>
-        <div class="card-suit">${sym}</div>
-        <div class="card-corner-br"><span>${card.number}</span><br>${sym}</div>
-    </div>`;
-}
-
-function renderMiniCards() {
-    const el = document.getElementById('cpuHandMini');
-    let h = '';
-    for (let i = 0; i < 3; i++) h += `<div class="mini-card ${i >= cpuHand.length ? 'gone' : ''}"></div>`;
-    el.innerHTML = h;
-}
-
-function renderHands() {
-    const canPlay = playerTurn && !waitingForTruco && !waitingForEnvido && !handOver;
-    document.getElementById('playerHand').innerHTML = playerHand.map(c => renderCard(c, canPlay)).join('');
-    renderMiniCards();
-}
-
-function renderScores() {
-    document.getElementById('scorePlayer').textContent = playerScore;
-    document.getElementById('scoreCpu').textContent = cpuScore;
-}
-
-function setMsg(m) { document.getElementById('gameMessage').textContent = m; }
-
-function highlightRound(r) {
-    for (let i = 0; i < 3; i++) {
-        document.getElementById(`round${i}`).style.opacity = i === r ? '1' : i < r ? '0.6' : '0.3';
-    }
-}
-
-function placeCard(card, slot) {
-    document.getElementById(slot).innerHTML = renderCard(card, false);
-}
-
-function addRoundBadge(slot, type) {
-    const el = document.getElementById(slot);
-    const badge = document.createElement('div');
-    badge.className = `round-badge badge-${type}`;
-    badge.textContent = type === 'win' ? '✓' : type === 'lose' ? '✗' : '=';
-    el.appendChild(badge);
-}
-
-// =================== ACTIONS ========================
-function renderActions() {
-    const bar = document.getElementById('actionBar');
-    bar.innerHTML = '';
-
-    if (waitingForEnvido) {
-        // Respond to envido
-        let btns = `<button class="btn-game btn-accept" onclick="respondEnvido(true)">¡QUIERO!</button>`;
-        btns += `<button class="btn-game btn-reject" onclick="respondEnvido(false)">NO QUIERO</button>`;
-
-        // Can raise envido?
-        if (envidoLevel === 0) {
-            btns += `<button class="btn-game btn-envido" onclick="raiseEnvido(1)">REAL ENVIDO</button>`;
-            btns += `<button class="btn-game btn-envido" onclick="raiseEnvido(2)">FALTA ENVIDO</button>`;
-        } else if (envidoLevel === 1) {
-            btns += `<button class="btn-game btn-envido" onclick="raiseEnvido(2)">FALTA ENVIDO</button>`;
-        }
-        bar.innerHTML = btns;
-        return;
-    }
-
-    if (waitingForTruco) {
-        const next = trucoLevel < 2 ? TRUCO_LEVELS[trucoLevel + 1] : null;
-        let btns = `<button class="btn-game btn-accept" onclick="respondTruco(true)">¡QUIERO!</button>`;
-        btns += `<button class="btn-game btn-reject" onclick="respondTruco(false)">NO QUIERO</button>`;
-        if (next) btns += `<button class="btn-game" onclick="raiseTruco()">${next.name}</button>`;
-        bar.innerHTML = btns;
-        return;
-    }
-
-    if (playerTurn && !handOver) {
-        let btns = '';
-
-        // Envido only in first round, before first card or after first card of round 1
-        if (!envidoResolved && currentRound === 0) {
-            btns += `<button class="btn-game btn-envido" onclick="callEnvido(0)">ENVIDO</button>`;
-            btns += `<button class="btn-game btn-envido" onclick="callEnvido(1)">REAL ENVIDO</button>`;
-            btns += `<button class="btn-game btn-envido" onclick="callEnvido(2)">FALTA ENVIDO</button>`;
-        }
-
-        // Truco
-        const nextT = trucoLevel + 1;
-        if (nextT <= 2 && trucoCaller !== 'player') {
-            btns += `<button class="btn-game" onclick="callTruco()">${TRUCO_LEVELS[nextT].name}</button>`;
-        }
-
-        // Ir al mazo
-        btns += `<button class="btn-game btn-mazo" onclick="irAlMazo()">IR AL MAZO</button>`;
-
-        bar.innerHTML = btns;
-    }
-}
-
-// =================== DEAL ============================
-function deal() {
-    const deck = shuffle(createDeck());
-    playerHand = deck.slice(0, 3);
-    cpuHand = deck.slice(3, 6);
-    currentRound = 0;
-    roundResults = [];
-    trucoLevel = -1;
-    trucoCaller = null;
-    handPoints = 1;
-    waitingForTruco = false;
-    envidoLevel = -1;
-    envidoCaller = null;
-    envidoPoints = 0;
-    envidoResolved = false;
-    waitingForEnvido = false;
-    envidoChain = [];
-    handOver = false;
-    playerTurn = true;
-    pendingPlayerCard = null;
-    firstCardPlayed = false;
-
-    for (let i = 0; i < 3; i++) {
-        document.getElementById(`round${i}`).style.opacity = i === 0 ? '1' : '0.3';
-        document.getElementById(`playerSlot${i}`).innerHTML = '';
-        document.getElementById(`cpuSlot${i}`).innerHTML = '';
-    }
-
-    document.getElementById('envidoReveal').classList.remove('show');
-
-    renderHands();
-    renderScores();
-    renderActions();
-    setMsg('ELEGÍ UNA CARTA');
-    setMood(null);
-    alfSay('start');
-
-    // CPU might call envido first sometimes
-    const cpuEnv = calcEnvido(cpuHand);
-    if (cpuEnv >= 28 && Math.random() < 0.6) {
-        setTimeout(() => { cpuCallEnvido(cpuEnv >= 31 ? 2 : 0); }, 800);
-    } else if (cpuEnv >= 25 && Math.random() < 0.35) {
-        setTimeout(() => { cpuCallEnvido(0); }, 800);
-    }
-}
-
-// ================ PLAY CARD ==========================
-function playCard(key) {
-    if (!playerTurn || waitingForTruco || waitingForEnvido || handOver) return;
-
-    const idx = playerHand.findIndex(c => c.key === key);
-    if (idx === -1) return;
-
-    const card = playerHand[idx];
-    playerHand = playerHand.filter((_, i) => i !== idx);
-
-    if (!firstCardPlayed) firstCardPlayed = true;
-
-    placeCard(card, `playerSlot${currentRound}`);
-    playerTurn = false;
-    renderHands();
-    renderActions();
-    setMsg('ALFREDITO PIENSA...');
-
-    // CPU might call envido after seeing first card
-    if (!envidoResolved && currentRound === 0 && roundResults.length === 0) {
-        const cpuEnv = calcEnvido(cpuHand);
-        if (cpuEnv >= 26 && Math.random() < 0.4) {
-            setTimeout(() => {
-                pendingPlayerCard = card;
-                cpuCallEnvido(cpuEnv >= 30 ? 1 : 0);
-            }, 500);
-            return;
-        }
-    }
-
-    // CPU might call truco
-    setTimeout(() => { cpuPlayCard(card); }, 500 + Math.random() * 600);
-}
-
-function cpuPlayCard(playerCard) {
-    if (handOver) return;
-
-    const pp = getPower(playerCard);
-    const sorted = [...cpuHand].sort((a, b) => getPower(a) - getPower(b));
-
-    let chosen;
-    const winner = sorted.find(c => getPower(c) > pp);
-
-    if (winner) {
-        // Maybe call truco with strong hand
-        if (trucoLevel < 2 && trucoCaller !== 'cpu' && Math.random() < 0.25 && getPower(winner) >= 10) {
-            pendingPlayerCard = playerCard;
-            cpuCallTruco();
-            return;
-        }
-        chosen = winner;
-    } else {
-        chosen = sorted[0];
-        // Bluff truco when losing
-        if (trucoLevel < 0 && trucoCaller !== 'cpu' && Math.random() < 0.12) {
-            pendingPlayerCard = playerCard;
-            cpuCallTruco();
-            return;
-        }
-    }
-
-    cpuHand = cpuHand.filter(c => c.key !== chosen.key);
-    placeCard(chosen, `cpuSlot${currentRound}`);
-    renderMiniCards();
-
-    setTimeout(() => { resolveRound(playerCard, chosen); }, 400);
-}
-
-// ================ RESOLVE ROUND ======================
-function resolveRound(pCard, cCard) {
-    const pp = getPower(pCard);
-    const cp = getPower(cCard);
-
-    let result = pp > cp ? 'player' : cp > pp ? 'cpu' : 'tie';
-    roundResults.push(result);
-
-    // Badge on player's slot
-    addRoundBadge(`playerSlot${currentRound}`, result === 'player' ? 'win' : result === 'cpu' ? 'lose' : 'tie');
-
-    if (result === 'player') { alfSay('loseRound'); setMood('angry'); }
-    else if (result === 'cpu') { alfSay('winRound'); setMood('happy'); }
-
-    const pWins = roundResults.filter(r => r === 'player').length;
-    const cWins = roundResults.filter(r => r === 'cpu').length;
-
-    let winner = null;
-
-    if (pWins >= 2) winner = 'player';
-    else if (cWins >= 2) winner = 'cpu';
-    else if (currentRound === 2) {
-        if (pWins > cWins) winner = 'player';
-        else if (cWins > pWins) winner = 'cpu';
-        else {
-            if (roundResults[0] === 'player') winner = 'player';
-            else if (roundResults[0] === 'cpu') winner = 'cpu';
-            else winner = 'player'; // mano
-        }
-    } else if (currentRound === 1 && roundResults[0] === 'tie' && result === 'tie') {
-        winner = 'player'; // mano
-    }
-
-    if (winner) {
-        setTimeout(() => { endHand(winner); }, 500);
-    } else {
-        currentRound++;
-        highlightRound(currentRound);
-        setTimeout(() => {
-            playerTurn = true;
-            setMsg('ELEGÍ UNA CARTA');
-            setMood(null);
-            envidoResolved = true; // envido can only be called in round 1
-            renderHands();
-            renderActions();
-        }, 600);
-    }
-}
-
-// ================ END HAND ===========================
-function endHand(winner) {
-    handOver = true;
-    const q = winner === 'cpu' ? alfSay('winHand') : alfSay('loseHand');
-
-    if (winner === 'player') {
-        playerScore += handPoints;
-        setMood('angry');
-        showOverlay('¡GANASTE!', `+${handPoints} pts truco${envidoPoints > 0 ? ` | +${envidoPoints} pts envido previos` : ''}`, false, q);
-    } else {
-        cpuScore += handPoints;
-        setMood('happy');
-        showOverlay('PERDISTE', `Alfredito +${handPoints} pts${envidoPoints > 0 ? ` | envido ya contado` : ''}`, true, q);
-    }
-    renderScores();
-    renderHands();
-    renderActions();
-    checkGameEnd();
-}
-
-function checkGameEnd() {
-    if (playerScore >= 30 || cpuScore >= 30) {
-        const gw = playerScore >= 30 ? 'player' : 'cpu';
-        setTimeout(() => {
-            const q = gw === 'cpu' ? alfSay('winGame') : alfSay('loseGame');
-            showOverlay(
-                gw === 'player' ? '¡PARTIDA GANADA!' : 'PARTIDA PERDIDA',
-                gw === 'player' ? 'Le ganaste a Alfredito' : 'Alfredito te destruyó',
-                gw !== 'player', q
-            );
-            document.getElementById('overlayBtn').textContent = 'REVANCHA';
-            document.getElementById('overlayBtn').onclick = () => { playerScore = 0; cpuScore = 0; closeOverlay(); };
-        }, 1200);
-    }
-}
-
-// ================ IR AL MAZO ========================
-function irAlMazo() {
-    alfSay('mazo');
-    setMood('happy');
-    handOver = true;
-    cpuScore += handPoints;
-    renderScores();
-    showOverlay('TE FUISTE AL MAZO', `Alfredito suma ${handPoints} punto${handPoints > 1 ? 's' : ''}`, true, ALF.mazo[Math.floor(Math.random() * ALF.mazo.length)]);
-    checkGameEnd();
-}
-
-// ================ ENVIDO ============================
-function callEnvido(level) {
-    if (envidoResolved) return;
-    envidoLevel = level;
-    envidoCaller = 'player';
-    envidoChain.push(level);
-    const name = ENVIDO_LEVELS[level].name;
-    setMsg(`¡CANTASTE ${name}!`);
-    renderActions();
-
-    setTimeout(() => { cpuRespondEnvido(); }, 600 + Math.random() * 500);
-}
-
-function cpuCallEnvido(level) {
-    if (envidoResolved) return;
-    envidoLevel = level;
-    envidoCaller = 'cpu';
-    waitingForEnvido = true;
-    envidoChain.push(level);
-
-    const cat = level === 0 ? 'envido' : level === 1 ? 'realEnvido' : 'faltaEnvido';
-    alfSay(cat);
-    setMood('happy');
-    setMsg(`ALFREDITO CANTA ${ENVIDO_LEVELS[level].name}!`);
-    renderHands();
-    renderActions();
-}
-
-function respondEnvido(accept) {
-    waitingForEnvido = false;
-
-    if (accept) {
-        setMsg('¡QUIERO!');
-        setTimeout(() => { resolveEnvido(); }, 500);
-    } else {
-        setMsg('NO QUIERO...');
-        // Give previous points to caller
-        const pts = calcEnvidoNoQuieroPoints();
-        cpuScore += pts;
-        envidoResolved = true;
-        renderScores();
-        alfSay('envidoWin');
-        setMood('happy');
-        setTimeout(() => {
-            setMsg(`ALFREDITO +${pts} PTS ENVIDO`);
-            setTimeout(() => { resumeAfterEnvido(); }, 800);
-        }, 400);
-    }
-}
-
-function raiseEnvido(level) {
-    waitingForEnvido = false;
-    envidoLevel = level;
-    envidoCaller = 'player';
-    envidoChain.push(level);
-    setMsg(`¡${ENVIDO_LEVELS[level].name}!`);
-
-    setTimeout(() => { cpuRespondEnvido(); }, 600 + Math.random() * 500);
-}
-
-function cpuRespondEnvido() {
-    const cpuEnv = calcEnvido(cpuHand);
-    const threshold = envidoLevel === 2 ? 27 : envidoLevel === 1 ? 25 : 23;
-    const accept = cpuEnv >= threshold || Math.random() < 0.3;
-
-    if (accept) {
-        // Maybe raise
-        if (envidoLevel < 2 && cpuEnv >= 29 && Math.random() < 0.4) {
-            const newLevel = envidoLevel + 1;
-            envidoLevel = newLevel;
-            envidoCaller = 'cpu';
-            waitingForEnvido = true;
-            envidoChain.push(newLevel);
-            const cat = newLevel === 1 ? 'realEnvido' : 'faltaEnvido';
-            alfSay(cat);
-            setMood('happy');
-            setMsg(`ALFREDITO CANTA ${ENVIDO_LEVELS[newLevel].name}!`);
-            renderHands();
-            renderActions();
-            return;
-        }
-
-        alfSay('envidoQuiero');
-        setMsg('ALFREDITO: ¡QUIERO!');
-        setTimeout(() => { resolveEnvido(); }, 600);
-    } else {
-        alfSay('envidoNoQuiero');
-        setMood('angry');
-        const pts = calcEnvidoNoQuieroPoints();
-        playerScore += pts;
-        envidoResolved = true;
-        renderScores();
-        setTimeout(() => {
-            setMsg(`VOS +${pts} PTS ENVIDO`);
-            setTimeout(() => { resumeAfterEnvido(); }, 800);
-        }, 400);
-    }
-}
-
-function calcEnvidoNoQuieroPoints() {
-    // Points for "no quiero": sum of all previous accepted levels
-    // envido=1, real envido=1, falta envido=1 (just the base if not accepted)
-    // Actually: if chain is [envido] and rejected = 1 point
-    // if chain is [envido, real_envido] and rejected = envido points (2)
-    // if chain is [envido, real_envido, falta_envido] rejected = envido + real_envido (5)
-    if (envidoChain.length <= 1) return 1;
-
-    let pts = 0;
-    for (let i = 0; i < envidoChain.length - 1; i++) {
-        const lvl = envidoChain[i];
-        pts += lvl === 0 ? 2 : lvl === 1 ? 3 : 0;
-    }
-    return Math.max(pts, 1);
-}
-
-function calcEnvidoWinPoints() {
-    // Total points for winning envido
-    let pts = 0;
-    for (const lvl of envidoChain) {
-        if (lvl === 0) pts += 2;
-        else if (lvl === 1) pts += 3;
-        else if (lvl === 2) {
-            // Falta envido: difference to 30 for the losing side
-            const gap = 30 - Math.min(playerScore, cpuScore);
-            pts += Math.max(gap, 1);
-        }
-    }
-    return Math.max(pts, 2);
-}
-
-function resolveEnvido() {
-    const pEnv = calcEnvido(playerHand.length === 3 ? playerHand : reconstructPlayerHand());
-    const cEnv = calcEnvido(cpuHand.length === 3 ? cpuHand : reconstructCpuHand());
-
-    // Show reveal
-    const reveal = document.getElementById('envidoReveal');
-    reveal.classList.add('show');
-
-    const pEl = document.getElementById('envidoPlayerPts');
-    const cEl = document.getElementById('envidoCpuPts');
-
-    pEl.textContent = pEnv;
-    cEl.textContent = cEnv;
-
-    const winner = pEnv >= cEnv ? 'player' : 'cpu'; // player wins ties (mano)
-    pEl.className = `envido-points-value ${winner === 'player' ? 'envido-win' : 'envido-lose'}`;
-    cEl.className = `envido-points-value ${winner === 'cpu' ? 'envido-win' : 'envido-lose'}`;
-
-    const pts = calcEnvidoWinPoints();
-    envidoPoints = pts;
-
-    if (winner === 'player') {
-        playerScore += pts;
-        alfSay('envidoLose');
-        setMood('angry');
-        setMsg(`¡GANASTE EL ENVIDO! +${pts} PTS`);
-    } else {
-        cpuScore += pts;
-        alfSay('envidoWin');
-        setMood('happy');
-        setMsg(`ALFREDITO GANA ENVIDO +${pts} PTS`);
-    }
-
-    envidoResolved = true;
-    renderScores();
-
-    setTimeout(() => {
-        reveal.classList.remove('show');
-        resumeAfterEnvido();
-    }, 2000);
-}
-
-// We need original hands for envido calc if cards were played
-let originalPlayerHand = [];
-let originalCpuHand = [];
-
-function reconstructPlayerHand() { return originalPlayerHand; }
-function reconstructCpuHand() { return originalCpuHand; }
-
-function resumeAfterEnvido() {
-    setMood(null);
-    playerTurn = true;
-
-    // If there was a pending card (CPU called envido mid-play)
-    if (pendingPlayerCard) {
-        const pc = pendingPlayerCard;
-        pendingPlayerCard = null;
-        setMsg('ALFREDITO PIENSA...');
-        playerTurn = false;
-        renderHands();
-        renderActions();
-        setTimeout(() => { cpuPlayCard(pc); }, 500);
-    } else {
-        setMsg('ELEGÍ UNA CARTA');
-        renderHands();
-        renderActions();
-    }
-    checkGameEnd();
-}
-
-// ================ TRUCO =============================
-function callTruco() {
-    const next = trucoLevel + 1;
-    if (next > 2) return;
-    trucoLevel = next;
-    trucoCaller = 'player';
-    setMsg(`¡CANTASTE ${TRUCO_LEVELS[trucoLevel].name}!`);
-    renderActions();
-    setTimeout(() => { cpuRespondTruco(); }, 600 + Math.random() * 500);
-}
-
-function cpuCallTruco() {
-    const next = trucoLevel + 1;
-    if (next > 2) return;
-    trucoLevel = next;
-    trucoCaller = 'cpu';
-    waitingForTruco = true;
-
-    const cat = trucoLevel === 0 ? 'truco' : trucoLevel === 1 ? 'retruco' : 'valeCuatro';
-    alfSay(cat);
-    setMood('happy');
-    setMsg(`ALFREDITO CANTA ${TRUCO_LEVELS[trucoLevel].name}!`);
-    renderHands();
-    renderActions();
-}
-
-function respondTruco(accept) {
-    waitingForTruco = false;
-
-    if (accept) {
-        handPoints = TRUCO_LEVELS[trucoLevel].points;
-        setMsg('¡QUIERO!');
-        setTimeout(() => {
-            playerTurn = true;
-            setMsg('ELEGÍ UNA CARTA');
-            setMood(null);
-            renderHands();
-            renderActions();
-
-            if (pendingPlayerCard) {
-                const pc = pendingPlayerCard;
-                pendingPlayerCard = null;
-                playerTurn = false;
-                setMsg('ALFREDITO PIENSA...');
-                renderHands();
-                renderActions();
-                setTimeout(() => { cpuPlayCard(pc); }, 500);
-            }
-        }, 500);
-    } else {
-        setMsg('NO QUIERO...');
-        setTimeout(() => { endHand('cpu'); }, 600);
-    }
-}
-
-function raiseTruco() {
-    waitingForTruco = false;
-    trucoLevel++;
-    trucoCaller = 'player';
-    setMsg(`¡${TRUCO_LEVELS[trucoLevel].name}!`);
-    renderActions();
-    setTimeout(() => { cpuRespondTruco(); }, 600 + Math.random() * 500);
-}
-
-function cpuRespondTruco() {
-    const maxP = Math.max(...cpuHand.map(getPower));
-    const accept = maxP >= 8 || Math.random() < 0.35;
-
-    if (accept) {
-        if (trucoLevel < 2 && maxP >= 12 && Math.random() < 0.25) {
-            trucoLevel++;
-            trucoCaller = 'cpu';
-            waitingForTruco = true;
-            const cat = trucoLevel === 1 ? 'retruco' : 'valeCuatro';
-            alfSay(cat);
-            setMood('happy');
-            setMsg(`ALFREDITO CANTA ${TRUCO_LEVELS[trucoLevel].name}!`);
-            renderHands();
-            renderActions();
-            return;
-        }
-
-        handPoints = TRUCO_LEVELS[trucoLevel].points;
-        alfSay('trucoQuiero');
-        setMsg('ALFREDITO: ¡QUIERO!');
-        setTimeout(() => {
-            setMsg('ELEGÍ UNA CARTA');
-            setMood(null);
-            renderActions();
-        }, 600);
-    } else {
-        alfSay('trucoNoQuiero');
-        setMood('angry');
-        setMsg('ALFREDITO: NO QUIERO');
-        setTimeout(() => { endHand('player'); }, 600);
-    }
-}
-
-// ================ OVERLAY ============================
-function showOverlay(text, sub, isLoss, quote) {
-    const o = document.getElementById('overlay');
-    document.getElementById('overlayText').textContent = text;
-    document.getElementById('overlayText').style.color = isLoss ? 'var(--red)' : 'var(--green)';
-    document.getElementById('overlaySub').textContent = sub;
-    document.getElementById('overlayQuote').textContent = quote ? `"${quote}" — Alfredito` : '';
-    document.getElementById('overlayImg').style.borderColor = isLoss ? 'var(--red)' : 'var(--green)';
-    document.getElementById('overlayBtn').textContent = 'OTRA MANO';
-    document.getElementById('overlayBtn').onclick = closeOverlay;
-    o.classList.add('show');
-}
-
-function closeOverlay() {
-    document.getElementById('overlay').classList.remove('show');
-    deal();
-}
-
-// ================ INIT ==============================
-// Override deal to save original hands
-const _origDeal = deal;
-deal = function() {
-    _origDeal();
-    originalPlayerHand = [...playerHand];
-    originalCpuHand = [...cpuHand];
-};
-
-deal();
 </script>
 
 </body>

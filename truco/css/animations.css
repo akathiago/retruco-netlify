@@ -1,0 +1,753 @@
+/* ============================================
+   TRUCO GAME - ANIMATION SYSTEM
+   Flash-style professional polish
+   ============================================ */
+
+/* ============================================
+   CSS VARIABLES FOR ANIMATION TIMING
+   ============================================ */
+:root {
+    --anim-card-deal: 400ms;
+    --anim-card-flip: 300ms;
+    --anim-card-play: 350ms;
+    --anim-call-reveal: 600ms;
+    --anim-score: 500ms;
+    --anim-ripple: 600ms;
+    --ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ============================================
+   CARD DEALING ANIMATION
+   Cascade from deck position
+   ============================================ */
+@keyframes cardDeal {
+    0% {
+        transform: translate(-50%, -300%) rotate(-15deg) scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(0, -40px) rotate(8deg) scale(1.08);
+        opacity: 1;
+    }
+    75% {
+        transform: translate(0, 5px) rotate(-3deg) scale(0.98);
+    }
+    100% {
+        transform: translate(0, 0) rotate(0) scale(1);
+    }
+}
+
+.card-dealing {
+    animation: cardDeal var(--anim-card-deal) var(--ease-bounce) both;
+}
+
+/* ============================================
+   3D CARD FLIP ANIMATION
+   Perspective-based flip for reveals
+   ============================================ */
+@keyframes cardFlip {
+    0% {
+        transform: perspective(1000px) rotateY(180deg) scale(0.8);
+    }
+    50% {
+        transform: perspective(1000px) rotateY(90deg) scale(0.9);
+    }
+    100% {
+        transform: perspective(1000px) rotateY(0deg) scale(1);
+    }
+}
+
+.card-flipping {
+    animation: cardFlip var(--anim-card-flip) ease-out both;
+    transform-style: preserve-3d;
+}
+
+/* ============================================
+   CARD PLAY ARC ANIMATION
+   Smooth arc from hand to table
+   ============================================ */
+@keyframes cardPlayArc {
+    0% {
+        transform: translateY(0) translateX(0) scale(1) rotate(0deg);
+        z-index: 100;
+    }
+    35% {
+        transform: translateY(-100px) translateX(calc(var(--target-x, 0px) * 0.3)) scale(1.2) rotate(-8deg);
+        z-index: 100;
+    }
+    70% {
+        transform: translateY(calc(var(--target-y, 0px) * 0.8)) translateX(calc(var(--target-x, 0px) * 0.9)) scale(0.85) rotate(3deg);
+        z-index: 100;
+    }
+    100% {
+        transform: translateY(var(--target-y, 0px)) translateX(var(--target-x, 0px)) scale(0.77) rotate(0deg);
+        z-index: 1;
+    }
+}
+
+.card-playing {
+    animation: cardPlayArc var(--anim-card-play) var(--ease-smooth) both;
+    pointer-events: none;
+}
+
+/* ============================================
+   ENHANCED CARD SLAM (replacing original)
+   More dramatic bounce
+   ============================================ */
+@keyframes cardSlamEnhanced {
+    0% {
+        transform: translateY(-150px) scale(1.3) rotate(-10deg);
+        opacity: 0;
+    }
+    40% {
+        transform: translateY(8px) scale(0.95) rotate(2deg);
+        opacity: 1;
+    }
+    60% {
+        transform: translateY(-5px) scale(1.02) rotate(-1deg);
+    }
+    80% {
+        transform: translateY(2px) scale(0.99);
+    }
+    100% {
+        transform: translateY(0) scale(1) rotate(0);
+    }
+}
+
+.card-slam {
+    animation: cardSlamEnhanced 0.4s var(--ease-bounce) both;
+}
+
+/* ============================================
+   GLOW PULSE ANIMATION
+   For interactive elements
+   ============================================ */
+@keyframes glowPulse {
+    0%, 100% {
+        box-shadow: 0 0 5px var(--glow-color, var(--rust, #2bb8cd));
+    }
+    50% {
+        box-shadow:
+            0 0 15px var(--glow-color, var(--rust, #2bb8cd)),
+            0 0 30px var(--glow-color, var(--rust, #2bb8cd));
+    }
+}
+
+.glow-pulse {
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* ============================================
+   CALL REVEAL ANIMATION
+   Dramatic TRUCO!/ENVIDO! display
+   ============================================ */
+@keyframes callReveal {
+    0% {
+        transform: scale(0) rotate(-25deg);
+        opacity: 0;
+        filter: blur(20px);
+    }
+    50% {
+        transform: scale(1.4) rotate(5deg);
+        opacity: 1;
+        filter: blur(0);
+    }
+    70% {
+        transform: scale(0.9) rotate(-2deg);
+    }
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
+
+@keyframes callRevealOut {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+        filter: blur(10px);
+    }
+}
+
+.call-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0);
+    z-index: 10000;
+    pointer-events: none;
+    transition: background 0.3s ease;
+}
+
+.call-overlay.show {
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.call-text {
+    font-family: 'Trevor', 'Impact', sans-serif;
+    font-size: clamp(3rem, 18vw, 7rem);
+    font-weight: 900;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    text-shadow:
+        4px 4px 0 rgba(0, 0, 0, 0.9),
+        0 0 60px currentColor,
+        0 0 100px currentColor;
+    animation: callReveal var(--anim-call-reveal) var(--ease-bounce);
+}
+
+.call-overlay.hide .call-text {
+    animation: callRevealOut 0.3s ease-out forwards;
+}
+
+/* Call type colors */
+.call-text.truco { color: #2bb8cd; }
+.call-text.retruco { color: #1e90ff; }
+.call-text.vale-cuatro { color: #9b59b6; }
+.call-text.envido { color: #c9a227; }
+.call-text.real-envido { color: #f39c12; }
+.call-text.falta-envido { color: #e74c3c; }
+.call-text.quiero { color: #2ecc71; }
+.call-text.no-quiero { color: #e74c3c; }
+
+/* ============================================
+   THINKING DOTS ANIMATION
+   CPU is processing
+   ============================================ */
+@keyframes thinkingDot {
+    0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.3;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.thinking-dots {
+    display: inline-flex;
+    gap: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.thinking-dots span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--rust, #2bb8cd);
+    border-radius: 50%;
+    animation: thinkingDot 1.4s ease-in-out infinite both;
+}
+
+.thinking-dots span:nth-child(1) { animation-delay: -0.32s; }
+.thinking-dots span:nth-child(2) { animation-delay: -0.16s; }
+.thinking-dots span:nth-child(3) { animation-delay: 0s; }
+
+/* ============================================
+   SCORE COUNTER ANIMATIONS
+   ============================================ */
+@keyframes scoreIncrease {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.6); color: var(--green, #2ecc71); }
+    100% { transform: scale(1); }
+}
+
+@keyframes scoreDecrease {
+    0% { transform: scale(1); }
+    30% { transform: scale(0.7); color: var(--red, #e74c3c); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.score-increasing {
+    animation: scoreIncrease var(--anim-score) var(--ease-bounce);
+}
+
+.score-decreasing {
+    animation: scoreDecrease var(--anim-score) var(--ease-bounce);
+}
+
+/* ============================================
+   VICTORY CELEBRATION
+   ============================================ */
+@keyframes victoryBurst {
+    0% {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.3) rotate(15deg);
+        opacity: 1;
+    }
+    80% {
+        transform: scale(0.9) rotate(-5deg);
+    }
+    100% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
+
+@keyframes victoryFlash {
+    0%, 100% {
+        filter: brightness(1);
+    }
+    25% {
+        filter: brightness(1.6) saturate(1.3);
+    }
+    50% {
+        filter: brightness(1.2);
+    }
+    75% {
+        filter: brightness(1.4) saturate(1.2);
+    }
+}
+
+.victory-celebration {
+    animation: victoryBurst 0.8s var(--ease-bounce);
+}
+
+.victory-flash {
+    animation: victoryFlash 0.6s ease;
+}
+
+/* ============================================
+   DEFEAT SHAKE
+   ============================================ */
+@keyframes defeatShake {
+    0%, 100% { transform: translateX(0); }
+    10% { transform: translateX(-12px) rotate(-1deg); }
+    20% { transform: translateX(10px) rotate(1deg); }
+    30% { transform: translateX(-8px) rotate(-0.5deg); }
+    40% { transform: translateX(8px) rotate(0.5deg); }
+    50% { transform: translateX(-5px); }
+    60% { transform: translateX(5px); }
+    70% { transform: translateX(-3px); }
+    80% { transform: translateX(3px); }
+    90% { transform: translateX(-1px); }
+}
+
+.defeat-shake {
+    animation: defeatShake 0.6s ease;
+}
+
+/* ============================================
+   BUTTON RIPPLE EFFECT
+   ============================================ */
+@keyframes ripple {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.7;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(4);
+        opacity: 0;
+    }
+}
+
+.btn-ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple-effect {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    animation: ripple var(--anim-ripple) linear;
+    pointer-events: none;
+}
+
+/* ============================================
+   BUTTON SHINE EFFECT
+   ============================================ */
+@keyframes buttonShine {
+    0% { transform: translateX(-150%) skewX(-15deg); }
+    100% { transform: translateX(250%) skewX(-15deg); }
+}
+
+.btn-shine::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.15),
+        transparent
+    );
+    animation: buttonShine 4s infinite;
+    pointer-events: none;
+}
+
+/* ============================================
+   CARD HOVER ENHANCEMENTS
+   Tilt + glow + depth
+   ============================================ */
+.card-interactive {
+    transition:
+        transform 0.2s var(--ease-bounce),
+        box-shadow 0.2s ease;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+.card-interactive:hover {
+    box-shadow:
+        0 0 20px rgba(43, 184, 205, 0.4),
+        4px 8px 16px rgba(0, 0, 0, 0.4),
+        8px 16px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Glow overlay on hover */
+.card-interactive::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 10px;
+    background: linear-gradient(
+        135deg,
+        transparent 30%,
+        rgba(43, 184, 205, 0.15) 50%,
+        rgba(43, 184, 205, 0.25) 70%,
+        transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.card-interactive:hover::after {
+    opacity: 1;
+}
+
+/* ============================================
+   OPPONENT REACTIONS
+   ============================================ */
+@keyframes angryGlow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(231, 76, 60, 0.7);
+    }
+}
+
+@keyframes happyBounce {
+    0%, 100% { transform: translateY(0); }
+    20% { transform: translateY(-8px); }
+    40% { transform: translateY(0); }
+    60% { transform: translateY(-4px); }
+    80% { transform: translateY(0); }
+}
+
+@keyframes thinkingPulse {
+    0%, 100% {
+        filter: brightness(1);
+        transform: scale(1);
+    }
+    50% {
+        filter: brightness(0.7);
+        transform: scale(0.98);
+    }
+}
+
+.opponent-angry {
+    animation: defeatShake 0.4s ease, angryGlow 1.5s ease infinite;
+    border-color: var(--red, #e74c3c) !important;
+}
+
+.opponent-happy {
+    animation: happyBounce 0.6s var(--ease-bounce);
+    border-color: var(--green, #2ecc71) !important;
+}
+
+.opponent-thinking {
+    animation: thinkingPulse 2s ease-in-out infinite;
+}
+
+/* ============================================
+   ROUND BADGE ANIMATIONS
+   ============================================ */
+@keyframes badgePop {
+    0% {
+        transform: scale(0) rotate(-45deg);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.3) rotate(10deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
+
+.badge-pop {
+    animation: badgePop 0.4s var(--ease-bounce) both;
+}
+
+/* ============================================
+   ROUND ROW TRANSITIONS
+   ============================================ */
+.round-row-animated {
+    transition:
+        opacity 0.4s ease,
+        transform 0.4s ease,
+        filter 0.4s ease;
+}
+
+.round-row-animated.active {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1);
+}
+
+.round-row-animated.inactive {
+    opacity: 0.3;
+    transform: scale(0.96);
+    filter: brightness(0.8);
+}
+
+.round-row-animated.completed {
+    opacity: 0.6;
+    transform: scale(0.98);
+}
+
+/* ============================================
+   LOADING SCREEN
+   ============================================ */
+@keyframes spinLoader {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes loadingPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.loading-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg, #0d2233);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    z-index: 99999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(43, 184, 205, 0.2);
+    border-top-color: var(--rust, #2bb8cd);
+    border-radius: 50%;
+    animation: spinLoader 1s linear infinite;
+}
+
+.loading-text {
+    font-family: 'Trevor', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 6px;
+    color: var(--rust, #2bb8cd);
+    animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+/* ============================================
+   SPEECH BUBBLE ANIMATION
+   ============================================ */
+@keyframes speechPop {
+    0% {
+        transform: scale(0) translateX(-30px);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.1) translateX(5px);
+    }
+    100% {
+        transform: scale(1) translateX(0);
+        opacity: 1;
+    }
+}
+
+.speech-bubble-animated {
+    animation: speechPop 0.35s var(--ease-bounce) both;
+}
+
+/* ============================================
+   ENVIDO REVEAL ANIMATION
+   ============================================ */
+@keyframes envidoCountUp {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.envido-reveal {
+    animation: envidoCountUp 0.5s var(--ease-bounce) both;
+}
+
+/* ============================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================ */
+.will-animate {
+    will-change: transform, opacity;
+    contain: layout style;
+}
+
+/* ============================================
+   REDUCED MOTION SUPPORT
+   Accessibility
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .glow-pulse,
+    .thinking-dots span,
+    .btn-shine::before {
+        animation: none !important;
+    }
+}
+
+/* ============================================
+   AUDIO CONTROLS UI
+   ============================================ */
+.audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-audio {
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 6px;
+    opacity: 0.7;
+    transition: opacity 0.2s, transform 0.2s;
+    line-height: 1;
+}
+
+.btn-audio:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.btn-audio:active {
+    transform: scale(0.95);
+}
+
+.btn-audio .icon-muted {
+    display: none;
+}
+
+.btn-audio.muted .icon-sound {
+    display: none;
+}
+
+.btn-audio.muted .icon-muted {
+    display: inline;
+}
+
+.volume-slider {
+    width: 70px;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(43, 184, 205, 0.25);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--rust, #2bb8cd);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border: none;
+    border-radius: 50%;
+    background: var(--rust, #2bb8cd);
+    cursor: pointer;
+}
+
+/* ============================================
+   CARD BACK DESIGN
+   For flip animations
+   ============================================ */
+.card-back {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(135deg, #1a3a4a 0%, #0d2233 50%, #1a3a4a 100%);
+    border-radius: 7px;
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-back::before {
+    content: '';
+    width: 70%;
+    height: 80%;
+    border: 2px solid rgba(43, 184, 205, 0.3);
+    border-radius: 5px;
+    background:
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 5px,
+            rgba(43, 184, 205, 0.05) 5px,
+            rgba(43, 184, 205, 0.05) 10px
+        );
+}
