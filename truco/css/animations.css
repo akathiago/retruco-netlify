@@ -720,6 +720,76 @@
 }
 
 /* ============================================
+   ACCESSIBILITY: FOCUS STATES
+   WCAG 2.1 AA Compliant
+   ============================================ */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.btn-game:focus-visible,
+.btn-tut:focus-visible,
+.card.playable:focus-visible {
+    outline: 3px solid var(--rust, #2bb8cd);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 6px rgba(43, 184, 205, 0.25);
+}
+
+/* Focus for interactive cards */
+.card.playable:focus-visible {
+    transform: translateY(-15px) scale(1.05);
+    border-color: var(--rust, #2bb8cd);
+    box-shadow:
+        0 0 0 4px rgba(43, 184, 205, 0.3),
+        0 15px 35px rgba(0,0,0,0.5);
+}
+
+/* Focus for FAQ items */
+.faq-item:focus-visible {
+    outline: 3px solid var(--rust, #2bb8cd);
+    outline-offset: 2px;
+    transform: rotate(0deg) translateX(6px);
+    box-shadow: 8px 8px 0 var(--rust, #2bb8cd);
+}
+
+/* Focus for modal close buttons */
+.modal-close:focus-visible {
+    outline: 2px solid var(--rust, #2bb8cd);
+    outline-offset: 2px;
+    background: rgba(43, 184, 205, 0.1);
+}
+
+/* Focus for nav links */
+.nav-links a:focus-visible,
+.back-link:focus-visible,
+.tut-back:focus-visible {
+    outline: 2px solid var(--rust, #2bb8cd);
+    outline-offset: 4px;
+}
+
+/* Skip link for keyboard navigation */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--rust, #2bb8cd);
+    color: var(--bg, #0a0a0a);
+    padding: 12px 24px;
+    font-family: 'Trevor', sans-serif;
+    letter-spacing: 2px;
+    z-index: 10000;
+    border-radius: 0 0 8px 8px;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* ============================================
    CARD BACK DESIGN
    For flip animations
    ============================================ */

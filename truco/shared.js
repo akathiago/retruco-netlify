@@ -59,10 +59,10 @@ const _cardBasePath = (typeof CARD_BASE_PATH !== 'undefined') ? CARD_BASE_PATH :
 function renderCard(card, playable) {
     const imgSrc = CARD_IMAGES[card.key];
     const playableClass = playable ? 'playable card-interactive will-animate' : '';
-    const clickHandler = playable ? `onclick="playCard('${card.key}')"` : '';
+    const draggableAttr = playable ? 'draggable="true"' : '';
 
     if (imgSrc) {
-        return `<div class="card card-img ${playableClass}" data-key="${card.key}" ${clickHandler}>
+        return `<div class="card card-img ${playableClass}" data-key="${card.key}" ${draggableAttr}>
             <img src="${imgSrc}" alt="${card.number} de ${card.suit}" draggable="false">
             <div class="card-shine"></div>
         </div>`;
@@ -71,7 +71,7 @@ function renderCard(card, playable) {
     const sym = SUIT_SYMBOLS[card.suit];
     const faceNumber = card.number === 10 ? '10' : card.number === 11 ? 'S' : card.number === 12 ? 'R' : card.number;
 
-    return `<div class="card ${playableClass} suit-${card.suit}" data-key="${card.key}" ${clickHandler}>
+    return `<div class="card ${playableClass} suit-${card.suit}" data-key="${card.key}" ${draggableAttr}>
         <div class="card-inner">
             <div class="card-corner"><span>${faceNumber}</span><br>${sym}</div>
             <div class="card-center">
@@ -139,6 +139,12 @@ const OPPONENTS = {
         portrait: '../imagenes/abraham.png',
         placeholderPortrait: true,
         color: '#8B7355',
+        background: '../imagenes/fondotruco1.png',
+        lore: 'Viejo zorro del pabellón. Lleva 30 años jugando truco y nunca perdió una partida importante. Dicen que enseñó a jugar a medio penal.',
+        bio: 'Abraham cayó en los 90 por un ajuste de cuentas que nunca quiso explicar. Desde entonces, el truco se convirtió en su religión. Cada carta que tira tiene 30 años de experiencia detrás. Los pibes nuevos lo buscan para aprender, los veteranos lo respetan. Nunca levanta la voz, pero cuando habla, todos escuchan.',
+        mission: 'Abraham es tu primer rival. Jugá conservador, no te apures. Él rara vez bluffea, así que si canta truco, probablemente tenga cartas buenas. Aprendé a leer sus silencios.',
+        traits: ['Conservador', 'Paciente', 'Maestro'],
+        skills: { agresividad: 1, farol: 1, envido: 2, estrategia: 3 },
         ai: {
             envidoAcceptThreshold: 25,
             envidoRaiseThreshold: 31,
@@ -187,6 +193,12 @@ const OPPONENTS = {
         tier: 1,
         portrait: '../imagenes/alfredito.png',
         color: '#2bb8cd',
+        background: '../imagenes/fondotruco1.png',
+        lore: 'El pibe más boca del patio. Siempre gritando, siempre cantando. No sabe perder pero tampoco sabe cuándo callarse.',
+        bio: 'Alfredito tiene 23 años y cayó por robo de autos. Es el más joven del pabellón pero el que más ruido hace. Creció en la villa jugando truco con sus hermanos, y acá adentro encontró su escenario. Cada partida es un show para él. No le importa ganar o perder, le importa que todos lo miren.',
+        mission: 'Alfredito es puro humo. Canta truco con cualquier cosa esperando que te asustes. Bancátela y vas a ver cómo se desinfla. Aceptá sus trucos cuando tengas cartas decentes.',
+        traits: ['Bocón', 'Energético', 'Impredecible'],
+        skills: { agresividad: 3, farol: 2, envido: 3, estrategia: 2 },
         ai: {
             envidoAcceptThreshold: 23,
             envidoRaiseThreshold: 29,
@@ -236,6 +248,12 @@ const OPPONENTS = {
         portrait: '../imagenes/aliado.png',
         placeholderPortrait: true,
         color: '#5DADE2',
+        background: '../imagenes/fondotruco1.png',
+        lore: 'Cayó por un error ajeno. Siempre tranquilo, siempre ayudando. El tipo que todos quieren de compañero pero nadie quiere de rival.',
+        bio: 'Nadie sabe su nombre real. Le dicen "Aliado" porque siempre está ayudando a alguien. Cayó como cómplice de un robo que ni sabía que estaba pasando. No guarda rencor. En el pabellón es el que presta yerba, el que escucha, el que nunca juzga. Juega truco para pasar el tiempo, no para demostrar nada.',
+        mission: 'Aliado no es agresivo pero tampoco es tonto. Juega honesto y espera que vos también. No te confíes por su actitud tranquila, sabe cuándo apretar.',
+        traits: ['Tranquilo', 'Solidario', 'Humilde'],
+        skills: { agresividad: 2, farol: 1, envido: 2, estrategia: 2 },
         ai: {
             envidoAcceptThreshold: 24,
             envidoRaiseThreshold: 30,
@@ -284,6 +302,12 @@ const OPPONENTS = {
         tier: 2,
         portrait: '../imagenes/dario.png',
         color: '#AF7AC5',
+        background: '../imagenes/fondotruco1.png',
+        lore: 'El genio del pabellón. Estudió contabilidad antes de caer. Calcula cada carta, cada probabilidad, cada jugada. Dicen que nunca pierde dos veces contra el mismo rival.',
+        bio: 'Darío era contador en un estudio grande hasta que empezó a "redistribuir" fondos de sus clientes. Cayó por estafa pero acá adentro encontró su verdadera vocación: analizar todo. Calcula probabilidades de cada mano, estudia patrones de sus rivales. Tiene una libreta donde anota cada partida. Es frío, metódico, y casi nunca se equivoca.',
+        mission: 'Darío te va a leer. No repitas patrones, sorprendelo. Bluffeá cuando menos lo espere, porque él está calculando basándose en tus jugadas anteriores. Rompé su sistema.',
+        traits: ['Calculador', 'Analítico', 'Frío'],
+        skills: { agresividad: 2, farol: 3, envido: 3, estrategia: 4 },
         ai: {
             envidoAcceptThreshold: 22,
             envidoRaiseThreshold: 27,
@@ -333,6 +357,12 @@ const OPPONENTS = {
         portrait: '../imagenes/momo.png',
         placeholderPortrait: true,
         color: '#E74C3C',
+        background: '../imagenes/fondotruco1.png',
+        lore: 'El que menos habla es el que más pega. Momo cayó por una pelea y desde entonces no perdió una sola partida de truco. Su silencio intimida más que cualquier grito.',
+        bio: 'Momo mide casi dos metros y pesa 120 kilos. Cayó por lesiones graves en una pelea de bar. No habla de su pasado, no habla de nada. Comunica con miradas. En el truco es igual: tira las cartas con violencia contenida. Nadie le discute una jugada. Nadie quiere.',
+        mission: 'No te dejes intimidar por su presencia. Momo juega agresivo pero predecible. Esperá que cante truco con cartas mediocres y hacelo pagar. Su debilidad es el envido.',
+        traits: ['Silencioso', 'Intimidante', 'Agresivo'],
+        skills: { agresividad: 4, farol: 3, envido: 2, estrategia: 2 },
         ai: {
             envidoAcceptThreshold: 24,
             envidoRaiseThreshold: 28,
@@ -382,6 +412,12 @@ const OPPONENTS = {
         portrait: '../imagenes/littleboogie.png',
         placeholderPortrait: true,
         color: '#F39C12',
+        background: '../imagenes/fondotruco1.png',
+        lore: 'DJ de cumbia villera antes de caer. Le puso ritmo al pabellón y ahora le pone ritmo a cada partida. Impredecible como un beat trap, letal como un drop.',
+        bio: 'Little Boogie era DJ en los bailes más pesados del conurbano. Cayó por tenencia después de un allanamiento en plena fiesta. Extraña los parlantes, el público, la noche. Acá adentro canta las cartas como si fueran lyrics, tira el truco con flow. Convirtió el pabellón en su escenario.',
+        mission: 'Boogie es caótico. Cambia de estrategia como cambia de tema. No intentes predecirlo, fluí con el juego. A veces la mejor jugada es dejarlo que se maree solo.',
+        traits: ['Impredecible', 'Carismático', 'Rítmico'],
+        skills: { agresividad: 3, farol: 3, envido: 3, estrategia: 2 },
         ai: {
             envidoAcceptThreshold: 23,
             envidoRaiseThreshold: 28,
@@ -431,6 +467,12 @@ const OPPONENTS = {
         portrait: '../imagenes/wachin.png',
         placeholderPortrait: true,
         color: '#1ABC9C',
+        background: '../imagenes/fondotruco1.png',
+        lore: 'Heredó el apodo de su viejo, que también cayó por tramposo. Pero él no hace trampa: simplemente aprendió todos los trucos del oficio. El más respetado del pabellón.',
+        bio: 'Su viejo era "El Wachin" original, leyenda del truco callejero. Cuando cayó él, heredó el nombre y la reputación. No hace trampa porque no la necesita. Conoce cada truco psicológico, cada forma de leer al rival. Es el jefe no oficial del pabellón. Todos le piden consejos.',
+        mission: 'Wachin es completo: buen envido, buen truco, lee el bluff. No tiene punto débil obvio. Tenés que jugar tu mejor juego y esperar que las cartas te favorezcan.',
+        traits: ['Respetado', 'Experimentado', 'Astuto'],
+        skills: { agresividad: 3, farol: 3, envido: 3, estrategia: 3 },
         ai: {
             envidoAcceptThreshold: 21,
             envidoRaiseThreshold: 27,
@@ -480,6 +522,12 @@ const OPPONENTS = {
         portrait: '../imagenes/chino.png',
         placeholderPortrait: true,
         color: '#2ECC71',
+        background: '../imagenes/fondotruco1.png',
+        lore: 'Dicen que jugaba Go profesionalmente en Asia antes de terminar acá. Piensa tres jugadas adelante y nunca muestra emoción. El rival más difícil de leer.',
+        bio: 'Llegó de Corea del Sur como importador de electrónicos. El negocio era fachada. Cayó por contrabando pero nunca delató a nadie. Aprendió truco en 6 meses y ya le gana a tipos que juegan hace décadas. Ve el juego como un tablero de Go: cada carta es una piedra, cada jugada construye hacia la victoria.',
+        mission: 'Chino piensa a largo plazo. Te va a dejar ganar rondas para ganarte la mano. No te confíes con victorias tempranas. Forzalo a jugar reactivo, no le des tiempo a planear.',
+        traits: ['Sereno', 'Estratégico', 'Paciente'],
+        skills: { agresividad: 2, farol: 2, envido: 4, estrategia: 5 },
         ai: {
             envidoAcceptThreshold: 20,
             envidoRaiseThreshold: 26,
@@ -523,11 +571,17 @@ const OPPONENTS = {
     },
     bignone: {
         name: 'BIGNONE',
-        role: 'El Viejo Exaltado',
+        role: 'El Jefe Final',
         difficulty: 5,
         tier: 5,
         portrait: '../imagenes/bignone.png',
         color: '#E74C3C',
+        background: '../imagenes/fondotruco1.png',
+        lore: 'El viejo dictador del pabellón. Grita, insulta, pero juega como nadie. Lleva décadas adentro y nadie sabe exactamente por qué. Su ego es más grande que su condena.',
+        bio: 'Bignone lleva más tiempo adentro que la mayoría de los guardias. Nadie pregunta por qué. Se autoproclamó "presidente" del pabellón y, de alguna forma, todos aceptaron. Controla todo: los cigarrillos, las visitas, las partidas de truco. Juega para humillar, no para ganar. Cada victoria es una demostración de poder.',
+        mission: 'El jefe final. Bignone es agresivo, impredecible, y no acepta perder. Va a gritar, va a presionarte, va a intentar sacarte de tu juego. Mantené la calma. Usá su ego en su contra: aceptá sus trucos cuando tengas cartas buenas.',
+        traits: ['Autoritario', 'Explosivo', 'Veterano'],
+        skills: { agresividad: 5, farol: 4, envido: 3, estrategia: 3 },
         ai: {
             envidoAcceptThreshold: 19,
             envidoRaiseThreshold: 25,
@@ -571,11 +625,17 @@ const OPPONENTS = {
     },
     xiao: {
         name: 'XIAO',
-        role: 'El Chino',
+        role: 'La Sombra',
         difficulty: 5,
-        tier: 5,
+        tier: 4,
         portrait: '../imagenes/xiao.png',
         color: '#95A5A6',
+        background: '../imagenes/fondotruco1.png',
+        lore: 'Llegó de Shanghai sin hablar español. Ahora apenas habla, pero juega un truco letal. Sus silencios dicen más que mil palabras.',
+        bio: 'Xiao llegó en un container junto con mercadería ilegal. Lo encontraron medio muerto y lo acusaron de tráfico. Nunca habló para defenderse. Aprendió español en el pabellón, pero prefiere no usarlo. Observa todo, procesa todo. Cuando juega truco, es como si supiera tus cartas.',
+        mission: 'Xiao es casi imposible de leer. No reacciona, no muestra emoción. Tu única ventaja es que él tampoco puede leerte si mantenés la calma. Jugá random, confundilo.',
+        traits: ['Misterioso', 'Letal', 'Silencioso'],
+        skills: { agresividad: 3, farol: 4, envido: 4, estrategia: 5 },
         ai: {
             envidoAcceptThreshold: 18,
             envidoRaiseThreshold: 25,
@@ -628,6 +688,7 @@ function getTrucoProgress() {
     } catch (e) { return {}; }
 }
 
+// Legacy victory save (keeps track of all-time wins)
 function saveTrucoVictory(rivalId) {
     const progress = getTrucoProgress();
     if (!progress.victories) progress.victories = {};
@@ -643,6 +704,72 @@ function saveTrucoVictory(rivalId) {
     progress.highestTier = Math.min(maxTier, 5);
     localStorage.setItem('trucoProgress', JSON.stringify(progress));
     return progress;
+}
+
+// Tower mode: save victory in current run (sequential progression)
+function saveTowerVictory(rivalId) {
+    const progress = getTrucoProgress();
+
+    // Initialize defeatedInRun array if not exists
+    if (!progress.defeatedInRun) progress.defeatedInRun = [];
+
+    // Add to defeated list if not already there
+    if (!progress.defeatedInRun.includes(rivalId)) {
+        progress.defeatedInRun.push(rivalId);
+    }
+
+    // Also track all-time victories
+    if (!progress.victories) progress.victories = {};
+    progress.victories[rivalId] = (progress.victories[rivalId] || 0) + 1;
+
+    localStorage.setItem('trucoProgress', JSON.stringify(progress));
+    return progress;
+}
+
+// Tower mode: reset all progress on loss (back to level 1)
+function resetTowerProgress() {
+    const progress = getTrucoProgress();
+
+    // Clear the current run progress
+    progress.defeatedInRun = [];
+
+    // Keep all-time stats but reset current run
+    localStorage.setItem('trucoProgress', JSON.stringify(progress));
+    return progress;
+}
+
+// Get the current tower run progress
+function getTowerDefeated() {
+    const progress = getTrucoProgress();
+    return progress.defeatedInRun || [];
+}
+
+// Check if a rival is next in sequence
+function isRivalAvailable(rivalId) {
+    const defeated = getTowerDefeated();
+    const rival = OPPONENTS[rivalId];
+    if (!rival) return false;
+
+    // Get all rivals in this tier sorted by difficulty
+    const tiersRivals = Object.entries(OPPONENTS)
+        .filter(([_, r]) => r.tier === rival.tier)
+        .sort((a, b) => a[1].difficulty - b[1].difficulty);
+
+    // Check if previous tier is complete
+    if (rival.tier > 1) {
+        const prevTierRivals = Object.entries(OPPONENTS)
+            .filter(([_, r]) => r.tier === rival.tier - 1);
+        const prevTierComplete = prevTierRivals.every(([id]) => defeated.includes(id));
+        if (!prevTierComplete) return false;
+    }
+
+    // Check if previous rivals in this tier are defeated
+    for (const [id, _] of tiersRivals) {
+        if (id === rivalId) return true;
+        if (!defeated.includes(id)) return false;
+    }
+
+    return true;
 }
 
 function getHighestTier() {

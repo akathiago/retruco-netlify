@@ -2,10 +2,34 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>ReTruco - Truco</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ReTruco - Truco | Juega contra la IA</title>
+    <meta name="description" content="Juega Truco argentino contra rivales con IA unica. Envido, Truco, estrategia y cartas en una experiencia inmersiva.">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ReTruco - Juega Truco">
+    <meta property="og:description" content="Juega Truco argentino contra rivales con IA unica. Envido, Truco y estrategia.">
+    <meta property="og:image" content="https://retruco.xyz/imagenes/hero-01.png">
+    <meta property="og:url" content="https://retruco.xyz/truco/juego.html">
+    <meta property="og:locale" content="es_AR">
+    <meta property="og:site_name" content="ReTruco">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ReTruco - Juega Truco">
+    <meta name="twitter:description" content="Juega Truco argentino contra rivales con IA unica.">
+    <meta name="twitter:image" content="https://retruco.xyz/imagenes/hero-01.png">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://retruco.xyz/truco/juego.html">
+
+    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
     <link rel="shortcut icon" href="../favicon/favicon.ico">
+    <link rel="apple-touch-icon" href="../favicon/apple-touch-icon.png">
+    <meta name="theme-color" content="#0a0a0a">
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/animations.css">
     <style>
@@ -19,13 +43,13 @@
 
         :root {
             --rust: #2bb8cd;
-            --paper: #e0f7fa;
-            --ink: #0a1a24;
-            --bg: #0d2233;
+            --paper: #f0f0f0;
+            --ink: #0a0a0a;
+            --bg: #0a0a0a;
             --card-bg: #f5f0e1;
-            --gold: #c9a227;
-            --red: #e74c3c;
-            --green: #2ecc71;
+            --gold: #d4af37;
+            --red: #ff4757;
+            --green: #2ed573;
             --table-green: #1a5c3a;
             --table-border: #0f3d26;
             --accent: #2bb8cd;
@@ -33,9 +57,9 @@
 
         body {
             background: var(--bg);
-            background-image:
-                radial-gradient(ellipse at 50% 0%, rgba(43,184,205,0.08) 0%, transparent 60%),
-                radial-gradient(ellipse at 50% 100%, rgba(43,184,205,0.05) 0%, transparent 60%);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             color: var(--paper);
             font-family: 'Montserrat', sans-serif;
             height: 100vh;
@@ -46,61 +70,102 @@
             user-select: none;
         }
 
+        /* Dark overlay for readability */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(0,0,0,0.7) 0%,
+                rgba(0,0,0,0.4) 30%,
+                rgba(0,0,0,0.4) 70%,
+                rgba(0,0,0,0.8) 100%
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
         /* ====== HEADER ====== */
         .game-header {
             width: 100%;
-            padding: 8px 20px;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0,0,0,0.3);
-            border-bottom: 2px solid rgba(43,184,205,0.15);
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
             flex-shrink: 0;
+            position: relative;
         }
-
-        .game-logo { height: 28px; filter: drop-shadow(0 0 8px rgba(43,184,205,0.3)); }
 
         .score-display {
             display: flex;
-            gap: 6px;
+            gap: 12px;
             align-items: center;
             font-family: 'Trevor', sans-serif;
-            font-size: 0.65rem;
-            letter-spacing: 1px;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
             white-space: nowrap;
+            background: rgba(0,0,0,0.6);
+            padding: 12px 24px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.15);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        .score-you { color: var(--green); }
-        .score-sep { color: rgba(224,247,250,0.3); }
-        .score-opp { color: var(--red); }
-        .score-num { font-size: 1.1rem; }
+        .score-you { color: var(--green); text-shadow: 0 0 10px var(--green); }
+        .score-sep { color: rgba(255,255,255,0.3); font-size: 1.2rem; }
+        .score-opp { color: var(--red); text-shadow: 0 0 10px var(--red); }
+        .score-num { font-size: 1.8rem; font-weight: 700; }
 
         .back-link {
-            color: var(--rust);
+            color: #fff;
             text-decoration: none;
             font-family: 'Trevor', sans-serif;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             letter-spacing: 2px;
-            opacity: 0.6;
-            transition: opacity 0.2s;
+            opacity: 0.5;
+            transition: all 0.2s;
+            padding: 8px 12px;
+            border-radius: 20px;
         }
-        .back-link:hover { opacity: 1; }
+        .back-link:hover {
+            opacity: 1;
+            background: rgba(255,255,255,0.1);
+        }
 
         /* ====== OPPONENT AREA ====== */
         .opponent-area {
             display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 10px;
-            padding: 8px 15px;
+            padding: 15px 20px;
             flex-shrink: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 100%);
+        }
+
+        .opponent-center {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .opponent-avatar {
-            width: 52px;
-            height: 52px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             border: 3px solid var(--accent);
-            box-shadow: 0 0 15px rgba(43,184,205,0.3);
+            box-shadow:
+                0 0 20px rgba(43,184,205,0.4),
+                0 4px 15px rgba(0,0,0,0.5);
             object-fit: cover;
             object-position: top;
             transition: all 0.3s ease;
@@ -113,7 +178,7 @@
 
         .opponent-avatar.angry {
             border-color: var(--red);
-            box-shadow: 0 0 20px rgba(231,76,60,0.4);
+            box-shadow: 0 0 25px rgba(255,71,87,0.5);
             animation: shake 0.4s ease;
         }
 
@@ -128,146 +193,108 @@
             75% { transform: rotate(5deg); }
         }
 
-        .opponent-info { flex: 1; min-width: 0; }
-
-        .opponent-top {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
         .opponent-name {
             font-family: 'Trevor', sans-serif;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
+            font-size: 1.5rem;
+            letter-spacing: 4px;
             color: var(--accent);
+            white-space: nowrap;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
-
-        .opponent-hand-mini {
-            display: flex;
-            gap: 3px;
-        }
-
-        .mini-card {
-            width: 18px;
-            height: 26px;
-            border-radius: 3px;
-            background: var(--ink);
-            border: 1.5px solid var(--accent);
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        }
-
-        .mini-card.gone { opacity: 0.12; }
 
         /* Speech bubble */
         .speech-bubble {
-            background: var(--paper);
-            color: var(--ink);
+            background: rgba(0,0,0,0.85);
+            color: #fff;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 0.7rem;
-            padding: 6px 12px;
-            border-radius: 10px;
-            border: 2px solid var(--ink);
-            box-shadow: 2px 2px 0 var(--ink);
-            max-width: 200px;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 12px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            max-width: 280px;
+            min-height: 24px;
+            text-align: center;
             opacity: 0;
-            transform: scale(0.8);
-            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            flex-shrink: 0;
+            transform: scale(0.8) translateY(-5px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
         }
 
         .speech-bubble.show {
             opacity: 1;
-            transform: scale(1);
+            transform: scale(1) translateY(0);
         }
 
-        /* ====== TABLE ====== */
-        .table-area {
+        /* ====== PLAY ZONE ====== */
+        .play-zone {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 5px 12px;
+            padding: 10px 20px;
             min-height: 0;
-        }
-
-        .felt-table {
-            width: 100%;
-            max-width: 480px;
-            background: var(--table-green);
-            background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 25px, rgba(0,0,0,0.02) 25px, rgba(0,0,0,0.02) 26px);
-            border: 4px solid var(--table-border);
-            border-radius: 14px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5), inset 0 2px 10px rgba(0,0,0,0.3);
-            padding: 12px 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .round-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            transition: opacity 0.3s;
-        }
-
-        .round-label {
-            font-family: 'Trevor', sans-serif;
-            font-size: 0.45rem;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.2);
-            width: 12px;
-            text-align: center;
-        }
-
-        .played-slot {
-            width: 58px;
-            height: 84px;
-            border: 2px dashed rgba(255,255,255,0.08);
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             position: relative;
         }
 
-        .played-slot .card {
-            width: 58px;
-            height: 84px;
-            animation: cardSlam 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        .card-pile {
+            width: 320px;
+            height: 260px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .played-slot .card-number { font-size: 1rem; }
-        .played-slot .card-suit { font-size: 0.9rem; margin-top: 0; }
-        .played-slot .card-corner, .played-slot .card-corner-br { display: none; }
-
-        @keyframes cardSlam {
-            0% { transform: translateY(-30px) scale(1.2) rotate(-6deg); opacity: 0; }
-            60% { transform: translateY(2px) scale(0.96); }
-            100% { transform: translateY(0) scale(1); opacity: 1; }
+        .card-pile .card {
+            position: absolute;
+            width: 100px;
+            height: 144px;
+            cursor: default;
+            box-shadow: 4px 6px 20px rgba(0,0,0,0.6);
         }
 
-        .vs-divider {
-            width: 2px;
-            height: 25px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 1px;
+        .card-pile .card.player-card {
+            /* Player cards come from bottom */
+        }
+
+        .card-pile .card.cpu-card {
+            /* CPU cards come from top */
+        }
+
+        .card-pile.highlight {
+            background: radial-gradient(circle, rgba(43,184,205,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .card-pile.highlight::after {
+            content: 'SOLTÁ ACÁ';
+            position: absolute;
+            bottom: -25px;
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.5rem;
+            letter-spacing: 2px;
+            color: var(--accent);
+            opacity: 0.8;
+        }
+
+        .round-badges {
+            display: flex;
+            gap: 8px;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .round-badge {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            width: 16px;
-            height: 16px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            font-size: 0.45rem;
+            font-size: 0.5rem;
             font-weight: 900;
             display: flex;
             align-items: center;
@@ -323,97 +350,122 @@
         /* ====== GAME MESSAGE ====== */
         .game-message {
             font-family: 'Trevor', sans-serif;
-            font-size: clamp(0.8rem, 3vw, 1.1rem);
-            letter-spacing: 3px;
-            color: var(--accent);
+            font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+            letter-spacing: 4px;
+            color: #fff;
             text-align: center;
-            padding: 6px 0;
+            padding: 10px 20px;
             flex-shrink: 0;
-            min-height: 30px;
+            min-height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
+            text-shadow: 0 0 20px var(--accent), 0 2px 10px rgba(0,0,0,0.5);
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.3), transparent);
         }
 
         /* ====== PLAYER AREA ====== */
         .player-area {
             flex-shrink: 0;
-            padding: 4px 12px 6px;
+            padding: 8px 15px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);
         }
 
         .player-label {
             font-family: 'Trevor', sans-serif;
-            font-size: 0.5rem;
-            letter-spacing: 4px;
-            color: rgba(224,247,250,0.25);
+            font-size: 0.55rem;
+            letter-spacing: 5px;
+            color: rgba(255,255,255,0.3);
+            text-shadow: 0 1px 5px rgba(0,0,0,0.5);
         }
 
         .hand {
             display: flex;
-            gap: 8px;
+            gap: 15px;
             justify-content: center;
+            perspective: 1000px;
         }
 
         /* ====== CARDS ====== */
         .card {
-            width: 75px;
-            height: 108px;
-            border-radius: 7px;
-            border: 2.5px solid #444;
-            box-shadow: 2px 3px 0 rgba(0,0,0,0.4);
+            width: 105px;
+            height: 151px;
+            border-radius: 12px;
+            border: 3px solid #333;
+            box-shadow:
+                0 4px 8px rgba(0,0,0,0.3),
+                0 8px 25px rgba(0,0,0,0.2);
             position: relative;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: default;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             background: var(--card-bg);
-            background-image: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.3), transparent 60%);
+            background-image: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.4), transparent 60%);
         }
 
         .card::before {
             content: '';
             position: absolute;
-            inset: 3px;
-            border: 1px solid rgba(0,0,0,0.06);
-            border-radius: 4px;
+            inset: 4px;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 6px;
             pointer-events: none;
         }
 
         .card.playable {
-            cursor: pointer;
-            border-color: rgba(43,184,205,0.35);
+            cursor: grab;
+            border-color: var(--accent);
+            touch-action: none;
+            box-shadow:
+                0 4px 8px rgba(0,0,0,0.3),
+                0 8px 25px rgba(0,0,0,0.2),
+                0 0 20px rgba(43,184,205,0.3);
         }
 
         .card.playable:hover {
-            transform: translateY(-14px) rotate(-2deg) scale(1.06);
-            box-shadow: 4px 12px 20px rgba(0,0,0,0.5);
+            transform: translateY(-20px) rotate(-3deg) scale(1.08);
+            box-shadow:
+                0 15px 35px rgba(0,0,0,0.5),
+                0 0 30px rgba(43,184,205,0.4);
             border-color: var(--accent);
             z-index: 10;
         }
 
-        .card.playable:active {
-            transform: translateY(-4px) scale(0.97);
+        .card.dragging {
+            cursor: grabbing;
+            z-index: 100;
+            box-shadow: 10px 20px 40px rgba(0,0,0,0.6);
+            transform: scale(1.15) rotate(8deg);
+        }
+
+        .hand .card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hand .card.dragging {
+            transition: none;
         }
 
         .card-number {
             font-family: 'Trevor', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             line-height: 1;
         }
 
-        .card-suit { font-size: 1.3rem; margin-top: 2px; }
+        .card-suit { font-size: 1.6rem; margin-top: 3px; }
 
         .card-corner {
             position: absolute;
-            top: 3px;
-            left: 5px;
-            font-size: 0.45rem;
+            top: 5px;
+            left: 7px;
+            font-size: 0.55rem;
             font-weight: 700;
             line-height: 1.1;
             text-align: center;
@@ -421,9 +473,9 @@
 
         .card-corner-br {
             position: absolute;
-            bottom: 3px;
-            right: 5px;
-            font-size: 0.45rem;
+            bottom: 5px;
+            right: 7px;
+            font-size: 0.55rem;
             font-weight: 700;
             line-height: 1.1;
             text-align: center;
@@ -463,62 +515,65 @@
         /* ====== ACTION BAR ====== */
         .action-bar {
             display: flex;
-            gap: 6px;
+            gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
-            min-height: 48px;
-            padding: 4px 12px 12px;
+            min-height: 56px;
+            padding: 8px 15px 20px;
             flex-shrink: 0;
             align-items: center;
         }
 
         .btn-game {
             font-family: 'Trevor', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             letter-spacing: 2px;
-            padding: 10px 20px;
-            border: 3px solid var(--accent);
-            background: var(--ink);
-            color: var(--paper);
-            box-shadow: 3px 3px 0 var(--accent);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--accent) 0%, #1a8a9c 100%);
+            color: #fff;
+            box-shadow:
+                0 4px 15px rgba(43,184,205,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.2);
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.2s ease;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
         .btn-game:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 5px 5px 0 var(--accent);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow:
+                0 8px 25px rgba(43,184,205,0.5),
+                inset 0 1px 0 rgba(255,255,255,0.2);
         }
 
         .btn-game:active {
-            transform: translate(1px, 1px);
-            box-shadow: 1px 1px 0 var(--accent);
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 10px rgba(43,184,205,0.3);
         }
 
         .btn-game.btn-accept {
-            border-color: var(--green);
-            box-shadow: 3px 3px 0 var(--green);
-            background: #0f2e1c;
+            background: linear-gradient(135deg, var(--green) 0%, #1e9c5a 100%);
+            box-shadow: 0 4px 15px rgba(46,213,115,0.4);
         }
 
         .btn-game.btn-reject {
-            border-color: var(--red);
-            box-shadow: 3px 3px 0 var(--red);
-            background: #2e0f0f;
+            background: linear-gradient(135deg, var(--red) 0%, #c0392b 100%);
+            box-shadow: 0 4px 15px rgba(255,71,87,0.4);
         }
 
         .btn-game.btn-envido {
-            border-color: var(--gold);
-            box-shadow: 3px 3px 0 var(--gold);
-            background: #2e2a0f;
+            background: linear-gradient(135deg, var(--gold) 0%, #b8860b 100%);
+            box-shadow: 0 4px 15px rgba(212,175,55,0.4);
         }
 
         .btn-game.btn-mazo {
-            border-color: #666;
-            box-shadow: 3px 3px 0 #666;
-            font-size: 0.6rem;
-            padding: 8px 14px;
-            opacity: 0.6;
+            background: linear-gradient(135deg, #555 0%, #333 100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 0.65rem;
+            padding: 10px 18px;
+            opacity: 0.7;
         }
         .btn-game.btn-mazo:hover { opacity: 1; }
 
@@ -527,83 +582,85 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(10,26,36,0.95);
+            background: rgba(0,0,0,0.95);
             z-index: 1000;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
+            backdrop-filter: blur(10px);
         }
 
         .overlay.show {
             display: flex;
-            animation: overlayIn 0.3s ease;
+            animation: overlayIn 0.4s ease;
         }
 
-        @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes overlayIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
         .overlay-img {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
             object-position: top;
             border: 4px solid;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            box-shadow: 0 0 40px rgba(0,0,0,0.6), 0 0 60px currentColor;
         }
 
         .overlay-text {
             font-family: 'Trevor', sans-serif;
-            font-size: clamp(1.8rem, 8vw, 3.5rem);
-            letter-spacing: 5px;
-            text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+            font-size: clamp(2rem, 10vw, 4rem);
+            letter-spacing: 6px;
+            text-shadow: 0 4px 30px currentColor;
         }
 
         .overlay-sub {
-            font-size: 0.85rem;
-            color: rgba(224,247,250,0.5);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 3px;
         }
 
         .overlay-quote {
             font-style: italic;
-            font-size: 0.8rem;
-            color: rgba(224,247,250,0.35);
-            max-width: 280px;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+            max-width: 300px;
             text-align: center;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .overlay .btn-game {
-            font-size: 0.9rem;
-            padding: 14px 35px;
+            font-size: 1rem;
+            padding: 16px 40px;
+            margin-top: 10px;
             margin-top: 5px;
         }
 
         /* ====== MOBILE ====== */
         @media (max-width: 420px) {
-            .card { width: 65px; height: 94px; }
-            .card-number { font-size: 1.2rem; }
-            .card-suit { font-size: 1rem; }
+            .card { width: 80px; height: 115px; }
+            .card-number { font-size: 1.4rem; }
+            .card-suit { font-size: 1.2rem; }
             .card-corner, .card-corner-br { display: none; }
-            .hand { gap: 6px; }
-            .opponent-avatar { width: 42px; height: 42px; }
-            .speech-bubble { font-size: 0.6rem; max-width: 150px; }
+            .hand { gap: 8px; }
+            .card-pile .card { width: 75px; height: 108px; }
+            .opponent-avatar { width: 50px; height: 50px; }
+            .opponent-name { font-size: 1.1rem; letter-spacing: 2px; }
+            .opponent-center { gap: 10px; }
+            .speech-bubble { font-size: 0.8rem; max-width: 200px; padding: 8px 14px; }
+            .score-display { padding: 8px 16px; gap: 8px; font-size: 0.7rem; }
+            .score-display .score-num { font-size: 1.3rem; }
+            .score-display .score-sep { font-size: 1rem; }
             .btn-game { padding: 8px 14px; font-size: 0.65rem; }
-            .played-slot { width: 50px; height: 72px; }
-            .played-slot .card { width: 50px; height: 72px; }
-            .played-slot .card-number { font-size: 0.85rem; }
-            .played-slot .card-suit { font-size: 0.75rem; }
         }
 
         @media (max-height: 680px) {
             .felt-table { padding: 8px; gap: 4px; }
-            .played-slot { width: 48px; height: 68px; }
-            .played-slot .card { width: 48px; height: 68px; }
-            .played-slot .card-number { font-size: 0.8rem; }
-            .played-slot .card-suit { font-size: 0.7rem; }
-            .card { width: 62px; height: 90px; }
-            .card-number { font-size: 1.15rem; }
-            .card-suit { font-size: 0.95rem; }
+            .card-pile .card { width: 72px; height: 104px; }
+            .card { width: 78px; height: 112px; }
+            .card-number { font-size: 1.35rem; }
+            .card-suit { font-size: 1.15rem; }
             .opponent-area { padding: 5px 12px; }
             .player-area { padding: 2px 12px 4px; }
             .game-message { padding: 3px 0; min-height: 24px; }
@@ -733,19 +790,8 @@
         /* Enhanced speech bubble */
         .speech-bubble {
             box-shadow:
-                3px 3px 0 var(--ink),
+                2px 2px 0 var(--ink),
                 0 4px 12px rgba(0,0,0,0.2);
-            position: relative;
-        }
-
-        .speech-bubble::before {
-            content: '';
-            position: absolute;
-            left: -8px;
-            top: 50%;
-            transform: translateY(-50%);
-            border: 6px solid transparent;
-            border-right-color: var(--paper);
         }
 
         /* Game message glow */
@@ -758,18 +804,6 @@
         /* Played slot glow when card is there */
         .played-slot:has(.card) {
             border-color: transparent;
-        }
-
-        /* Mini card improvements */
-        .mini-card {
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-        }
-
-        .mini-card:not(.gone) {
-            box-shadow:
-                1px 1px 3px rgba(0,0,0,0.3),
-                0 0 6px rgba(43,184,205,0.2);
         }
 
         /* VS divider glow */
@@ -828,6 +862,9 @@
             background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.1) 100%);
         }
     </style>
+    <!-- GSAP for smooth animations -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
 </head>
 <body>
 
@@ -838,11 +875,13 @@
     </div>
 
     <div class="game-header">
-        <img src="../imagenes/logoretruco.png" alt="ReTruco" class="game-logo">
+        <a href="./" class="back-link" id="backLink">&larr; SALIR</a>
         <div class="score-display">
-            <span class="score-you">VOS <span class="score-num" id="scorePlayer">0</span></span>
+            <span class="score-you">VOS</span>
+            <span class="score-num" id="scorePlayer">0</span>
             <span class="score-sep">-</span>
-            <span class="score-opp"><span class="score-num" id="scoreCpu">0</span> <span id="scoreOppName">RIVAL</span></span>
+            <span class="score-num" id="scoreCpu">0</span>
+            <span class="score-opp">ÉL</span>
         </div>
         <div class="audio-controls">
             <button class="btn-audio" id="btnMute" aria-label="Silenciar">
@@ -851,56 +890,35 @@
             </button>
             <input type="range" id="volumeSlider" min="0" max="100" value="70" class="volume-slider" aria-label="Volumen">
         </div>
-        <a href="./" class="back-link" id="backLink">&larr; SALIR</a>
     </div>
 
     <!-- OPPONENT -->
     <div class="opponent-area">
-        <img src="../imagenes/alfredito.png" alt="Rival" class="opponent-avatar" id="oppAvatar">
-        <div class="opponent-info">
-            <div class="opponent-top">
-                <div class="opponent-name" id="oppName">RIVAL</div>
-                <div class="opponent-hand-mini" id="cpuHandMini"></div>
-            </div>
+        <div class="opponent-center">
+            <img src="../imagenes/alfredito.png" alt="Rival" class="opponent-avatar" id="oppAvatar">
+            <div class="opponent-name" id="oppName">RIVAL</div>
         </div>
         <div class="speech-bubble" id="speechBubble"></div>
     </div>
 
-    <!-- TABLE -->
-    <div class="table-area">
-        <div class="felt-table">
-            <!-- Envido reveal -->
-            <div class="envido-reveal" id="envidoReveal">
-                <div class="envido-points">
-                    <div class="envido-points-label">VOS</div>
-                    <div class="envido-points-value" id="envidoPlayerPts">--</div>
-                </div>
-                <div style="font-family:'Trevor',sans-serif; color:rgba(255,255,255,0.2); font-size:0.7rem;">VS</div>
-                <div class="envido-points">
-                    <div class="envido-points-label" id="envidoOppLabel">RIVAL</div>
-                    <div class="envido-points-value" id="envidoCpuPts">--</div>
-                </div>
+    <!-- PLAY ZONE - where cards get thrown -->
+    <div class="play-zone" id="playZone">
+        <!-- Envido reveal -->
+        <div class="envido-reveal" id="envidoReveal">
+            <div class="envido-points">
+                <div class="envido-points-label">VOS</div>
+                <div class="envido-points-value" id="envidoPlayerPts">--</div>
             </div>
-            <!-- Rounds -->
-            <div class="round-row" id="round0">
-                <div class="round-label">1</div>
-                <div class="played-slot" id="cpuSlot0"></div>
-                <div class="vs-divider"></div>
-                <div class="played-slot" id="playerSlot0"></div>
-            </div>
-            <div class="round-row" id="round1" style="opacity:0.3">
-                <div class="round-label">2</div>
-                <div class="played-slot" id="cpuSlot1"></div>
-                <div class="vs-divider"></div>
-                <div class="played-slot" id="playerSlot1"></div>
-            </div>
-            <div class="round-row" id="round2" style="opacity:0.3">
-                <div class="round-label">3</div>
-                <div class="played-slot" id="cpuSlot2"></div>
-                <div class="vs-divider"></div>
-                <div class="played-slot" id="playerSlot2"></div>
+            <div style="font-family:'Trevor',sans-serif; color:rgba(255,255,255,0.2); font-size:0.7rem;">VS</div>
+            <div class="envido-points">
+                <div class="envido-points-label" id="envidoOppLabel">RIVAL</div>
+                <div class="envido-points-value" id="envidoCpuPts">--</div>
             </div>
         </div>
+        <!-- Cards pile here -->
+        <div class="card-pile" id="cardPile"></div>
+        <!-- Round results badges -->
+        <div class="round-badges" id="roundBadges"></div>
     </div>
 
     <!-- MESSAGE -->
@@ -940,9 +958,16 @@ const LINES = OPP.lines;
 // Apply accent color
 document.documentElement.style.setProperty('--accent', OPP.color);
 
+// Apply opponent background if defined
+if (OPP.background) {
+    document.body.style.backgroundImage = `url('${OPP.background}')`;
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center';
+    document.body.style.backgroundRepeat = 'no-repeat';
+}
+
 // Set opponent info in UI
 document.getElementById('oppName').textContent = OPP.name;
-document.getElementById('scoreOppName').textContent = OPP.name;
 document.getElementById('envidoOppLabel').textContent = OPP.name;
 document.title = `ReTruco - Truco vs ${OPP.name}`;
 
@@ -990,6 +1015,38 @@ function setMood(mood) {
 }
 
 // =================== GAME STATE =====================
+const GAME_STORAGE_KEY = `trucoGame_${rivalId}`;
+
+function saveGameState() {
+    const state = {
+        playerScore,
+        cpuScore,
+        rivalId,
+        timestamp: Date.now()
+    };
+    localStorage.setItem(GAME_STORAGE_KEY, JSON.stringify(state));
+}
+
+function loadGameState() {
+    try {
+        const saved = localStorage.getItem(GAME_STORAGE_KEY);
+        if (saved) {
+            const state = JSON.parse(saved);
+            // Solo cargar si es del mismo rival y no es muy viejo (24 horas)
+            if (state.rivalId === rivalId && Date.now() - state.timestamp < 86400000) {
+                return state;
+            }
+        }
+    } catch (e) {
+        console.log('Error loading game state:', e);
+    }
+    return null;
+}
+
+function clearGameState() {
+    localStorage.removeItem(GAME_STORAGE_KEY);
+}
+
 let playerHand = [];
 let cpuHand = [];
 let roundResults = [];
@@ -1013,47 +1070,169 @@ let playerTurn = true;
 let handOver = false;
 let pendingPlayerCard = null;
 let firstCardPlayed = false;
+let cpuCardPlacedThisRound = false;
 
 let originalPlayerHand = [];
 let originalCpuHand = [];
 
 // =================== RENDER =========================
 function renderMiniCards() {
-    const el = document.getElementById('cpuHandMini');
-    let h = '';
-    for (let i = 0; i < 3; i++) h += `<div class="mini-card ${i >= cpuHand.length ? 'gone' : ''}"></div>`;
-    el.innerHTML = h;
+    // Removed - no longer showing mini cards
 }
 
 function renderHands() {
     const canPlay = playerTurn && !waitingForTruco && !waitingForEnvido && !handOver;
     document.getElementById('playerHand').innerHTML = playerHand.map(c => renderCard(c, canPlay)).join('');
     renderMiniCards();
+    if (canPlay) setupDragDrop();
+}
+
+// ================ GSAP DRAG & THROW ========================
+let activeDraggables = [];
+let cardZIndex = 10;
+
+function setupDragDrop() {
+    // Kill existing draggables
+    activeDraggables.forEach(d => d.kill());
+    activeDraggables = [];
+
+    const cards = document.querySelectorAll('#playerHand .card.playable');
+    const playZone = document.getElementById('playZone');
+    const pile = document.getElementById('cardPile');
+
+    cards.forEach(card => {
+        const draggable = Draggable.create(card, {
+            type: 'x,y',
+            inertia: true,
+            bounds: document.body,
+            edgeResistance: 0.65,
+            onDragStart: function() {
+                this.target.classList.add('dragging');
+                gsap.to(this.target, { scale: 1.15, rotation: 8, duration: 0.2 });
+            },
+            onDrag: function() {
+                // Check if over play zone
+                const cardRect = this.target.getBoundingClientRect();
+                const pileRect = pile.getBoundingClientRect();
+                const isOverPile = (
+                    cardRect.left < pileRect.right &&
+                    cardRect.right > pileRect.left &&
+                    cardRect.top < pileRect.bottom &&
+                    cardRect.bottom > pileRect.top
+                );
+                pile.classList.toggle('highlight', isOverPile);
+            },
+            onDragEnd: function() {
+                this.target.classList.remove('dragging');
+                pile.classList.remove('highlight');
+
+                // Check if thrown into play zone
+                const cardRect = this.target.getBoundingClientRect();
+                const pileRect = pile.getBoundingClientRect();
+                const isOverPile = (
+                    cardRect.left < pileRect.right &&
+                    cardRect.right > pileRect.left &&
+                    cardRect.top < pileRect.bottom &&
+                    cardRect.bottom > pileRect.top
+                );
+
+                if (isOverPile) {
+                    const key = this.target.dataset.key;
+                    if (key) {
+                        // Animate card flying to pile center
+                        const pileCenter = {
+                            x: pileRect.left + pileRect.width / 2,
+                            y: pileRect.top + pileRect.height / 2
+                        };
+                        gsap.to(this.target, {
+                            x: 0, y: 0, scale: 1, rotation: 0,
+                            duration: 0.15,
+                            onComplete: () => playCard(key)
+                        });
+                    }
+                } else {
+                    // Snap back to hand position
+                    gsap.to(this.target, {
+                        x: 0, y: 0, scale: 1, rotation: 0,
+                        duration: 0.4,
+                        ease: 'elastic.out(1, 0.5)'
+                    });
+                }
+            }
+        })[0];
+
+        activeDraggables.push(draggable);
+
+        // Double-tap/click to play instantly
+        card.addEventListener('dblclick', () => {
+            const key = card.dataset.key;
+            if (key) playCard(key);
+        });
+    });
+}
+
+// Throw card into pile with physics
+function throwCardToPile(cardEl, isPlayer) {
+    const pile = document.getElementById('cardPile');
+    const randomX = (Math.random() - 0.5) * 60;
+    const randomY = (Math.random() - 0.5) * 40;
+    const randomRot = (Math.random() - 0.5) * 25;
+
+    cardZIndex++;
+    cardEl.style.zIndex = cardZIndex;
+    cardEl.classList.add(isPlayer ? 'player-card' : 'cpu-card');
+
+    pile.appendChild(cardEl);
+
+    // Animate from off-screen
+    const startY = isPlayer ? 200 : -200;
+    const startRot = isPlayer ? 15 : -15;
+
+    gsap.fromTo(cardEl,
+        { y: startY, x: 0, rotation: startRot, scale: 0.8, opacity: 0 },
+        {
+            y: randomY,
+            x: randomX,
+            rotation: randomRot,
+            scale: 1,
+            opacity: 1,
+            duration: 0.4,
+            ease: 'power2.out'
+        }
+    );
+
+    // Play sound
+    if (window.audioManager) {
+        window.audioManager.play('card-play');
+    }
 }
 
 function renderScores() {
     document.getElementById('scorePlayer').textContent = playerScore;
     document.getElementById('scoreCpu').textContent = cpuScore;
+    saveGameState();
 }
 
 function setMsg(m) { document.getElementById('gameMessage').textContent = m; }
 
-function highlightRound(r) {
-    for (let i = 0; i < 3; i++) {
-        document.getElementById(`round${i}`).style.opacity = i === r ? '1' : i < r ? '0.6' : '0.3';
-    }
-}
 
 function placeCard(card, slot) {
-    document.getElementById(slot).innerHTML = renderCard(card, false);
+    // Create card element and throw it to pile
+    const cardEl = document.createElement('div');
+    cardEl.innerHTML = renderCard(card, false);
+    const actualCard = cardEl.firstElementChild;
+
+    const isPlayer = slot.includes('player');
+    throwCardToPile(actualCard, isPlayer);
 }
 
 function addRoundBadge(slot, type) {
-    const el = document.getElementById(slot);
+    const container = document.getElementById('roundBadges');
     const badge = document.createElement('div');
     badge.className = `round-badge badge-${type}`;
-    badge.textContent = type === 'win' ? '\u2713' : type === 'lose' ? '\u2717' : '=';
-    el.appendChild(badge);
+    badge.textContent = type === 'win' ? '✓' : type === 'lose' ? '✗' : '=';
+    container.appendChild(badge);
+    // Cards stay on the table until the hand ends
 }
 
 // =================== ACTIONS ========================
@@ -1141,17 +1320,18 @@ function deal() {
     playerTurn = true;
     pendingPlayerCard = null;
     firstCardPlayed = false;
+    cpuFirstCard = null;
+    cpuCardPlacedThisRound = false;
 
     // Play shuffle sound
     if (window.audioManager) {
         window.audioManager.play('card-shuffle');
     }
 
-    for (let i = 0; i < 3; i++) {
-        document.getElementById(`round${i}`).style.opacity = i === 0 ? '1' : '0.3';
-        document.getElementById(`playerSlot${i}`).innerHTML = '';
-        document.getElementById(`cpuSlot${i}`).innerHTML = '';
-    }
+    // Clear pile and badges
+    document.getElementById('cardPile').innerHTML = '';
+    document.getElementById('roundBadges').innerHTML = '';
+    cardZIndex = 10;
 
     document.getElementById('envidoReveal').classList.remove('show');
 
@@ -1181,6 +1361,8 @@ function deal() {
                 if (window.animationController) {
                     window.animationController.setupCardTilt(actualCard);
                 }
+                // Setup drag/drop for this card
+                setupDragDrop();
             }, 400);
         }, i * 180);
     });
@@ -1221,15 +1403,24 @@ function playCard(key) {
 
     // Small particle effect on card play
     if (window.particleSystem) {
-        const slot = document.getElementById(`playerSlot${currentRound}`);
-        const rect = slot.getBoundingClientRect();
+        const pile = document.getElementById('cardPile');
+        const rect = pile.getBoundingClientRect();
         window.particleSystem.burst('cardPlay', rect.left + rect.width / 2, rect.top + rect.height / 2);
     }
 
-    placeCard(card, `playerSlot${currentRound}`);
+    placeCard(card, 'player');
     playerTurn = false;
     renderHands();
     renderActions();
+
+    // Si la CPU ya tiró primero, resolvemos la ronda directamente
+    if (cpuFirstCard) {
+        const cpuCard = cpuFirstCard;
+        cpuFirstCard = null;
+        setTimeout(() => { resolveRound(card, cpuCard); }, 400);
+        return;
+    }
+
     setMsg(`${OPP.name} PIENSA...`);
 
     // Show thinking animation
@@ -1282,15 +1473,63 @@ function cpuPlayCard(playerCard) {
     }
 
     cpuHand = cpuHand.filter(c => c.key !== chosen.key);
-    placeCard(chosen, `cpuSlot${currentRound}`);
+    placeCard(chosen, 'cpu');
     renderMiniCards();
 
-    // Play card sound for CPU
-    if (window.audioManager) {
-        window.audioManager.play('card-play');
+    setTimeout(() => { resolveRound(playerCard, chosen); }, 400);
+}
+
+// CPU plays first (when CPU won the previous round)
+let cpuFirstCard = null;
+
+function cpuPlaysFirst() {
+    if (handOver) return;
+
+    // CPU selects a card without knowing player's card
+    // Use a more aggressive strategy when playing first
+    const chosen = cpuSelectCardFirst(cpuHand, AI.cardStrategy, roundResults);
+
+    // Maybe call truco before playing
+    if (trucoLevel < 2 && trucoCaller !== 'cpu') {
+        const cp = getPower(chosen);
+        const variance = AI.randomVariance ? (Math.random() * AI.randomVariance * 2 - AI.randomVariance) : 0;
+        if (cp >= (AI.trucoProactiveMinPower + variance) && Math.random() < AI.trucoProactiveChance) {
+            cpuFirstCard = chosen;
+            cpuCallTruco();
+            return;
+        }
     }
 
-    setTimeout(() => { resolveRound(playerCard, chosen); }, 400);
+    cpuHand = cpuHand.filter(c => c.key !== chosen.key);
+    placeCard(chosen, 'cpu');
+    renderMiniCards();
+    cpuFirstCard = chosen;
+
+    // Now player must respond
+    setTimeout(() => {
+        playerTurn = true;
+        setMsg('ELEGI UNA CARTA PARA RESPONDER');
+        renderHands();
+        renderActions();
+    }, 400);
+}
+
+// CPU selects a card when playing first (doesn't know player's card)
+function cpuSelectCardFirst(hand, strategy, results) {
+    // Simple strategy: play middle card when going first
+    // Save the best for later, don't waste it
+    const sorted = [...hand].sort((a, b) => getPower(a) - getPower(b));
+
+    if (strategy === 'aggressive' || results.filter(r => r === 'cpu').length > 0) {
+        // If already winning or aggressive, play strong
+        return sorted[sorted.length - 1];
+    } else if (strategy === 'conservative') {
+        // Play weakest first
+        return sorted[0];
+    } else {
+        // Default: play middle card
+        return sorted[Math.floor(sorted.length / 2)];
+    }
 }
 
 // ================ RESOLVE ROUND ======================
@@ -1301,7 +1540,7 @@ function resolveRound(pCard, cCard) {
     let result = pp > cp ? 'player' : cp > pp ? 'cpu' : 'tie';
     roundResults.push(result);
 
-    addRoundBadge(`playerSlot${currentRound}`, result === 'player' ? 'win' : result === 'cpu' ? 'lose' : 'tie');
+    addRoundBadge(null, result === 'player' ? 'win' : result === 'cpu' ? 'lose' : 'tie');
 
     if (result === 'player') {
         oppSay('loseRound');
@@ -1338,14 +1577,31 @@ function resolveRound(pCard, cCard) {
         setTimeout(() => { endHand(winner); }, 500);
     } else {
         currentRound++;
-        highlightRound(currentRound);
+        cpuCardPlacedThisRound = false;
+
+        // El que gana la mano tira primero en la siguiente
+        // Si hay empate, sigue tirando el mismo que tiró primero antes
+        const nextStarter = result === 'tie' ? 'player' : result === 'player' ? 'player' : 'cpu';
+
         setTimeout(() => {
-            playerTurn = true;
-            setMsg('ELEGI UNA CARTA');
             setMood(null);
             envidoResolved = true;
-            renderHands();
-            renderActions();
+
+            if (nextStarter === 'player') {
+                playerTurn = true;
+                setMsg('ELEGI UNA CARTA');
+                renderHands();
+                renderActions();
+            } else {
+                // CPU ganó la mano anterior, tira primero
+                playerTurn = false;
+                setMsg(`${OPP.name} TIRA PRIMERO...`);
+                renderHands();
+                renderActions();
+
+                // CPU juega su carta primero
+                setTimeout(() => { cpuPlaysFirst(); }, 500 + Math.random() * 600);
+            }
         }, 600);
     }
 }
@@ -1384,22 +1640,37 @@ function endHand(winner) {
 }
 
 function checkGameEnd() {
-    if (playerScore >= 30 || cpuScore >= 30) {
-        const gw = playerScore >= 30 ? 'player' : 'cpu';
+    if (playerScore >= 15 || cpuScore >= 15) {
+        const gw = playerScore >= 15 ? 'player' : 'cpu';
         setTimeout(() => {
             const q = gw === 'cpu' ? oppSay('winGame') : oppSay('loseGame');
 
             if (gw === 'player') {
-                saveTrucoVictory(rivalId);
-            }
+                // Tower mode: save victory and progress to next rival
+                saveTowerVictory(rivalId);
+                saveTrucoVictory(rivalId); // Also keep all-time stats
+                clearGameState(); // Limpiar partida guardada
 
-            showOverlay(
-                gw === 'player' ? '\u00a1PARTIDA GANADA!' : 'PARTIDA PERDIDA',
-                gw === 'player' ? `Le ganaste a ${OPP.name}` : `${OPP.name} te destruyo`,
-                gw !== 'player', q
-            );
-            document.getElementById('overlayBtn').textContent = 'REVANCHA';
-            document.getElementById('overlayBtn').onclick = () => { playerScore = 0; cpuScore = 0; closeOverlay(); };
+                showOverlay(
+                    '\u00a1PARTIDA GANADA!',
+                    `Derrotaste a ${OPP.name}`,
+                    false, q
+                );
+                document.getElementById('overlayBtn').textContent = 'SIGUIENTE RIVAL';
+                document.getElementById('overlayBtn').onclick = () => { window.location.href = './'; };
+            } else {
+                // Tower mode: LOSE = reset all tower progress
+                resetTowerProgress();
+                clearGameState(); // Limpiar partida guardada
+
+                showOverlay(
+                    'PARTIDA PERDIDA',
+                    `${OPP.name} te destruy\u00f3. Volv\u00e9s al inicio de la torre.`,
+                    true, q
+                );
+                document.getElementById('overlayBtn').textContent = 'VOLVER A LA TORRE';
+                document.getElementById('overlayBtn').onclick = () => { window.location.href = './'; };
+            }
         }, 1200);
     }
 }
@@ -1549,7 +1820,7 @@ function calcEnvidoWinPoints() {
         if (lvl === 0) pts += 2;
         else if (lvl === 1) pts += 3;
         else if (lvl === 2) {
-            const gap = 30 - Math.min(playerScore, cpuScore);
+            const gap = 15 - Math.min(playerScore, cpuScore);
             pts += Math.max(gap, 1);
         }
     }
@@ -1681,9 +1952,28 @@ function respondTruco(accept) {
 
         setMsg('\u00a1QUIERO!');
         setTimeout(() => {
+            setMood(null);
+
+            // Si la CPU cantó truco mientras tiraba primero, ahora tira su carta
+            if (cpuFirstCard && !cpuCardPlacedThisRound) {
+                cpuCardPlacedThisRound = true;
+                const chosen = cpuFirstCard;
+                cpuHand = cpuHand.filter(c => c.key !== chosen.key);
+                placeCard(chosen, 'cpu');
+                renderMiniCards();
+
+                // Ahora el jugador responde
+                setTimeout(() => {
+                    playerTurn = true;
+                    setMsg('ELEGI UNA CARTA PARA RESPONDER');
+                    renderHands();
+                    renderActions();
+                }, 400);
+                return;
+            }
+
             playerTurn = true;
             setMsg('ELEGI UNA CARTA');
-            setMood(null);
             renderHands();
             renderActions();
 
@@ -1811,6 +2101,13 @@ async function initSystems() {
 
 // Start initialization
 initSystems().then(() => {
+    // Cargar estado guardado si existe
+    const savedState = loadGameState();
+    if (savedState) {
+        playerScore = savedState.playerScore;
+        cpuScore = savedState.cpuScore;
+        renderScores();
+    }
     deal();
 });
 </script>

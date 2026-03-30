@@ -2,10 +2,34 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>ReTruco - Elegi tu Rival</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReTruco - La Torre | Derrota a todos los rivales</title>
+    <meta name="description" content="Escala la Torre de ReTruco derrotando a 6 rivales en el juego de Truco argentino. Estrategia, cartas y competencia real.">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ReTruco - La Torre">
+    <meta property="og:description" content="Escala la Torre derrotando a 6 rivales en Truco argentino. Estrategia y competencia real.">
+    <meta property="og:image" content="https://retruco.xyz/imagenes/hero-01.png">
+    <meta property="og:url" content="https://retruco.xyz/truco/">
+    <meta property="og:locale" content="es_AR">
+    <meta property="og:site_name" content="ReTruco">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ReTruco - La Torre">
+    <meta name="twitter:description" content="Escala la Torre derrotando a 6 rivales en Truco argentino.">
+    <meta name="twitter:image" content="https://retruco.xyz/imagenes/hero-01.png">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://retruco.xyz/truco/">
+
+    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
     <link rel="shortcut icon" href="../favicon/favicon.ico">
+    <link rel="apple-touch-icon" href="../favicon/apple-touch-icon.png">
+    <meta name="theme-color" content="#0a0a0a">
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         @font-face {
@@ -17,314 +41,1075 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
+            --bg: #0a0a0a;
+            --bg-tower: #0d1117;
             --rust: #2bb8cd;
             --paper: #e0f7fa;
-            --ink: #0a1a24;
-            --bg: #0d2233;
-            --gold: #c9a227;
+            --dim: rgba(224, 247, 250, 0.85);
+            --faint: rgba(224, 247, 250, 0.55);
+            --border: rgba(43, 184, 205, 0.15);
+            --gold: #ffd700;
             --red: #e74c3c;
             --green: #2ecc71;
+            --blood: #8b0000;
+            --fire: #ff4500;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
         }
 
         body {
             background: var(--bg);
-            background-image:
-                radial-gradient(ellipse at 50% 0%, rgba(43,184,205,0.08) 0%, transparent 60%),
-                radial-gradient(ellipse at 50% 100%, rgba(43,184,205,0.05) 0%, transparent 60%);
             color: var(--paper);
             font-family: 'Montserrat', sans-serif;
-            min-height: 100vh;
-            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* ====== HEADER ====== */
-        .sel-header {
-            width: 100%;
+        .header {
             padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0,0,0,0.3);
-            border-bottom: 2px solid rgba(43,184,205,0.15);
+            border-bottom: 1px solid var(--border);
+            background: rgba(0,0,0,0.5);
+            flex-shrink: 0;
+            z-index: 100;
         }
+        .logo { height: 28px; opacity: 0.9; }
+        .back {
+            color: var(--dim);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+        .back:hover { color: var(--rust); }
 
-        .sel-logo { height: 28px; filter: drop-shadow(0 0 8px rgba(43,184,205,0.3)); }
-
-        .sel-back {
+        /* ====== TUTORIAL TAB ====== */
+        .tutorial-tab {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 200;
+        }
+        .btn-tutorial {
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            padding: 10px 16px;
+            border: 2px solid var(--rust);
+            background: rgba(13, 17, 23, 0.95);
             color: var(--rust);
             text-decoration: none;
-            font-family: 'Trevor', sans-serif;
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            opacity: 0.6;
-            transition: opacity 0.2s;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            transition: all 0.2s;
         }
-        .sel-back:hover { opacity: 1; }
-
-        /* ====== TITLE ====== */
-        .sel-title {
-            font-family: 'Trevor', sans-serif;
-            font-size: clamp(1.5rem, 6vw, 2.5rem);
-            letter-spacing: 5px;
-            text-align: center;
-            padding: 20px 0 5px;
-            color: var(--rust);
-            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+        .btn-tutorial:hover {
+            background: var(--rust);
+            color: var(--bg);
+            transform: translateY(-2px);
         }
+        .btn-tutorial svg { width: 14px; height: 14px; }
 
-        .sel-subtitle {
-            text-align: center;
-            font-size: 0.75rem;
-            color: rgba(224,247,250,0.4);
-            letter-spacing: 2px;
-            padding-bottom: 20px;
+        /* ====== MAIN CONTAINER ====== */
+        .main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            position: relative;
         }
 
-        /* ====== GRID ====== */
-        .rival-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 16px;
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 0 20px 30px;
-        }
-
-        .rival-card {
-            background: rgba(0,0,0,0.3);
-            border: 2px solid rgba(43,184,205,0.15);
-            border-radius: 12px;
-            padding: 16px 12px;
+        /* ====== TOWER CONTAINER ====== */
+        .tower-wrapper {
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px;
+            background:
+                linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.7) 100%),
+                url('../imagenes/congreso.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* ====== BOSS SECTION ====== */
+        .boss-section {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .boss-frame {
+            position: relative;
+            display: inline-block;
+        }
+
+        .boss-portrait {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top;
+            border: 4px solid var(--blood);
+            box-shadow:
+                0 0 30px rgba(139, 0, 0, 0.6),
+                0 0 60px rgba(139, 0, 0, 0.3),
+                inset 0 0 20px rgba(0,0,0,0.5);
+            filter: saturate(1.2) contrast(1.1);
+            transition: all 0.3s;
+        }
+
+        .boss-frame.locked .boss-portrait {
+            filter: grayscale(1) brightness(0.3);
+            border-color: #333;
+            box-shadow: none;
+        }
+
+        .boss-frame.unlocked .boss-portrait {
+            animation: bossGlow 2s ease-in-out infinite;
             cursor: pointer;
-            transition: all 0.2s ease;
+        }
+
+        .boss-frame.unlocked:hover .boss-portrait {
+            transform: scale(1.05);
+            box-shadow: 0 0 60px rgba(255, 69, 0, 1), 0 0 120px rgba(139, 0, 0, 0.7);
+        }
+
+        .boss-frame.defeated .boss-portrait {
+            filter: grayscale(0.5) brightness(0.7);
+            border-color: var(--green);
+            box-shadow: 0 0 30px rgba(46, 204, 113, 0.5);
+            animation: none;
+        }
+
+        @keyframes bossGlow {
+            0%, 100% { box-shadow: 0 0 30px rgba(139, 0, 0, 0.6), 0 0 60px rgba(139, 0, 0, 0.3); }
+            50% { box-shadow: 0 0 50px rgba(255, 69, 0, 0.8), 0 0 100px rgba(139, 0, 0, 0.5); }
+        }
+
+        .boss-name {
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: var(--blood);
+            margin-top: 10px;
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+
+        .boss-title {
+            font-size: 0.65rem;
+            color: var(--faint);
+            letter-spacing: 3px;
+            margin-top: 4px;
+        }
+
+        .boss-frame.locked .boss-name,
+        .boss-frame.locked .boss-title {
+            color: #444;
+            text-shadow: none;
+        }
+
+        /* ====== TOWER ====== */
+        .tower {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+        }
+
+        /* Tower spine/connector */
+        .tower::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--blood) 0%, var(--rust) 100%);
+            transform: translateX(-50%);
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        /* ====== FLOOR ====== */
+        .floor {
+            position: relative;
+            z-index: 1;
+            padding: 8px 0;
+        }
+
+        .floor-label {
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: var(--rust);
+            text-align: center;
+            padding: 8px 16px;
+            background: linear-gradient(90deg, transparent, rgba(43, 184, 205, 0.1), transparent);
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .floor-label::before,
+        .floor-label::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--rust), transparent);
+            opacity: 0.3;
+        }
+        .floor-label::before { left: 0; }
+        .floor-label::after { right: 0; }
+
+        .floor.locked .floor-label {
+            color: #444;
+            opacity: 0.4;
+        }
+
+        /* ====== RIVAL CARD ====== */
+        .rival {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            margin: 4px 0;
+            background: linear-gradient(135deg, rgba(20, 25, 35, 0.9), rgba(13, 17, 23, 0.95));
+            border: 1px solid var(--border);
+            border-radius: 8px;
             text-decoration: none;
             color: inherit;
+            transition: all 0.25s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .rival-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--card-color, var(--rust));
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 0 15px rgba(43,184,205,0.15);
+        .rival::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(43, 184, 205, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
-        .rival-card:active {
-            transform: translateY(0);
+        .rival:hover::before { opacity: 1; }
+
+        .rival:hover {
+            border-color: var(--rust);
+            transform: translateX(4px);
+            box-shadow: -4px 0 20px rgba(43, 184, 205, 0.2);
         }
 
-        .rival-card.locked {
-            cursor: default;
-            opacity: 0.4;
-            filter: grayscale(0.7);
+        /* Available - Blue ReTruco */
+        .rival.current {
+            border-color: var(--rust);
+            box-shadow: 0 0 20px rgba(43, 184, 205, 0.3);
+            animation: currentPulse 2s ease-in-out infinite;
         }
 
-        .rival-card.locked:hover {
-            transform: none;
-            border-color: rgba(43,184,205,0.15);
-            box-shadow: none;
+        @keyframes currentPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(43, 184, 205, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(43, 184, 205, 0.5); }
         }
 
+        .rival.current .rival-avatar {
+            border-color: var(--rust);
+            box-shadow: 0 0 10px rgba(43, 184, 205, 0.4);
+        }
+
+        /* Locked - Greyed out */
+        .rival.locked {
+            opacity: 0.35;
+            filter: grayscale(0.9);
+            cursor: pointer;
+        }
+
+        .rival.locked:hover {
+            opacity: 0.45;
+        }
+
+        /* Defeated - Red with X */
+        .rival.defeated {
+            border-color: var(--blood);
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.15), rgba(13, 17, 23, 0.95));
+            opacity: 0.5;
+            filter: grayscale(0.3);
+        }
+
+        .rival.defeated .rival-avatar {
+            border-color: var(--blood);
+        }
+
+        .rival.defeated::after {
+            content: '\u2716';
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: var(--blood);
+            opacity: 0.8;
+        }
+
+        /* Avatar */
         .rival-avatar {
-            width: 64px;
-            height: 64px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            border: 3px solid var(--card-color, var(--rust));
             object-fit: cover;
             object-position: top;
-            box-shadow: 0 0 12px rgba(0,0,0,0.4);
-            transition: box-shadow 0.2s;
+            border: 2px solid var(--border);
+            flex-shrink: 0;
+            transition: all 0.2s;
         }
 
-        .rival-card:hover .rival-avatar {
-            box-shadow: 0 0 20px rgba(43,184,205,0.3);
+        .rival:hover .rival-avatar {
+            border-color: var(--rust);
         }
 
-        .rival-avatar.placeholder {
-            filter: brightness(0.15) contrast(0.8);
-            background: var(--ink);
+
+        .avatar-placeholder {
+            filter: brightness(0.2);
+        }
+
+        /* Info */
+        .rival-info {
+            flex: 1;
+            min-width: 0;
         }
 
         .rival-name {
             font-family: 'Trevor', sans-serif;
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             letter-spacing: 2px;
-            color: var(--card-color, var(--rust));
-            text-align: center;
+            color: var(--paper);
+            margin-bottom: 2px;
         }
 
         .rival-role {
-            font-size: 0.6rem;
-            color: rgba(224,247,250,0.4);
-            text-align: center;
-            letter-spacing: 1px;
-        }
-
-        .rival-difficulty {
-            display: flex;
-            gap: 3px;
-        }
-
-        .diff-skull {
-            font-size: 0.6rem;
-            opacity: 0.8;
-        }
-
-        .diff-skull.empty {
-            opacity: 0.15;
-        }
-
-        .rival-lock {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            font-size: 1rem;
-            opacity: 0.5;
-        }
-
-        .rival-wins {
-            font-size: 0.55rem;
-            color: var(--green);
-            letter-spacing: 1px;
-        }
-
-        /* ====== TIER LABEL ====== */
-        .tier-label {
-            max-width: 700px;
-            margin: 10px auto 8px;
-            padding: 0 20px;
-            font-family: 'Trevor', sans-serif;
-            font-size: 0.55rem;
-            letter-spacing: 3px;
-            color: rgba(224,247,250,0.2);
-        }
-
-        /* ====== TUTORIAL BUTTON ====== */
-        .tutorial-section {
-            text-align: center;
-            padding: 10px 20px 30px;
-        }
-
-        .btn-tutorial {
-            font-family: 'Trevor', sans-serif;
-            font-size: 0.75rem;
-            letter-spacing: 3px;
-            padding: 12px 30px;
-            border: 2px solid rgba(43,184,205,0.3);
-            background: rgba(0,0,0,0.3);
+            font-size: 0.65rem;
             color: var(--rust);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: inline-block;
+            letter-spacing: 1px;
         }
 
-        .btn-tutorial:hover {
-            border-color: var(--rust);
-            background: rgba(43,184,205,0.08);
-            transform: translateY(-2px);
+        /* Difficulty skulls */
+        .rival-diff {
+            font-size: 0.75rem;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+
+        /* Status indicator */
+        .rival-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+
+        .rival.current .rival-status {
+            background: var(--gold);
+            box-shadow: 0 0 10px var(--gold);
+            animation: statusBlink 1s ease-in-out infinite;
+        }
+
+        @keyframes statusBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ====== PROGRESS BAR ====== */
+        .progress-section {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .progress-title {
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            color: var(--dim);
+        }
+
+        .progress-count {
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.7rem;
+            color: var(--rust);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--rust), var(--green));
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        /* ====== RESET WARNING ====== */
+        .reset-warning {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(139, 0, 0, 0.9);
+            color: var(--paper);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            text-align: center;
+            border: 1px solid var(--blood);
+            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.5);
+            z-index: 150;
+            animation: fadeInUp 0.5s ease;
+            display: none;
+        }
+
+        .reset-warning.show {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translate(-50%, 20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        .reset-warning strong {
+            color: var(--gold);
+        }
+
+        /* ====== CHARACTER MODAL ====== */
+        .char-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        .char-modal.show {
+            display: flex;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0d1117 0%, #1a1a2e 100%);
+            border: 2px solid var(--rust);
+            border-radius: 12px;
+            max-width: 420px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--dim);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--rust);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top;
+            border: 3px solid var(--rust);
+            box-shadow: 0 0 20px rgba(43, 184, 205, 0.3);
+        }
+
+        .modal-info {
+            flex: 1;
+        }
+
+        .modal-name {
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            color: var(--paper);
+            margin-bottom: 4px;
+        }
+
+        .modal-role {
+            font-size: 0.75rem;
+            color: var(--rust);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .modal-difficulty {
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        /* Tabs */
+        .modal-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-tab {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            color: var(--dim);
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .modal-tab:hover {
+            color: var(--paper);
+        }
+
+        .modal-tab.active {
+            color: var(--rust);
+        }
+
+        .modal-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: var(--rust);
+        }
+
+        /* Tab content */
+        .modal-tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .modal-tab-content.active {
+            display: block;
+            animation: tabFadeIn 0.3s ease;
+        }
+
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-text {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: rgba(224, 247, 250, 0.8);
+        }
+
+        .modal-section-title {
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            color: var(--rust);
+            margin-bottom: 12px;
+        }
+
+        /* Skills */
+        .modal-skills {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skill-label {
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            color: var(--dim);
+            width: 40px;
+        }
+
+        .skill-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: var(--rust);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        /* Play button */
+        .modal-play {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-play-modal {
+            width: 100%;
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            padding: 14px;
+            border: 2px solid var(--green);
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--green);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-play-modal:hover {
+            background: var(--green);
+            color: var(--bg);
+        }
+
+        .btn-play-modal:disabled {
+            border-color: #444;
+            color: #444;
+            background: transparent;
+            cursor: not-allowed;
         }
 
         /* ====== MOBILE ====== */
-        @media (max-width: 420px) {
-            .rival-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-                padding: 0 12px 20px;
-            }
-            .rival-avatar { width: 52px; height: 52px; }
-            .rival-name { font-size: 0.6rem; }
-            .sel-title { padding: 15px 0 5px; }
+        @media (max-width: 500px) {
+            .tower-wrapper { padding: 15px 10px; }
+            .boss-portrait { width: 90px; height: 90px; }
+            .boss-name { font-size: 1rem; }
+            .rival { padding: 10px 12px; }
+            .rival-avatar { width: 42px; height: 42px; }
+            .rival-name { font-size: 0.75rem; }
+            .rival.defeated::after { display: none; }
+            .tutorial-tab { bottom: 15px; left: 15px; }
+            .btn-tutorial { padding: 8px 12px; font-size: 0.6rem; }
         }
+
+        /* ====== ENTER ANIMATION ====== */
+        .floor {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: floorEnter 0.5s ease forwards;
+        }
+
+        @keyframes floorEnter {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .floor:nth-child(1) { animation-delay: 0.1s; }
+        .floor:nth-child(2) { animation-delay: 0.2s; }
+        .floor:nth-child(3) { animation-delay: 0.3s; }
+        .floor:nth-child(4) { animation-delay: 0.4s; }
+        .floor:nth-child(5) { animation-delay: 0.5s; }
     </style>
 </head>
 <body>
 
-    <div class="sel-header">
-        <img src="../imagenes/logoretruco.png" alt="ReTruco" class="sel-logo">
-        <a href="../index.html" class="sel-back">&larr; VOLVER</a>
+    <header class="header">
+        <img src="../imagenes/logoretruco.png" alt="ReTruco" class="logo">
+        <a href="../index.html" class="back">&larr; VOLVER</a>
+    </header>
+
+    <main class="main">
+        <div class="tower-wrapper">
+            <!-- Boss at top -->
+            <div class="boss-section">
+                <div class="boss-frame" id="bossFrame">
+                    <img src="../imagenes/bignone.png" alt="Bignone" class="boss-portrait" id="bossPortrait">
+                </div>
+                <div class="boss-name" id="bossName">BIGNONE</div>
+                <div class="boss-title">EL JEFE FINAL</div>
+            </div>
+
+            <!-- Tower floors -->
+            <div class="tower" id="tower"></div>
+
+            <!-- Progress -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span class="progress-title">PROGRESO</span>
+                    <span class="progress-count" id="progressCount">0/10</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Tutorial Tab - Always visible -->
+    <div class="tutorial-tab">
+        <a href="tutorial.html" class="btn-tutorial">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            TUTORIAL
+        </a>
     </div>
 
-    <h1 class="sel-title">ELEGI TU RIVAL</h1>
-    <p class="sel-subtitle">GANÁ PARA DESBLOQUEAR MÁS RIVALES</p>
+    <!-- Reset warning -->
+    <div class="reset-warning" id="resetWarning">
+        <strong>CUIDADO:</strong> Si perd&eacute;s, volv&eacute;s al nivel 1
+    </div>
 
-    <div id="rivalContainer"></div>
-
-    <div class="tutorial-section">
-        <a href="tutorial.html" class="btn-tutorial">&#x1F0CF; TUTORIAL - APRENDE A JUGAR</a>
+    <!-- Character Modal -->
+    <div class="char-modal" id="charModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-header">
+                <img src="" alt="" class="modal-avatar" id="modalAvatar">
+                <div class="modal-info">
+                    <div class="modal-name" id="modalName"></div>
+                    <div class="modal-role" id="modalRole"></div>
+                    <div class="modal-difficulty" id="modalDifficulty"></div>
+                </div>
+            </div>
+            <div class="modal-tabs">
+                <button class="modal-tab active" onclick="switchTab('mission')">MISI&Oacute;N</button>
+                <button class="modal-tab" onclick="switchTab('bio')">BIOGRAF&Iacute;A</button>
+                <button class="modal-tab" onclick="switchTab('stats')">STATS</button>
+            </div>
+            <div class="modal-tab-content active" id="tabMission">
+                <div class="modal-section-title">TU OBJETIVO</div>
+                <p class="modal-text" id="modalMission"></p>
+            </div>
+            <div class="modal-tab-content" id="tabBio">
+                <div class="modal-section-title">HISTORIA</div>
+                <p class="modal-text" id="modalBio"></p>
+            </div>
+            <div class="modal-tab-content" id="tabStats">
+                <div class="modal-section-title">HABILIDADES</div>
+                <div class="modal-skills" id="modalSkills"></div>
+            </div>
+            <div class="modal-play">
+                <button class="btn-play-modal" id="modalPlayBtn">JUGAR</button>
+            </div>
+        </div>
     </div>
 
 <script src="shared.js"></script>
 <script>
+// Get progress
 const progress = getTrucoProgress();
-const highestTier = progress.highestTier || 1;
+const currentLevel = progress.currentLevel || 0;
 const victories = progress.victories || {};
+const defeatedList = progress.defeatedInRun || [];
 
-// Group opponents by tier
-const tiers = {};
-for (const [id, opp] of Object.entries(OPPONENTS)) {
-    if (!tiers[opp.tier]) tiers[opp.tier] = [];
-    tiers[opp.tier].push({ id, ...opp });
-}
+// Tower progression uses tiers internally but no labels shown
 
-const tierNames = {
-    1: 'EL PATIO',
-    2: 'EL PABELLÓN',
-    3: 'LA REJA',
-    4: 'EL CALABOZO',
-    5: 'LA CELDA DEL JEFE'
+// Bignone is the final boss - not in regular tower
+const FINAL_BOSS_ID = 'bignone';
+
+// Only these 6 characters are in the tower (+ Bignone as boss)
+const TOWER_RIVALS = ['alfredito', 'abraham', 'dario', 'momo', 'wachin', 'xiao'];
+
+// Custom tier assignment for the 6 rivals
+const TOWER_TIERS = {
+    'alfredito': 1,
+    'abraham': 1,
+    'dario': 2,
+    'momo': 2,
+    'wachin': 3,
+    'xiao': 3
 };
 
-const container = document.getElementById('rivalContainer');
+// Organize opponents by tier
+const tiers = {};
+for (const id of TOWER_RIVALS) {
+    const opp = OPPONENTS[id];
+    if (!opp) continue;
+    const tier = TOWER_TIERS[id];
+    if (!tiers[tier]) tiers[tier] = [];
+    tiers[tier].push({ id, ...opp, tier });
+}
 
-for (let t = 1; t <= 5; t++) {
+// Sort rivals within each tier by difficulty
+for (const tier of Object.values(tiers)) {
+    tier.sort((a, b) => a.difficulty - b.difficulty);
+}
+
+// Calculate which rivals are available
+// In tower mode: must defeat in sequence within each tier
+function getRivalStatus(rivalId, tier) {
+    const isDefeated = defeatedList.includes(rivalId);
+
+    // Check if this tier is unlocked
+    const previousTierDefeated = tier === 1 || tiers[tier - 1]?.every(r => defeatedList.includes(r.id));
+
+    if (!previousTierDefeated) {
+        return 'locked';
+    }
+
+    if (isDefeated) {
+        return 'defeated';
+    }
+
+    // Check if previous rivals in this tier are defeated
+    const tiersRivals = tiers[tier];
+    const rivalIndex = tiersRivals.findIndex(r => r.id === rivalId);
+
+    for (let i = 0; i < rivalIndex; i++) {
+        if (!defeatedList.includes(tiersRivals[i].id)) {
+            return 'locked';
+        }
+    }
+
+    return 'current';
+}
+
+// Build tower (from top tier to bottom)
+const tower = document.getElementById('tower');
+
+for (let t = 3; t >= 1; t--) {
     const rivals = tiers[t];
     if (!rivals) continue;
 
-    const unlocked = t <= highestTier;
+    const previousTierDefeated = t === 1 || tiers[t - 1]?.every(r => defeatedList.includes(r.id));
 
-    const label = document.createElement('div');
-    label.className = 'tier-label';
-    label.textContent = `${unlocked ? '' : '\u{1F512} '}${tierNames[t]}`;
-    container.appendChild(label);
+    const floor = document.createElement('div');
+    floor.className = `floor${previousTierDefeated ? '' : ' locked'}`;
 
-    const grid = document.createElement('div');
-    grid.className = 'rival-grid';
+    // No tier labels - just the rivals
+
+    // Sort rivals by difficulty (easiest first)
+    rivals.sort((a, b) => a.difficulty - b.difficulty);
 
     for (const rival of rivals) {
-        const card = document.createElement(unlocked ? 'a' : 'div');
-        card.className = `rival-card${unlocked ? '' : ' locked'}`;
-        if (unlocked) card.href = `juego.html?rival=${rival.id}`;
-        card.style.setProperty('--card-color', rival.color);
+        const status = getRivalStatus(rival.id, t);
 
-        const wins = victories[rival.id] || 0;
+        let portrait = rival.portrait;
+        if (rival.placeholderPortrait) portrait = '../imagenes/alfredito.png';
 
-        // Determine portrait
-        let portraitSrc = rival.portrait;
-        let isPlaceholder = rival.placeholderPortrait;
-        // For characters without portraits, use alfredito as silhouette base
-        if (isPlaceholder) portraitSrc = '../imagenes/alfredito.png';
+        const card = document.createElement('div');
+        card.className = `rival ${status}`;
+        card.dataset.rivalId = rival.id;
+        card.onclick = () => openModal(rival.id);
 
         card.innerHTML = `
-            ${!unlocked ? '<div class="rival-lock">\u{1F512}</div>' : ''}
-            <img src="${portraitSrc}" alt="${rival.name}" class="rival-avatar${isPlaceholder ? ' placeholder' : ''}" onerror="this.classList.add('placeholder')">
-            <div class="rival-name">${rival.name}</div>
-            <div class="rival-role">${rival.role}</div>
-            <div class="rival-difficulty">
-                ${Array.from({length: 5}, (_, i) => `<span class="diff-skull ${i < rival.difficulty ? '' : 'empty'}">\u{1F480}</span>`).join('')}
+            <img src="${portrait}" alt="${rival.name}"
+                 class="rival-avatar${rival.placeholderPortrait ? ' avatar-placeholder' : ''}"
+                 onerror="this.classList.add('avatar-placeholder')">
+            <div class="rival-info">
+                <div class="rival-name">${rival.name}</div>
+                <div class="rival-role">${rival.role}</div>
             </div>
-            ${wins > 0 ? `<div class="rival-wins">\u2713 ${wins} victoria${wins > 1 ? 's' : ''}</div>` : ''}
+            <div class="rival-diff">${'\u{1F480}'.repeat(rival.difficulty)}</div>
+            ${status === 'current' ? '<div class="rival-status"></div>' : ''}
         `;
 
-        grid.appendChild(card);
+        floor.appendChild(card);
     }
 
-    container.appendChild(grid);
+    tower.appendChild(floor);
 }
+
+// Update boss state - unlocked when all tower rivals are defeated
+const bossFrame = document.getElementById('bossFrame');
+const regularRivals = TOWER_RIVALS; // Only the 6 tower characters
+const allRegularDefeated = regularRivals.every(id => defeatedList.includes(id));
+const bossDefeated = defeatedList.includes(FINAL_BOSS_ID);
+
+bossFrame.className = `boss-frame ${allRegularDefeated ? 'unlocked' : 'locked'}${bossDefeated ? ' defeated' : ''}`;
+
+// Boss state visual updates
+if (allRegularDefeated) {
+    bossFrame.style.cursor = 'pointer';
+}
+if (bossDefeated) {
+    document.querySelector('.boss-title').textContent = 'DERROTADO';
+    document.querySelector('.boss-title').style.color = 'var(--green)';
+}
+
+// Update progress (excluding boss from count until tower is complete)
+const totalRegularRivals = regularRivals.length;
+const defeatedRegularCount = defeatedList.filter(id => id !== FINAL_BOSS_ID).length;
+const totalWithBoss = totalRegularRivals + 1;
+const defeatedWithBoss = defeatedRegularCount + (bossDefeated ? 1 : 0);
+
+document.getElementById('progressCount').textContent = `${defeatedWithBoss}/${totalWithBoss}`;
+document.getElementById('progressFill').style.width = `${(defeatedWithBoss / totalWithBoss) * 100}%`;
+
+// Show reset warning if player has progress
+if (defeatedRegularCount > 0) {
+    setTimeout(() => {
+        document.getElementById('resetWarning').classList.add('show');
+        setTimeout(() => {
+            document.getElementById('resetWarning').classList.remove('show');
+        }, 4000);
+    }, 1000);
+}
+
+// ====== CHARACTER MODAL ======
+let currentRivalId = null;
+
+function openModal(rivalId) {
+    const rival = OPPONENTS[rivalId];
+    if (!rival) return;
+
+    currentRivalId = rivalId;
+
+    // Set portrait
+    const avatar = document.getElementById('modalAvatar');
+    avatar.src = rival.placeholderPortrait ? '../imagenes/alfredito.png' : rival.portrait;
+    avatar.alt = rival.name;
+    avatar.style.borderColor = rival.color;
+
+    // Set info
+    document.getElementById('modalName').textContent = rival.name;
+    document.getElementById('modalRole').textContent = rival.role;
+    document.getElementById('modalDifficulty').textContent = '\u{1F480}'.repeat(rival.difficulty) + ' Dificultad ' + rival.difficulty + '/5';
+
+    // Set content
+    document.getElementById('modalMission').textContent = rival.mission || rival.lore;
+    document.getElementById('modalBio').textContent = rival.bio || rival.lore;
+
+    // Set skills
+    const skills = rival.skills || { agresividad: 2, farol: 2, envido: 2, estrategia: 2 };
+    const skillsHtml = Object.entries(skills).map(([key, val]) => `
+        <div class="skill-item">
+            <span class="skill-label">${key.substring(0, 3).toUpperCase()}</span>
+            <div class="skill-bar">
+                <div class="skill-fill" style="width: ${val * 20}%"></div>
+            </div>
+        </div>
+    `).join('');
+    document.getElementById('modalSkills').innerHTML = skillsHtml;
+
+    // Set play button based on status
+    const playBtn = document.getElementById('modalPlayBtn');
+    const status = rivalId === FINAL_BOSS_ID
+        ? (allRegularDefeated ? (bossDefeated ? 'defeated' : 'current') : 'locked')
+        : getRivalStatus(rivalId, rival.tier);
+
+    if (status === 'current' || status === 'defeated') {
+        playBtn.disabled = false;
+        playBtn.textContent = status === 'defeated' ? 'REVANCHA' : 'JUGAR';
+        playBtn.onclick = () => { window.location.href = `juego.html?rival=${rivalId}`; };
+    } else {
+        playBtn.disabled = true;
+        playBtn.textContent = '\u{1F512} BLOQUEADO';
+    }
+
+    // Reset to first tab
+    document.querySelectorAll('.modal-tab').forEach((tab, i) => {
+        tab.classList.toggle('active', i === 0);
+    });
+    document.querySelectorAll('.modal-tab-content').forEach((content, i) => {
+        content.classList.toggle('active', i === 0);
+    });
+
+    // Show modal
+    document.getElementById('charModal').classList.add('show');
+}
+
+function closeModal() {
+    document.getElementById('charModal').classList.remove('show');
+    currentRivalId = null;
+}
+
+function switchTab(tabName) {
+    // Update tab buttons
+    document.querySelectorAll('.modal-tab').forEach(tab => tab.classList.remove('active'));
+    event.target.classList.add('active');
+
+    // Update tab content
+    document.querySelectorAll('.modal-tab-content').forEach(content => content.classList.remove('active'));
+    const tabId = 'tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1);
+    document.getElementById(tabId).classList.add('active');
+}
+
+// Close modal on background click
+document.getElementById('charModal').addEventListener('click', (e) => {
+    if (e.target.id === 'charModal') closeModal();
+});
+
+// Close modal on escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+});
+
+// Make boss also open modal
+if (allRegularDefeated || bossDefeated) {
+    bossFrame.onclick = () => openModal(FINAL_BOSS_ID);
+}
+
 </script>
 
 </body>
