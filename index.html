@@ -1147,22 +1147,6 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
-        .plata-rain {
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            animation: plata-fall linear forwards;
-        }
-
-        @keyframes plata-fall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-            }
-        }
-
         /* Donate Images Row */
         .donate-images-row {
             display: flex;
@@ -2394,17 +2378,6 @@
                 transform: translate(-3px, -3px);
                 box-shadow: 9px 9px 0 #00d4ff;
             }
-            .btn-truco {
-                bottom: 330px;
-                font-size: 2rem;
-                padding: 25px 45px;
-                border-color: #e74c3c;
-                box-shadow: 6px 6px 0 #e74c3c;
-                background: #2e0f0f;
-            }
-            .btn-truco:hover {
-                box-shadow: 9px 9px 0 #e74c3c;
-            }
             .cards-track {
                 display: flex;
                 gap: 15px;
@@ -2479,16 +2452,6 @@
                     white-space: nowrap;
                     text-align: center;
                 }
-                .btn-truco {
-                    bottom: 70px;
-                    font-size: 0.85rem;
-                    padding: 10px 22px;
-                    border-color: #e74c3c;
-                    box-shadow: 3px 3px 0 #e74c3c;
-                }
-                .btn-truco:hover {
-                    box-shadow: 5px 5px 0 #e74c3c;
-                }
                 .btn-crear:hover {
                     box-shadow: 5px 5px 0 #00d4ff;
                 }
@@ -2498,7 +2461,6 @@
             }
         </style>
         <a href="retrucocharacter/indexcharacter.html" class="btn-crear">CREÁ TU PERSONAJE</a>
-        <a href="truco/" class="btn-crear btn-truco">JUGÁ AL TRUCO</a>
         <div style="position: absolute; bottom: 5%; left: 0; right: 0; overflow: visible; z-index: 10; padding: 20px 0;">
             <div class="cards-track" id="cardsTrack">
                 <div class="card-wrap" data-name="Donante 1" data-msg="Aguante RETRUCO!"><img src="imagenes/cards/marcofigura1.png" alt="Card"></div>
@@ -2830,6 +2792,654 @@
         }
     </style>
 
+    <!-- OST / SOUNDTRACK -->
+    <section id="ost" class="ost-section">
+        <div class="ost-container">
+            <div class="section-header">
+                <h2 class="section-title">SOUNDTRACK</h2>
+            </div>
+
+            <div class="ost-player">
+                <!-- Cassette Visual -->
+                <div class="cassette">
+                    <div class="cassette-body">
+                        <div class="cassette-label">
+                            <span class="cassette-title">RETRUCO OST</span>
+                            <span class="cassette-subtitle">Vol. 1 - Demo</span>
+                        </div>
+                        <div class="cassette-reels">
+                            <div class="reel reel-left" id="reelLeft">
+                                <div class="reel-center"></div>
+                            </div>
+                            <div class="reel reel-right" id="reelRight">
+                                <div class="reel-center"></div>
+                            </div>
+                        </div>
+                        <div class="cassette-window"></div>
+                    </div>
+                </div>
+
+                <!-- Track Info -->
+                <div class="track-info">
+                    <span class="track-number" id="trackNumber">01</span>
+                    <span class="track-name" id="trackName">ReTruco Main</span>
+                    <span class="track-duration" id="trackDuration">0:00 / 0:00</span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+
+                <!-- Controls -->
+                <div class="player-controls">
+                    <button class="control-btn" id="prevBtn" aria-label="Anterior">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                    </button>
+                    <button class="control-btn play-btn" id="playBtn" aria-label="Reproducir">
+                        <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </button>
+                    <button class="control-btn" id="nextBtn" aria-label="Siguiente">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                    </button>
+                    <button class="control-btn volume-btn" id="volumeBtn" aria-label="Volumen">
+                        <svg class="volume-on" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                        <svg class="volume-off" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Volume Slider -->
+                <div class="volume-slider-container" id="volumeSliderContainer">
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80">
+                </div>
+
+                <!-- Playlist -->
+                <div class="playlist">
+                    <div class="playlist-item active" data-track="0">
+                        <span class="playlist-num">01</span>
+                        <span class="playlist-name">ReTruco Main</span>
+                        <span class="playlist-time">--:--</span>
+                    </div>
+                    <div class="playlist-item" data-track="1">
+                        <span class="playlist-num">02</span>
+                        <span class="playlist-name">Boliche Ambience</span>
+                        <span class="playlist-time">--:--</span>
+                    </div>
+                    <div class="playlist-item" data-track="2">
+                        <span class="playlist-num">03</span>
+                        <span class="playlist-name">Ciudad Porteña</span>
+                        <span class="playlist-time">--:--</span>
+                    </div>
+                    <div class="playlist-item" data-track="3">
+                        <span class="playlist-num">04</span>
+                        <span class="playlist-name">Communist Song</span>
+                        <span class="playlist-time">--:--</span>
+                    </div>
+                    <div class="playlist-item" data-track="4">
+                        <span class="playlist-num">05</span>
+                        <span class="playlist-name">Ricky Fort Bossfight</span>
+                        <span class="playlist-time">--:--</span>
+                    </div>
+                </div>
+
+                <p class="ost-coming-soon">Tracks completos proximamente...</p>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        /* OST SECTION */
+        .ost-section {
+            background: linear-gradient(180deg, var(--concrete-1) 0%, var(--concrete-2) 100%);
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ost-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(43, 184, 205, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(43, 184, 205, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .ost-container {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ost-player {
+            background: var(--paper);
+            border: 4px solid var(--ink);
+            box-shadow: 12px 12px 0 var(--ink);
+            padding: 30px;
+            position: relative;
+        }
+
+        /* CASSETTE */
+        .cassette {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .cassette-body {
+            width: 280px;
+            height: 180px;
+            background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+            border-radius: 8px;
+            border: 3px solid #3a3a3a;
+            position: relative;
+            box-shadow:
+                inset 0 2px 10px rgba(0,0,0,0.5),
+                0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .cassette-label {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(180deg, var(--rust) 0%, var(--rust-dark) 100%);
+            padding: 8px 25px;
+            border-radius: 3px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .cassette-title {
+            display: block;
+            font-family: 'Trevor', sans-serif;
+            font-size: 14px;
+            color: var(--ink);
+            letter-spacing: 2px;
+        }
+
+        .cassette-subtitle {
+            display: block;
+            font-size: 10px;
+            color: var(--ink);
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .cassette-reels {
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 80px;
+        }
+
+        .reel {
+            width: 50px;
+            height: 50px;
+            background: #111;
+            border-radius: 50%;
+            border: 3px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .reel::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: repeating-conic-gradient(
+                from 0deg,
+                #222 0deg 30deg,
+                #333 30deg 60deg
+            );
+        }
+
+        .reel-center {
+            width: 15px;
+            height: 15px;
+            background: #555;
+            border-radius: 50%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .reel.spinning {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cassette-window {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 60px;
+            background: rgba(0,0,0,0.6);
+            border: 2px solid #444;
+            border-radius: 3px;
+        }
+
+        /* TRACK INFO */
+        .track-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .track-number {
+            font-family: 'Trevor', sans-serif;
+            font-size: 24px;
+            color: var(--rust);
+        }
+
+        .track-name {
+            font-family: 'Trevor', sans-serif;
+            font-size: 20px;
+            color: var(--ink);
+            letter-spacing: 1px;
+        }
+
+        .track-duration {
+            font-size: 12px;
+            color: var(--blue-ink);
+            font-family: monospace;
+        }
+
+        /* PROGRESS BAR */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: var(--paper-dark);
+            border: 2px solid var(--ink);
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--rust) 0%, var(--cyan-bright) 100%);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* CONTROLS */
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            background: var(--ink);
+            border: none;
+            border-radius: 50%;
+            color: var(--paper);
+            cursor: url("imagenes/Cursor.png"), pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--rust);
+            transform: scale(1.1);
+        }
+
+        .control-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .play-btn {
+            width: 65px;
+            height: 65px;
+            background: var(--rust);
+        }
+
+        .play-btn:hover {
+            background: var(--cyan-bright);
+        }
+
+        .play-btn svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .volume-btn {
+            width: 40px;
+            height: 40px;
+        }
+
+        .volume-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* VOLUME SLIDER */
+        .volume-slider-container {
+            display: none;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .volume-slider-container.active {
+            display: flex;
+        }
+
+        .volume-slider {
+            width: 150px;
+            height: 6px;
+            -webkit-appearance: none;
+            background: var(--paper-dark);
+            border: 2px solid var(--ink);
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--rust);
+            border: 2px solid var(--ink);
+            border-radius: 50%;
+            cursor: url("imagenes/Cursor.png"), pointer;
+        }
+
+        /* PLAYLIST */
+        .playlist {
+            border: 2px solid var(--ink);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--paper-dark);
+            cursor: url("imagenes/Cursor.png"), pointer;
+            transition: all 0.2s ease;
+        }
+
+        .playlist-item:last-child {
+            border-bottom: none;
+        }
+
+        .playlist-item:hover {
+            background: var(--paper-dark);
+        }
+
+        .playlist-item.active {
+            background: var(--rust);
+            color: var(--ink);
+        }
+
+        .playlist-item.active .playlist-num,
+        .playlist-item.active .playlist-name,
+        .playlist-item.active .playlist-time {
+            color: var(--ink);
+        }
+
+        .playlist-num {
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--blue-ink);
+            width: 30px;
+        }
+
+        .playlist-name {
+            flex: 1;
+            font-size: 14px;
+            color: var(--ink);
+        }
+
+        .playlist-time {
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--blue-ink);
+        }
+
+        .playlist::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .playlist::-webkit-scrollbar-track {
+            background: var(--paper-dark);
+        }
+
+        .playlist::-webkit-scrollbar-thumb {
+            background: var(--rust);
+        }
+
+        .ost-coming-soon {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--blue-ink);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .ost-player {
+                padding: 20px 15px;
+            }
+
+            .cassette-body {
+                width: 220px;
+                height: 140px;
+            }
+
+            .cassette-label {
+                padding: 6px 15px;
+            }
+
+            .cassette-title {
+                font-size: 11px;
+            }
+
+            .cassette-reels {
+                gap: 50px;
+                bottom: 25px;
+            }
+
+            .reel {
+                width: 35px;
+                height: 35px;
+            }
+
+            .cassette-window {
+                width: 70px;
+                height: 45px;
+                bottom: 20px;
+            }
+
+            .track-name {
+                font-size: 16px;
+            }
+
+            .control-btn {
+                width: 45px;
+                height: 45px;
+            }
+
+            .play-btn {
+                width: 55px;
+                height: 55px;
+            }
+        }
+    </style>
+
+    <script>
+        // OST Player
+        (function() {
+            // Placeholder tracks - reemplazar con los reales
+            const tracks = [
+                { name: 'ReTruco Main', artist: 'Double T', src: 'songs/ReTruco Main -Double T.mp3' },
+                { name: 'Boliche Ambience', artist: 'Double T', src: 'songs/Boliche Ambience 01 -Double T.mp3' },
+                { name: 'Ciudad Porteña', artist: 'Vava', src: 'songs/Ciudad Porteña -Vava.m4a' },
+                { name: 'Communist Song', artist: 'Double T', src: 'songs/Communist song -Double T.mp3' },
+                { name: 'Ricky Fort Bossfight', artist: 'necrofantasy', src: 'songs/Ricky Fort Bossfight -necrofantasy.mp3' }
+            ];
+
+            let currentTrack = 0;
+            let isPlaying = false;
+            let audio = new Audio();
+            audio.volume = 0.8;
+
+            const playBtn = document.getElementById('playBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const volumeBtn = document.getElementById('volumeBtn');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const volumeSliderContainer = document.getElementById('volumeSliderContainer');
+            const progressBar = document.getElementById('progressBar');
+            const progressContainer = document.getElementById('progressContainer');
+            const trackName = document.getElementById('trackName');
+            const trackNumber = document.getElementById('trackNumber');
+            const trackDuration = document.getElementById('trackDuration');
+            const reelLeft = document.getElementById('reelLeft');
+            const reelRight = document.getElementById('reelRight');
+            const playlistItems = document.querySelectorAll('.playlist-item');
+
+            function formatTime(seconds) {
+                if (isNaN(seconds)) return '0:00';
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return mins + ':' + (secs < 10 ? '0' : '') + secs;
+            }
+
+            function updateTrackInfo() {
+                trackName.textContent = tracks[currentTrack].name;
+                trackNumber.textContent = String(currentTrack + 1).padStart(2, '0');
+
+                playlistItems.forEach((item, index) => {
+                    item.classList.toggle('active', index === currentTrack);
+                });
+            }
+
+            function togglePlay() {
+                if (!tracks[currentTrack].src) {
+                    // No hay audio cargado, mostrar mensaje
+                    trackDuration.textContent = 'Proximamente';
+                    return;
+                }
+
+                if (isPlaying) {
+                    audio.pause();
+                    isPlaying = false;
+                    playBtn.querySelector('.play-icon').style.display = 'block';
+                    playBtn.querySelector('.pause-icon').style.display = 'none';
+                    reelLeft.classList.remove('spinning');
+                    reelRight.classList.remove('spinning');
+                } else {
+                    audio.play();
+                    isPlaying = true;
+                    playBtn.querySelector('.play-icon').style.display = 'none';
+                    playBtn.querySelector('.pause-icon').style.display = 'block';
+                    reelLeft.classList.add('spinning');
+                    reelRight.classList.add('spinning');
+                }
+            }
+
+            function loadTrack(index) {
+                currentTrack = index;
+                if (tracks[index].src) {
+                    audio.src = tracks[index].src;
+                    audio.load();
+                }
+                updateTrackInfo();
+                progressBar.style.width = '0%';
+
+                if (isPlaying && tracks[index].src) {
+                    audio.play();
+                }
+            }
+
+            function nextTrack() {
+                currentTrack = (currentTrack + 1) % tracks.length;
+                loadTrack(currentTrack);
+            }
+
+            function prevTrack() {
+                currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+                loadTrack(currentTrack);
+            }
+
+            // Event Listeners
+            playBtn.addEventListener('click', togglePlay);
+            nextBtn.addEventListener('click', nextTrack);
+            prevBtn.addEventListener('click', prevTrack);
+
+            volumeBtn.addEventListener('click', () => {
+                volumeSliderContainer.classList.toggle('active');
+            });
+
+            volumeSlider.addEventListener('input', (e) => {
+                audio.volume = e.target.value / 100;
+                const volumeOn = volumeBtn.querySelector('.volume-on');
+                const volumeOff = volumeBtn.querySelector('.volume-off');
+                if (audio.volume === 0) {
+                    volumeOn.style.display = 'none';
+                    volumeOff.style.display = 'block';
+                } else {
+                    volumeOn.style.display = 'block';
+                    volumeOff.style.display = 'none';
+                }
+            });
+
+            progressContainer.addEventListener('click', (e) => {
+                if (!tracks[currentTrack].src) return;
+                const rect = progressContainer.getBoundingClientRect();
+                const percent = (e.clientX - rect.left) / rect.width;
+                audio.currentTime = percent * audio.duration;
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressBar.style.width = percent + '%';
+                trackDuration.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
+            });
+
+            audio.addEventListener('ended', nextTrack);
+
+            playlistItems.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    loadTrack(index);
+                    if (!isPlaying) togglePlay();
+                });
+            });
+
+            // Initialize
+            updateTrackInfo();
+        })();
+    </script>
+
     <!-- CTA / DONACIONES -->
     <section id="cta">
         <div class="cta-stripes"></div>
@@ -3007,41 +3617,6 @@
         document.getElementById('galleryLightbox').addEventListener('click', (e) => {
             if (e.target.id === 'galleryLightbox') closeGallery();
         });
-
-        // Character Hover Effect
-        // Lluvia de plata en hover de "APOYÁ EL PROYECTO"
-        const ctaTitle = document.querySelector('#cta .section-title');
-        let isRaining = false;
-
-        function createPlataRain() {
-            if (isRaining) return;
-            isRaining = true;
-
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const plata = document.createElement('img');
-                    plata.src = 'imagenes/plata_Mesa de trabajo 1.png';
-                    plata.className = 'plata-rain';
-                    plata.style.left = Math.random() * 100 + 'vw';
-                    plata.style.top = '-150px';
-                    plata.style.width = (250 + Math.random() * 150) + 'px';
-                    plata.style.animationDuration = (2 + Math.random() * 2) + 's';
-                    document.body.appendChild(plata);
-
-                    setTimeout(() => {
-                        plata.remove();
-                    }, 4000);
-                }, i * 100);
-            }
-
-            setTimeout(() => {
-                isRaining = false;
-            }, 2500);
-        }
-
-        if (ctaTitle) {
-            ctaTitle.addEventListener('mouseenter', createPlataRain);
-        }
 
         // Character Modal
         const charData = {

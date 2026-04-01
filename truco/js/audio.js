@@ -15,6 +15,18 @@ class AudioManager {
         this.unlocked = false;
         this.audioContext = null;
 
+        // OST Soundtrack playlist
+        this.soundtrack = [
+            { file: '../songs/ReTruco Main -Double T.mp3', title: 'ReTruco Main', artist: 'Double T' },
+            { file: '../songs/Boliche Ambience 01 -Double T.mp3', title: 'Boliche Ambience', artist: 'Double T' },
+            { file: '../songs/Ciudad Porteña -Vava.m4a', title: 'Ciudad Porteña', artist: 'Vava' },
+            { file: '../songs/Communist song -Double T.mp3', title: 'Communist Song', artist: 'Double T' },
+            { file: '../songs/Ricky Fort Bossfight -necrofantasy.mp3', title: 'Ricky Fort Bossfight', artist: 'necrofantasy' },
+        ];
+        this.currentTrackIndex = 0;
+        this.shuffle = false;
+        this.shuffleHistory = [];
+
         // Sound file definitions
         this.soundFiles = {
             'card-shuffle': { file: 'card-shuffle', volume: 0.8 },
@@ -113,25 +125,94 @@ class AudioManager {
     }
 
     /* ============================================
-       SETUP BACKGROUND MUSIC
+       SETUP BACKGROUND MUSIC (OST Playlist)
        ============================================ */
     setupMusic() {
         this.music = new Audio();
-        this.music.loop = true;
+        this.music.loop = false; // We handle track advancement ourselves
         this.music.volume = this.musicVolume * this.masterVolume;
 
-        // Try different formats
-        const basePath = 'audio/music-loop';
-        const formats = ['.mp3', '.ogg', '.wav'];
+        // Auto-advance to next track when current ends
+        this.music.addEventListener('ended', () => {
+            this.nextTrack();
+        });
 
-        for (const format of formats) {
-            try {
-                this.music.src = basePath + format;
-                break;
-            } catch {
-                // Try next format
+        // Load first track
+        this.loadTrack(this.currentTrackIndex);
+    }
+
+    loadTrack(index) {
+        if (index < 0 || index >= this.soundtrack.length) return;
+
+        this.currentTrackIndex = index;
+        const track = this.soundtrack[index];
+        this.music.src = track.file;
+
+        // Dispatch event for UI updates
+        window.dispatchEvent(new CustomEvent('trackChange', {
+            detail: {
+                index: index,
+                title: track.title,
+                artist: track.artist,
+                total: this.soundtrack.length
             }
+        }));
+    }
+
+    getCurrentTrack() {
+        return {
+            ...this.soundtrack[this.currentTrackIndex],
+            index: this.currentTrackIndex,
+            total: this.soundtrack.length
+        };
+    }
+
+    nextTrack() {
+        let nextIndex;
+
+        if (this.shuffle) {
+            // Shuffle mode: pick random track (avoid immediate repeat)
+            const availableIndices = this.soundtrack
+                .map((_, i) => i)
+                .filter(i => i !== this.currentTrackIndex);
+            nextIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+            this.shuffleHistory.push(this.currentTrackIndex);
+        } else {
+            // Sequential mode
+            nextIndex = (this.currentTrackIndex + 1) % this.soundtrack.length;
         }
+
+        this.loadTrack(nextIndex);
+
+        if (!this.muted && this.unlocked) {
+            this.music.play().catch(() => {});
+        }
+    }
+
+    previousTrack() {
+        let prevIndex;
+
+        if (this.shuffle && this.shuffleHistory.length > 0) {
+            // Go back in shuffle history
+            prevIndex = this.shuffleHistory.pop();
+        } else {
+            // Sequential mode
+            prevIndex = (this.currentTrackIndex - 1 + this.soundtrack.length) % this.soundtrack.length;
+        }
+
+        this.loadTrack(prevIndex);
+
+        if (!this.muted && this.unlocked) {
+            this.music.play().catch(() => {});
+        }
+    }
+
+    toggleShuffle() {
+        this.shuffle = !this.shuffle;
+        if (!this.shuffle) {
+            this.shuffleHistory = [];
+        }
+        return this.shuffle;
     }
 
     /* ============================================
@@ -448,6 +529,39 @@ class AudioManager {
             volumeSlider.addEventListener('input', (e) => {
                 this.setMasterVolume(e.target.value / 100);
             });
+        }
+
+        // OST controls (optional elements)
+        const nextBtn = document.getElementById('ost-next');
+        const prevBtn = document.getElementById('ost-prev');
+        const shuffleBtn = document.getElementById('ost-shuffle');
+        const trackDisplay = document.getElementById('ost-track-display');
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => this.nextTrack());
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => this.previousTrack());
+        }
+
+        if (shuffleBtn) {
+            shuffleBtn.addEventListener('click', () => {
+                const isShuffled = this.toggleShuffle();
+                shuffleBtn.classList.toggle('active', isShuffled);
+            });
+        }
+
+        // Update track display on track change
+        if (trackDisplay) {
+            window.addEventListener('trackChange', (e) => {
+                const { title, artist, index, total } = e.detail;
+                trackDisplay.innerHTML = `<span class="track-number">${index + 1}/${total}</span> ${title} <span class="track-artist">- ${artist}</span>`;
+            });
+
+            // Set initial display
+            const track = this.getCurrentTrack();
+            trackDisplay.innerHTML = `<span class="track-number">${track.index + 1}/${track.total}</span> ${track.title} <span class="track-artist">- ${track.artist}</span>`;
         }
     }
 }
