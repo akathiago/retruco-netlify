@@ -2101,11 +2101,100 @@
                 object-position: center;
             }
         }
+
+        /* PRELOADER STYLES */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('imagenes/fondocarga.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #A07F56;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .preloader-content {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .preloader-counter {
+            font-family: 'Trevor', sans-serif;
+            font-size: 6rem;
+            color: white;
+            text-shadow: 4px 4px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+            margin: 0;
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+        }
+
+        .preloader-character {
+            position: relative;
+            width: 1800px;
+            height: 1800px;
+        }
+
+        .preloader-character img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .cesar-eyes {
+            opacity: 1;
+        }
+
+        .cesar-blink {
+            opacity: 0;
+        }
+
+        .cesar-blinking .cesar-eyes {
+            opacity: 0;
+        }
+
+        .cesar-blinking .cesar-blink {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .preloader-counter {
+                font-size: 4rem;
+            }
+            .preloader-character {
+                width: 600px;
+                height: 600px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Skip link for keyboard accessibility -->
-    <a href="#about" class="skip-link">Saltar al contenido principal</a>
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-content">
+            <p id="counter" class="preloader-counter">0%</p>
+            <div class="preloader-character">
+                <img id="cesarOjos" src="imagenes/cesarojosabiertos.png" alt="César cargando" class="cesar-eyes">
+                <img id="cesarPestanea" src="imagenes/cesarpestañando.png" alt="César pestañeando" class="cesar-blink">
+            </div>
+        </div>
+    </div>
 
     <!-- NAV -->
     <nav>
@@ -3449,6 +3538,94 @@
         })();
     </script>
 
+    <!-- EN CONSTRUCCION -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+        #construccion .cinta-1 {
+            pointer-events: none;
+        }
+        #construccion .cinta-2,
+        #construccion .cinta-3 {
+            width: 150%; height: auto; display: block; position: absolute; top: 40%; left: 50%;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+        }
+        #construccion .cinta-2 {
+            clip-path: polygon(100% 100%, 100% 85%, 15% 0%, 0% 0%, 0% 15%, 85% 100%);
+        }
+        #construccion .cinta-3 {
+            clip-path: polygon(0% 100%, 0% 80%, 80% 0%, 100% 0%, 100% 20%, 20% 100%);
+        }
+    </style>
+    <section id="construccion" style="padding: 0; width: 100%; background: #0f0f1a; position: relative; overflow: hidden; cursor: pointer;">
+        <img src="imagenes/EnConstruccion1.png" alt="En construcción - fondo" class="cinta-1" style="width: 100%; height: auto; display: block;" loading="lazy">
+        <img src="imagenes/EnConstruccion2.png" alt="En construcción - medio" class="cinta-2" loading="lazy">
+        <img src="imagenes/EnConstruccion3.png" alt="En construcción - frente" class="cinta-3" loading="lazy">
+    </section>
+    <script>
+        (function() {
+            const section = document.getElementById('construccion');
+            const cinta2 = section.querySelector('.cinta-2');
+            const cinta3 = section.querySelector('.cinta-3');
+            let isOpen = false;
+            let tl = null;
+            let closeTl = null;
+
+            // Usar xPercent/yPercent que respeta el transform CSS
+            gsap.set([cinta2, cinta3], { xPercent: -50, yPercent: -50 });
+
+            function openCintas() {
+                if (isOpen) return;
+                isOpen = true;
+
+                if (closeTl) closeTl.kill();
+                if (tl) tl.kill();
+                tl = gsap.timeline();
+
+                // Primero la azul a bottom-left
+                tl.to(cinta3, {
+                    xPercent: -150,
+                    yPercent: 50,
+                    duration: 0.8,
+                    ease: 'power2.in'
+                });
+
+                // A los 0.2s la roja a bottom-right
+                tl.to(cinta2, {
+                    xPercent: 50,
+                    yPercent: 50,
+                    duration: 0.8,
+                    ease: 'power2.in'
+                }, '-=0.6');
+            }
+
+            function closeCintas() {
+                if (tl) tl.kill();
+                isOpen = false;
+
+                closeTl = gsap.timeline();
+
+                // Roja vuelve a -50, -50
+                closeTl.to(cinta2, {
+                    xPercent: -50,
+                    yPercent: -50,
+                    duration: 0.8,
+                    ease: 'power2.out'
+                });
+                // Azul vuelve a -50, -50
+                closeTl.to(cinta3, {
+                    xPercent: -50,
+                    yPercent: -50,
+                    duration: 0.8,
+                    ease: 'power2.out'
+                }, '-=0.6');
+            }
+
+            cinta3.addEventListener('mouseenter', openCintas);
+            section.addEventListener('mouseleave', closeCintas);
+        })();
+    </script>
+
     <!-- CTA / DONACIONES -->
     <section id="cta">
         <div class="cta-stripes"></div>
@@ -3758,6 +3935,50 @@
                 closeCharModal();
             }
         });
+
+        // ===== PRELOADER =====
+        // Bloquear scroll mientras carga
+        document.body.style.overflow = 'hidden';
+
+        let preloaderCounter = 0;
+        const counterElement = document.getElementById('counter');
+        const preloader = document.getElementById('preloader');
+        const cesarCharacter = document.querySelector('.preloader-character');
+
+        // Función para pestañear
+        function cesarBlink() {
+            cesarCharacter.classList.add('cesar-blinking');
+            setTimeout(() => {
+                cesarCharacter.classList.remove('cesar-blinking');
+            }, 350);
+        }
+
+        // Pestañear cada 2-4 segundos aleatorio
+        function scheduleNextBlink() {
+            const randomDelay = 2000 + Math.random() * 2000;
+            setTimeout(() => {
+                if (preloaderCounter < 100) {
+                    cesarBlink();
+                    scheduleNextBlink();
+                }
+            }, randomDelay);
+        }
+        scheduleNextBlink();
+
+        const updatePreloaderCounter = () => {
+            preloaderCounter++;
+            counterElement.textContent = `${preloaderCounter}%`;
+
+            if (preloaderCounter === 100) {
+                clearInterval(preloaderInterval);
+                preloader.style.opacity = '0';
+                preloader.style.pointerEvents = 'none';
+                document.body.style.overflow = '';
+            }
+        };
+
+        // Incrementar cada 60ms (100 pasos × 60ms = 6 segundos total)
+        const preloaderInterval = setInterval(updatePreloaderCounter, 60);
 
     </script>
 
