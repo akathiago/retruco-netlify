@@ -3940,10 +3940,13 @@
         // Bloquear scroll mientras carga
         document.body.style.overflow = 'hidden';
 
-        let preloaderCounter = 0;
         const counterElement = document.getElementById('counter');
         const preloader = document.getElementById('preloader');
         const cesarCharacter = document.querySelector('.preloader-character');
+
+        let currentProgress = 0;
+        let targetProgress = 0;
+        let loadingComplete = false;
 
         // Función para pestañear
         function cesarBlink() {
@@ -3957,7 +3960,7 @@
         function scheduleNextBlink() {
             const randomDelay = 2000 + Math.random() * 2000;
             setTimeout(() => {
-                if (preloaderCounter < 100) {
+                if (!loadingComplete) {
                     cesarBlink();
                     scheduleNextBlink();
                 }
@@ -3965,20 +3968,56 @@
         }
         scheduleNextBlink();
 
-        const updatePreloaderCounter = () => {
-            preloaderCounter++;
-            counterElement.textContent = `${preloaderCounter}%`;
+        // Obtener todas las imágenes (excluyendo las del preloader)
+        const images = Array.from(document.querySelectorAll('img:not(.cesar-eyes):not(.cesar-blink)'));
+        const totalResources = images.length + 1; // +1 para window load
+        let loadedResources = 0;
 
-            if (preloaderCounter === 100) {
-                clearInterval(preloaderInterval);
+        function updateProgress() {
+            loadedResources++;
+            targetProgress = Math.floor((loadedResources / totalResources) * 100);
+        }
+
+        // Animar el contador suavemente hacia el target
+        function animateCounter() {
+            if (currentProgress < targetProgress) {
+                currentProgress++;
+                counterElement.textContent = `${currentProgress}%`;
+            }
+
+            if (currentProgress >= 100) {
+                loadingComplete = true;
                 preloader.style.opacity = '0';
                 preloader.style.pointerEvents = 'none';
                 document.body.style.overflow = '';
+                return;
             }
-        };
 
-        // Incrementar cada 60ms (100 pasos × 60ms = 6 segundos total)
-        const preloaderInterval = setInterval(updatePreloaderCounter, 60);
+            requestAnimationFrame(animateCounter);
+        }
+        animateCounter();
+
+        // Trackear carga de cada imagen
+        images.forEach(img => {
+            if (img.complete) {
+                updateProgress();
+            } else {
+                img.addEventListener('load', updateProgress);
+                img.addEventListener('error', updateProgress);
+            }
+        });
+
+        // Cuando todo esté completamente cargado
+        window.addEventListener('load', () => {
+            targetProgress = 100;
+        });
+
+        // Fallback: máximo 15 segundos de espera
+        setTimeout(() => {
+            if (!loadingComplete) {
+                targetProgress = 100;
+            }
+        }, 15000);
 
     </script>
 
