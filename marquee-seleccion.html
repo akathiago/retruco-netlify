@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retruco - Marquees Seleccionados</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <style>
+        @font-face {
+            font-family: 'Trevor';
+            src: url('fuentes/TREVOR.TTF') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        :root {
+            --concrete-1: #0a1a24;
+            --concrete-2: #0f2535;
+            --concrete-3: #1a3545;
+            --rust: #2bb8cd;
+            --rust-dark: #1a8fa5;
+            --caution: #7dd4e4;
+            --graffiti: #5eead4;
+            --paper: #e0f7fa;
+            --paper-dark: #b2ebf2;
+            --ink: #0a1a24;
+            --cyan-bright: #22d3ee;
+            --cyan-glow: rgba(43, 184, 205, 0.5);
+            --warning-yellow: #fbbf24;
+            --danger-red: #ef4444;
+            --success-green: #22c55e;
+            --tape-color: rgba(255, 235, 180, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--concrete-1);
+            color: var(--paper);
+            overflow-x: hidden;
+            min-height: 100vh;
+            cursor: url("imagenes/Cursor.png"), auto;
+        }
+
+        a, button {
+            cursor: url("imagenes/Cursor.png"), pointer;
+        }
+
+        /* ============================================
+           SECTION HEADERS
+        ============================================ */
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-tag {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: var(--rust);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .section-title {
+            font-family: 'Trevor', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--rust);
+        }
+
+        /* ============================================
+           1. MARQUEE PERSONAJES (POLAROIDS)
+        ============================================ */
+        .marquee-section-characters {
+            padding: 120px 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(43, 184, 205, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(34, 211, 238, 0.08) 0%, transparent 50%),
+                var(--concrete-1);
+            position: relative;
+        }
+
+        .marquee-characters {
+            padding: 40px 0;
+        }
+
+        .marquee-characters .swiper-slide {
+            width: auto;
+            padding: 20px 25px;
+        }
+
+        .polaroid {
+            background: var(--paper);
+            padding: 15px 15px 50px;
+            transform: rotate(var(--rotation, 0deg));
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            box-shadow:
+                8px 8px 0 var(--ink),
+                12px 12px 25px rgba(0,0,0,0.4);
+        }
+
+        .polaroid::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 25px;
+            background: var(--tape-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 5;
+        }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.1) translateY(-10px);
+            box-shadow:
+                0 20px 40px rgba(43, 184, 205, 0.4),
+                0 0 0 3px var(--rust);
+            z-index: 100;
+        }
+
+        .polaroid-img {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            background: linear-gradient(135deg, #e8e8e8, #d0d0d0);
+            display: block;
+        }
+
+        .polaroid-name {
+            position: absolute;
+            bottom: 12px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.1rem;
+            color: var(--ink);
+            letter-spacing: 2px;
+        }
+
+        .polaroid .pin {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle at 30% 30%, #ff4444, #aa0000);
+            border-radius: 50%;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .polaroid .pin::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 6px;
+            height: 6px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* ============================================
+           2. MARQUEE SCREENSHOTS
+        ============================================ */
+        .marquee-section-screenshots {
+            padding: 120px 0;
+            background:
+                linear-gradient(180deg, var(--concrete-2) 0%, var(--concrete-1) 100%);
+        }
+
+        .marquee-screenshots {
+            padding: 40px 0;
+        }
+
+        .marquee-screenshots .swiper-slide {
+            width: auto;
+            padding: 20px;
+        }
+
+        .screenshot-frame {
+            position: relative;
+            border: 5px solid var(--ink);
+            box-shadow:
+                10px 10px 0 var(--rust),
+                15px 15px 30px rgba(0,0,0,0.4);
+            transform: rotate(var(--rotation, 0deg));
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .screenshot-frame:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow:
+                0 0 0 3px var(--cyan-bright),
+                0 20px 50px rgba(43, 184, 205, 0.4);
+        }
+
+        .screenshot-frame img {
+            width: 350px;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .screenshot-frame:hover img {
+            transform: scale(1.1);
+        }
+
+        .screenshot-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(10, 26, 36, 0.95));
+            padding: 30px 15px 15px;
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.9rem;
+            color: var(--paper);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ============================================
+           3. MARQUEE ZIGZAG
+        ============================================ */
+        .marquee-section-zigzag {
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+            background: var(--concrete-1);
+        }
+
+        .zigzag-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .zigzag-row {
+            padding: 18px 0;
+            position: relative;
+        }
+
+        .zigzag-row:nth-child(1) {
+            background: var(--rust);
+            transform: skewY(-3deg);
+            margin-bottom: -25px;
+            z-index: 1;
+        }
+
+        .zigzag-row:nth-child(2) {
+            background: var(--ink);
+            border-top: 4px solid var(--cyan-bright);
+            border-bottom: 4px solid var(--cyan-bright);
+            z-index: 3;
+            padding: 25px 0;
+        }
+
+        .zigzag-row:nth-child(3) {
+            background: var(--success-green);
+            transform: skewY(3deg);
+            margin-top: -25px;
+            z-index: 2;
+        }
+
+        .zigzag-row .swiper-slide {
+            width: auto;
+            padding: 0 25px;
+        }
+
+        .zigzag-row .marquee-text {
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .zigzag-row:nth-child(1) .marquee-text,
+        .zigzag-row:nth-child(3) .marquee-text {
+            color: var(--ink);
+        }
+
+        .zigzag-row:nth-child(2) .marquee-text {
+            color: var(--paper);
+            font-size: 2rem;
+        }
+
+        /* ============================================
+           4. MARQUEE VERTICAL LATERALES
+        ============================================ */
+        .vertical-marquee-container {
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            width: 45px;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        @media (min-width: 1200px) {
+            body {
+                padding-left: 45px;
+                padding-right: 45px;
+            }
+        }
+
+        @media (max-width: 1199px) {
+            .vertical-marquee-container {
+                display: none;
+            }
+        }
+
+        .vertical-marquee-left {
+            left: 0;
+            background: var(--rust);
+            border-right: 3px solid var(--cyan-bright);
+        }
+
+        .vertical-marquee-right {
+            right: 0;
+            background: var(--danger-red);
+            border-left: 3px solid var(--warning-yellow);
+        }
+
+        .vertical-marquee {
+            height: 200%;
+            writing-mode: vertical-rl;
+            animation: scroll-vertical 25s linear infinite;
+        }
+
+        .vertical-marquee-right .vertical-marquee {
+            animation-direction: reverse;
+        }
+
+        .vertical-marquee .v-text {
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.85rem;
+            color: var(--ink);
+            text-transform: uppercase;
+            white-space: nowrap;
+            padding: 15px 8px;
+            display: inline-block;
+            letter-spacing: 2px;
+        }
+
+        .vertical-marquee-right .v-text {
+            color: white;
+        }
+
+        @keyframes scroll-vertical {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 768px) {
+            .polaroid-img {
+                width: 140px;
+                height: 140px;
+            }
+
+            .polaroid {
+                padding: 10px 10px 40px;
+            }
+
+            .screenshot-frame img {
+                width: 280px;
+                height: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 4. VERTICAL LATERALES -->
+    <div class="vertical-marquee-container vertical-marquee-left">
+        <div class="vertical-marquee">
+            <span class="v-text">RETRUCO</span>
+            <span class="v-text">*</span>
+            <span class="v-text">BUENOS AIRES</span>
+            <span class="v-text">*</span>
+            <span class="v-text">2025</span>
+            <span class="v-text">*</span>
+            <span class="v-text">UNDERGROUND</span>
+            <span class="v-text">*</span>
+            <span class="v-text">RETRUCO</span>
+            <span class="v-text">*</span>
+            <span class="v-text">BUENOS AIRES</span>
+            <span class="v-text">*</span>
+            <span class="v-text">2025</span>
+            <span class="v-text">*</span>
+            <span class="v-text">UNDERGROUND</span>
+            <span class="v-text">*</span>
+        </div>
+    </div>
+
+    <div class="vertical-marquee-container vertical-marquee-right">
+        <div class="vertical-marquee">
+            <span class="v-text">DEMO GRATIS</span>
+            <span class="v-text">*</span>
+            <span class="v-text">JUGA YA</span>
+            <span class="v-text">*</span>
+            <span class="v-text">100% ARGENTINO</span>
+            <span class="v-text">*</span>
+            <span class="v-text">DEMO GRATIS</span>
+            <span class="v-text">*</span>
+            <span class="v-text">JUGA YA</span>
+            <span class="v-text">*</span>
+            <span class="v-text">100% ARGENTINO</span>
+            <span class="v-text">*</span>
+        </div>
+    </div>
+
+    <!-- 1. PERSONAJES (POLAROIDS) -->
+    <section class="marquee-section-characters">
+        <div class="section-header">
+            <span class="section-tag">Conoce al Equipo</span>
+            <h2 class="section-title">PERSONAJES</h2>
+        </div>
+
+        <div class="marquee-characters swiper" id="marquee-characters">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="polaroid" style="--rotation: -4deg;">
+                        <div class="pin"></div>
+                        <img src="imagenes/cesar.png" alt="César" class="polaroid-img">
+                        <span class="polaroid-name">CESAR</span>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="polaroid" style="--rotation: 3deg;">
+                        <div class="pin"></div>
+                        <img src="imagenes/dario.png" alt="Darío" class="polaroid-img">
+                        <span class="polaroid-name">DARIO</span>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="polaroid" style="--rotation: -2deg;">
+                        <div class="pin"></div>
+                        <img src="imagenes/bignone.png" alt="Bignone" class="polaroid-img">
+                        <span class="polaroid-name">BIGNONE</span>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="polaroid" style="--rotation: 5deg;">
+                        <div class="pin"></div>
+                        <img src="imagenes/xiao.png" alt="Xiao" class="polaroid-img">
+                        <span class="polaroid-name">XIAO</span>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="polaroid" style="--rotation: -3deg;">
+                        <div class="pin"></div>
+                        <img src="imagenes/cesar.png" alt="César" class="polaroid-img">
+                        <span class="polaroid-name">CESAR</span>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="polaroid" style="--rotation: 2deg;">
+                        <div class="pin"></div>
+                        <img src="imagenes/dario.png" alt="Darío" class="polaroid-img">
+                        <span class="polaroid-name">DARIO</span>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="polaroid" style="--rotation: -4deg;">
+                        <div class="pin"></div>
+                        <img src="imagenes/bignone.png" alt="Bignone" class="polaroid-img">
+                        <span class="polaroid-name">BIGNONE</span>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="polaroid" style="--rotation: 3deg;">
+                        <div class="pin"></div>
+                        <img src="imagenes/xiao.png" alt="Xiao" class="polaroid-img">
+                        <span class="polaroid-name">XIAO</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. SCREENSHOTS -->
+    <section class="marquee-section-screenshots">
+        <div class="section-header">
+            <span class="section-tag">Galeria</span>
+            <h2 class="section-title">SCREENSHOTS</h2>
+        </div>
+
+        <div class="marquee-screenshots swiper" id="marquee-screenshots">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="screenshot-frame" style="--rotation: -2deg;">
+                        <img src="imagenes/screenshot1.png" alt="Screenshot 1">
+                        <div class="screenshot-label">Gameplay #1</div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="screenshot-frame" style="--rotation: 3deg;">
+                        <img src="imagenes/screenshot2.png" alt="Screenshot 2">
+                        <div class="screenshot-label">Gameplay #2</div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="screenshot-frame" style="--rotation: -1deg;">
+                        <img src="imagenes/screenshot3.png" alt="Screenshot 3">
+                        <div class="screenshot-label">Gameplay #3</div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="screenshot-frame" style="--rotation: 2deg;">
+                        <img src="imagenes/screenshot4.png" alt="Screenshot 4">
+                        <div class="screenshot-label">Gameplay #4</div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="screenshot-frame" style="--rotation: -3deg;">
+                        <img src="imagenes/screenshot1.png" alt="Screenshot 1">
+                        <div class="screenshot-label">Gameplay #1</div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="screenshot-frame" style="--rotation: 1deg;">
+                        <img src="imagenes/screenshot2.png" alt="Screenshot 2">
+                        <div class="screenshot-label">Gameplay #2</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. ZIGZAG -->
+    <section class="marquee-section-zigzag">
+        <div class="zigzag-container">
+            <div class="zigzag-row swiper" id="zigzag-1">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><span class="marquee-text">ACCION</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">HUMOR</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">DELIRIO</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">SATIRA</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">ACCION</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">HUMOR</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                </div>
+            </div>
+
+            <div class="zigzag-row swiper" id="zigzag-2">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><span class="marquee-text">UNDERGROUND GAMES PRESENTA</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">///</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">RETRUCO</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">///</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">UNDERGROUND GAMES PRESENTA</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">///</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">RETRUCO</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">///</span></div>
+                </div>
+            </div>
+
+            <div class="zigzag-row swiper" id="zigzag-3">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><span class="marquee-text">RUN & GUN</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">BEAT EM UP</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">RPG</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">RUN & GUN</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">BEAT EM UP</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">RPG</span></div>
+                    <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        const marqueeConfig = {
+            slidesPerView: 'auto',
+            loop: true,
+            allowTouchMove: false,
+            speed: 8000,
+            autoplay: {
+                delay: 0,
+                disableOnInteraction: false,
+            },
+        };
+
+        // 1. Characters (draggable)
+        new Swiper('#marquee-characters', {
+            ...marqueeConfig,
+            speed: 15000,
+            grabCursor: true,
+            allowTouchMove: true,
+        });
+
+        // 2. Screenshots (draggable)
+        new Swiper('#marquee-screenshots', {
+            ...marqueeConfig,
+            speed: 18000,
+            grabCursor: true,
+            allowTouchMove: true,
+        });
+
+        // 3. ZigZag rows
+        new Swiper('#zigzag-1', {
+            ...marqueeConfig,
+            speed: 6000,
+        });
+
+        new Swiper('#zigzag-2', {
+            ...marqueeConfig,
+            speed: 10000,
+            autoplay: {
+                ...marqueeConfig.autoplay,
+                reverseDirection: true,
+            },
+        });
+
+        new Swiper('#zigzag-3', {
+            ...marqueeConfig,
+            speed: 5000,
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Underground Productions - Marquees</title>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <style>
+        @font-face {
+            font-family: 'TrashHand';
+            src: url('./fuentes/TrashHand.TTF') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'TrashHand', sans-serif;
+            background: #111;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 60px;
+            letter-spacing: 5px;
+        }
+
+        .marquee-label {
+            color: #666;
+            font-family: monospace;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            letter-spacing: 2px;
+        }
+
+        .marquee-wrapper {
+            margin-bottom: 60px;
+        }
+
+        /* ============================================
+           BASE MARQUEE STYLES
+        ============================================ */
+        .marquee {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marquee .swiper-slide {
+            width: auto;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+        }
+
+        .marquee-text {
+            font-family: 'TrashHand', sans-serif;
+            font-size: 2rem;
+            text-transform: uppercase;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            letter-spacing: 3px;
+            line-height: 1;
+            padding-top: 14px;
+        }
+
+        .marquee-logo {
+            height: 60px;
+            width: auto;
+            vertical-align: middle;
+            display: inline-block;
+            margin-top: -14px;
+        }
+
+        .marquee-logo.inverted {
+            filter: invert(1);
+        }
+
+        /* ============================================
+           MARQUEE 1 - Blanco/Negro, Recto
+        ============================================ */
+        .marquee-1 {
+            background: white;
+            border: 4px solid black;
+            padding: 20px 0;
+        }
+
+        .marquee-1 .marquee-text {
+            color: black;
+        }
+
+        /* ============================================
+           MARQUEE 2 - Blanco/Negro, Diagonal -3deg
+        ============================================ */
+        .marquee-2-wrapper {
+            overflow: hidden;
+            padding: 30px 0;
+        }
+
+        .marquee-2 {
+            background: white;
+            border-top: 4px solid black;
+            border-bottom: 4px solid black;
+            padding: 25px 0;
+            transform: rotate(-3deg) scale(1.1);
+        }
+
+        .marquee-2 .marquee-text {
+            color: black;
+            font-size: 1.8rem;
+        }
+
+        /* ============================================
+           MARQUEE 3 - Blanco/Negro, Diagonal +2deg, Grueso
+        ============================================ */
+        .marquee-3-wrapper {
+            overflow: hidden;
+            padding: 40px 0;
+        }
+
+        .marquee-3 {
+            background: white;
+            border: 8px solid black;
+            padding: 30px 0;
+            transform: rotate(2deg) scale(1.05);
+            box-shadow: 8px 8px 0 black;
+        }
+
+        .marquee-3 .marquee-text {
+            color: black;
+            font-size: 2.5rem;
+        }
+
+        .marquee-3 .marquee-logo {
+            height: 70px;
+        }
+
+        /* ============================================
+           MARQUEE 4 - Blanco/Negro, Doble borde
+        ============================================ */
+        .marquee-4 {
+            background: white;
+            border: 3px solid black;
+            outline: 3px solid black;
+            outline-offset: 4px;
+            padding: 18px 0;
+            margin: 10px;
+        }
+
+        .marquee-4 .marquee-text {
+            color: black;
+            font-size: 1.6rem;
+            letter-spacing: 8px;
+        }
+
+        /* ============================================
+           MARQUEE 5 - Blanco/Negro, Zigzag -5deg
+        ============================================ */
+        .marquee-5-wrapper {
+            overflow: hidden;
+            padding: 50px 0;
+        }
+
+        .marquee-5 {
+            background: white;
+            border-top: 6px solid black;
+            border-bottom: 6px solid black;
+            padding: 20px 0;
+            transform: rotate(-5deg) scale(1.15);
+        }
+
+        .marquee-5 .marquee-text {
+            color: black;
+            font-size: 2.2rem;
+        }
+
+        /* ============================================
+           MARQUEE 6 - Negro/Blanco, Recto (INVERTIDO)
+        ============================================ */
+        .marquee-6 {
+            background: black;
+            border: 4px solid white;
+            padding: 20px 0;
+        }
+
+        .marquee-6 .marquee-text {
+            color: white;
+        }
+
+        /* ============================================
+           MARQUEE 7 - Negro/Blanco, Diagonal +4deg
+        ============================================ */
+        .marquee-7-wrapper {
+            overflow: hidden;
+            padding: 35px 0;
+        }
+
+        .marquee-7 {
+            background: black;
+            border-top: 4px solid white;
+            border-bottom: 4px solid white;
+            padding: 25px 0;
+            transform: rotate(4deg) scale(1.1);
+        }
+
+        .marquee-7 .marquee-text {
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        /* ============================================
+           MARQUEE 8 - Negro/Blanco, -2deg con sombra blanca
+        ============================================ */
+        .marquee-8-wrapper {
+            overflow: hidden;
+            padding: 45px 0;
+        }
+
+        .marquee-8 {
+            background: black;
+            border: 6px solid white;
+            padding: 28px 0;
+            transform: rotate(-2deg) scale(1.08);
+            box-shadow: -8px -8px 0 white;
+        }
+
+        .marquee-8 .marquee-text {
+            color: white;
+            font-size: 2.4rem;
+        }
+
+        .marquee-8 .marquee-logo {
+            height: 75px;
+        }
+
+        /* ============================================
+           MARQUEE 9 - Negro/Blanco, Doble linea
+        ============================================ */
+        .marquee-9 {
+            background: black;
+            border: 2px solid white;
+            outline: 2px solid white;
+            outline-offset: 6px;
+            padding: 22px 0;
+            margin: 15px;
+        }
+
+        .marquee-9 .marquee-text {
+            color: white;
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+        }
+
+        /* ============================================
+           MARQUEE 10 - Negro/Blanco, +6deg extremo
+        ============================================ */
+        .marquee-10-wrapper {
+            overflow: hidden;
+            padding: 60px 0;
+        }
+
+        .marquee-10 {
+            background: black;
+            border-top: 8px solid white;
+            border-bottom: 8px solid white;
+            padding: 35px 0;
+            transform: rotate(6deg) scale(1.2);
+        }
+
+        .marquee-10 .marquee-text {
+            color: white;
+            font-size: 2.8rem;
+        }
+
+        .marquee-10 .marquee-logo {
+            height: 80px;
+        }
+
+        /* ============================================
+           SEPARADOR
+        ============================================ */
+        .separator {
+            text-align: center;
+            padding: 60px 0;
+            color: #333;
+            font-size: 1.2rem;
+            letter-spacing: 10px;
+            border-top: 1px solid #222;
+            border-bottom: 1px solid #222;
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">UNDERGROUND MARQUEES</h1>
+
+        <!-- MARQUEE 1 -->
+        <div class="marquee-wrapper">
+            <div class="marquee-label">MARQUEE 1 — Blanco/Negro, Recto</div>
+            <div class="marquee marquee-1 swiper" id="m1">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                    <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                    <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                    <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MARQUEE 2 -->
+        <div class="marquee-wrapper">
+            <div class="marquee-label">MARQUEE 2 — Blanco/Negro, Diagonal -3deg</div>
+            <div class="marquee-2-wrapper">
+                <div class="marquee marquee-2 swiper" id="m2">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                        <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                        <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                        <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MARQUEE 3 -->
+        <div class="marquee-wrapper">
+            <div class="marquee-label">MARQUEE 3 — Blanco/Negro, +2deg con sombra</div>
+            <div class="marquee-3-wrapper">
+                <div class="marquee marquee-3 swiper" id="m3">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"> CONTENIDO UNDER</span></div>
+                        <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                        <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                        <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"> CONTENIDO UNDER</span></div>
+                        <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                        <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                        <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MARQUEE 4 -->
+        <div class="marquee-wrapper">
+            <div class="marquee-label">MARQUEE 4 — Blanco/Negro, Doble borde</div>
+            <div class="marquee marquee-4 swiper" id="m4">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                    <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                    <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                    <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MARQUEE 5 -->
+        <div class="marquee-wrapper">
+            <div class="marquee-label">MARQUEE 5 — Blanco/Negro, -5deg extremo</div>
+            <div class="marquee-5-wrapper">
+                <div class="marquee marquee-5 swiper" id="m5">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                        <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                        <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                        <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEPARADOR -->
+        <div class="separator">— INVERTIDOS —</div>
+
+        <!-- MARQUEE 6 -->
+        <div class="marquee-wrapper">
+            <div class="marquee-label">MARQUEE 6 — Negro/Blanco, Recto</div>
+            <div class="marquee marquee-6 swiper" id="m6">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                    <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                    <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                    <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MARQUEE 7 -->
+        <div class="marquee-wrapper">
+            <div class="marquee-label">MARQUEE 7 — Negro/Blanco, +4deg</div>
+            <div class="marquee-7-wrapper">
+                <div class="marquee marquee-7 swiper" id="m7">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                        <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                        <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                        <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MARQUEE 8 -->
+        <div class="marquee-wrapper">
+            <div class="marquee-label">MARQUEE 8 — Negro/Blanco, -2deg con sombra</div>
+            <div class="marquee-8-wrapper">
+                <div class="marquee marquee-8 swiper" id="m8">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"> CONTENIDO UNDER</span></div>
+                        <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                        <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                        <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"> CONTENIDO UNDER</span></div>
+                        <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                        <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                        <div class="swiper-slide"><span class="marquee-text">*</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MARQUEE 9 -->
+        <div class="marquee-wrapper">
+            <div class="marquee-label">MARQUEE 9 — Negro/Blanco, Doble linea</div>
+            <div class="marquee marquee-9 swiper" id="m9">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                    <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                    <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                    <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                    <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MARQUEE 10 -->
+        <div class="marquee-wrapper">
+            <div class="marquee-label">MARQUEE 10 — Negro/Blanco, +6deg extremo</div>
+            <div class="marquee-10-wrapper">
+                <div class="marquee marquee-10 swiper" id="m10">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                        <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                        <div class="swiper-slide"><span class="marquee-text">NO APTO PARA GILES</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                        <div class="swiper-slide"><span class="marquee-text">CONTENIDO UNDER</span></div>
+                        <div class="swiper-slide"><span class="marquee-text"><img src="imagenes/logounderground.png" class="marquee-logo inverted"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        const baseConfig = {
+            slidesPerView: 'auto',
+            loop: true,
+            allowTouchMove: false,
+            autoplay: {
+                delay: 0,
+                disableOnInteraction: false,
+            },
+        };
+
+        // Marquee 1 - Normal speed
+        new Swiper('#m1', { ...baseConfig, speed: 8000 });
+
+        // Marquee 2 - Faster, reverse
+        new Swiper('#m2', {
+            ...baseConfig,
+            speed: 6000,
+            autoplay: { ...baseConfig.autoplay, reverseDirection: true }
+        });
+
+        // Marquee 3 - Slow
+        new Swiper('#m3', { ...baseConfig, speed: 12000 });
+
+        // Marquee 4 - Fast
+        new Swiper('#m4', { ...baseConfig, speed: 5000 });
+
+        // Marquee 5 - Medium, reverse
+        new Swiper('#m5', {
+            ...baseConfig,
+            speed: 7000,
+            autoplay: { ...baseConfig.autoplay, reverseDirection: true }
+        });
+
+        // Marquee 6 - Normal
+        new Swiper('#m6', { ...baseConfig, speed: 9000 });
+
+        // Marquee 7 - Fast, reverse
+        new Swiper('#m7', {
+            ...baseConfig,
+            speed: 5500,
+            autoplay: { ...baseConfig.autoplay, reverseDirection: true }
+        });
+
+        // Marquee 8 - Slow
+        new Swiper('#m8', { ...baseConfig, speed: 11000 });
+
+        // Marquee 9 - Very fast
+        new Swiper('#m9', { ...baseConfig, speed: 4000 });
+
+        // Marquee 10 - Medium, reverse
+        new Swiper('#m10', {
+            ...baseConfig,
+            speed: 8000,
+            autoplay: { ...baseConfig.autoplay, reverseDirection: true }
+        });
+    </script>
+</body>
+</html>

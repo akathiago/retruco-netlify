@@ -2181,6 +2181,159 @@
                 height: 600px;
             }
         }
+
+        /* ========================================
+           MASKING TAPE TRANSITION
+           ======================================== */
+        .tape-transition {
+            position: relative;
+            height: 0;
+            overflow: visible;
+            z-index: 20;
+        }
+
+        .masking-tape {
+            position: absolute;
+            height: 42px;
+            background: linear-gradient(180deg,
+                rgba(245, 235, 200, 0.92) 0%,
+                rgba(230, 218, 180, 0.95) 50%,
+                rgba(245, 235, 200, 0.92) 100%
+            );
+            box-shadow:
+                2px 3px 6px rgba(0,0,0,0.4),
+                inset 0 1px 2px rgba(255,255,255,0.5),
+                inset 0 -1px 1px rgba(0,0,0,0.1);
+            z-index: 20;
+            clip-path: polygon(
+                0% 8%, 2% 0%, 5% 5%, 8% 2%, 12% 6%, 15% 0%, 18% 4%, 22% 1%, 25% 5%, 28% 0%, 32% 3%, 35% 6%, 38% 2%, 42% 5%, 45% 0%, 48% 4%, 52% 1%, 55% 6%, 58% 2%, 62% 5%, 65% 0%, 68% 3%, 72% 6%, 75% 1%, 78% 4%, 82% 0%, 85% 5%, 88% 2%, 92% 6%, 95% 0%, 98% 4%, 100% 6%,
+                100% 92%, 98% 100%, 95% 95%, 92% 98%, 88% 94%, 85% 100%, 82% 96%, 78% 99%, 75% 95%, 72% 100%, 68% 94%, 65% 97%, 62% 100%, 58% 95%, 55% 98%, 52% 94%, 48% 100%, 45% 96%, 42% 99%, 38% 94%, 35% 100%, 32% 97%, 28% 94%, 25% 100%, 22% 95%, 18% 98%, 15% 94%, 12% 100%, 8% 96%, 5% 99%, 2% 94%, 0% 100%
+            );
+        }
+
+        .masking-tape::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(90deg, transparent 0px, transparent 6px, rgba(0,0,0,0.02) 6px, rgba(0,0,0,0.02) 12px);
+        }
+
+        .masking-tape.tape-1 {
+            left: 6%;
+            width: 200px;
+            top: -21px;
+            transform: rotate(-2.5deg);
+        }
+
+        .masking-tape.tape-2 {
+            left: 42%;
+            width: 240px;
+            top: -21px;
+            transform: rotate(1.5deg);
+        }
+
+        .masking-tape.tape-3 {
+            right: 4%;
+            width: 180px;
+            top: -21px;
+            transform: rotate(-1deg);
+        }
+
+        @media (max-width: 768px) {
+            .masking-tape {
+                height: 28px;
+                top: -14px !important;
+            }
+            .masking-tape.tape-1 {
+                left: 3%;
+                width: 100px;
+            }
+            .masking-tape.tape-2 {
+                left: 38%;
+                width: 110px;
+            }
+            .masking-tape.tape-3 {
+                right: 3%;
+                width: 90px;
+            }
+        }
+    </style>
+
+
+    <style>
+        /* Underground Marquee Styles */
+        @font-face {
+            font-family: 'TrashHand';
+            src: url('./fuentes/TrashHand.TTF') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        .underground-marquee {
+            overflow: hidden;
+            position: relative;
+            background: white;
+            border-top: 4px solid black;
+            border-bottom: 4px solid black;
+            padding: 20px 0;
+            display: flex;
+        }
+
+        .marquee-track {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            padding-right: 40px;
+            flex-shrink: 0;
+            -webkit-animation: underground-scroll 40s linear infinite !important;
+            animation: underground-scroll 40s linear infinite !important;
+            will-change: transform;
+        }
+
+        @-webkit-keyframes underground-scroll {
+            from { -webkit-transform: translateX(0); transform: translateX(0); }
+            to { -webkit-transform: translateX(-100%); transform: translateX(-100%); }
+        }
+
+        @keyframes underground-scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
+        }
+
+        .underground-marquee .marquee-text {
+            font-family: 'TrashHand', sans-serif;
+            font-size: 2rem;
+            text-transform: uppercase;
+            white-space: nowrap;
+            letter-spacing: 3px;
+            color: black;
+            flex-shrink: 0;
+        }
+
+        .underground-marquee .marquee-logo {
+            height: 60px;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        /* Inverted version */
+        .underground-marquee.inverted {
+            background: black;
+            border-top: 4px solid white;
+            border-bottom: 4px solid white;
+        }
+
+        .underground-marquee.inverted .marquee-text {
+            color: white;
+        }
+
+        .underground-marquee .marquee-logo.inverted {
+            filter: invert(1);
+        }
     </style>
 </head>
 <body>
@@ -2290,6 +2443,46 @@
             </div>
         </div>
     </section>
+
+    <!-- UNDERGROUND MARQUEE -->
+    <div class="underground-marquee">
+        <div class="marquee-track">
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+        </div>
+        <div class="marquee-track">
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+        </div>
+    </div>
 
     <!-- BANNER YA DISPONIBLE -->
     <section id="banner-disponible">
@@ -2413,6 +2606,13 @@
         <img src="imagenes/donsatur.png" alt="Don Satur" class="personaje-layer" loading="lazy" data-char="donsatur">
         <img src="imagenes/laverde.png" alt="La Verde" class="personaje-layer" loading="lazy" data-char="laverde">
     </section>
+
+    <!-- MASKING TAPE TRANSITION -->
+    <div class="tape-transition">
+        <div class="masking-tape tape-1"></div>
+        <div class="masking-tape tape-2"></div>
+        <div class="masking-tape tape-3"></div>
+    </div>
 
     <!-- MODAL PERSONAJE -->
     <div class="char-modal" id="charModal">
@@ -2882,8 +3082,51 @@
         }
     </style>
 
+    <!-- UNDERGROUND MARQUEE INVERTED -->
+    <div class="underground-marquee inverted">
+        <div class="marquee-track">
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+        </div>
+        <div class="marquee-track">
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">CONTENIDO UNDER</span>
+            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <span class="marquee-text">NO APTO PARA GILES</span>
+        </div>
+    </div>
+
     <!-- OST / SOUNDTRACK -->
     <section id="ost" class="ost-section">
+        <!-- Drink Sprite Animation -->
+        <div class="drink-sprite"></div>
+
         <div class="ost-container">
             <div class="section-header">
                 <h2 class="section-title">SOUNDTRACK</h2>
@@ -2984,6 +3227,45 @@
                 radial-gradient(circle at 20% 50%, rgba(43, 184, 205, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 50%, rgba(43, 184, 205, 0.05) 0%, transparent 50%);
             pointer-events: none;
+        }
+
+        /* Drink Sprite Animation - 4x2 grid, 944x751px total */
+        .drink-sprite {
+            position: absolute;
+            left: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 280px;
+            height: 450px;
+            background: url('imagenes/Drink.png') 0 0 no-repeat;
+            background-size: 400% 200%;
+            z-index: 10;
+            -webkit-animation: drink-sprite-anim 1.5s step-end infinite !important;
+            animation: drink-sprite-anim 1.5s step-end infinite !important;
+        }
+
+        @-webkit-keyframes drink-sprite-anim {
+            0%      { background-position: 0 0; }
+            12.5%   { background-position: 33.33% 0; }
+            25%     { background-position: 66.66% 0; }
+            37.5%   { background-position: 100% 0; }
+            50%     { background-position: 0 100%; }
+            62.5%   { background-position: 33.33% 100%; }
+            75%     { background-position: 66.66% 100%; }
+            87.5%   { background-position: 100% 100%; }
+            100%    { background-position: 0 0; }
+        }
+
+        @keyframes drink-sprite-anim {
+            0%      { background-position: 0 0; }
+            12.5%   { background-position: 33.33% 0; }
+            25%     { background-position: 66.66% 0; }
+            37.5%   { background-position: 100% 0; }
+            50%     { background-position: 0 100%; }
+            62.5%   { background-position: 33.33% 100%; }
+            75%     { background-position: 66.66% 100%; }
+            87.5%   { background-position: 100% 100%; }
+            100%    { background-position: 0 0; }
         }
 
         .ost-container {
@@ -3556,12 +3838,14 @@
         #construccion .cinta-3 {
             clip-path: polygon(0% 100%, 0% 80%, 80% 0%, 100% 0%, 100% 20%, 20% 100%);
         }
+
     </style>
     <section id="construccion" style="padding: 0; width: 100%; background: #0f0f1a; position: relative; overflow: hidden; cursor: pointer;">
         <img src="imagenes/EnConstruccion1.png" alt="En construcción - fondo" class="cinta-1" style="width: 100%; height: auto; display: block;" loading="lazy">
         <img src="imagenes/EnConstruccion2.png" alt="En construcción - medio" class="cinta-2" loading="lazy">
         <img src="imagenes/EnConstruccion3.png" alt="En construcción - frente" class="cinta-3" loading="lazy">
     </section>
+
     <script>
         (function() {
             const section = document.getElementById('construccion');
@@ -3953,12 +4237,12 @@
             cesarCharacter.classList.add('cesar-blinking');
             setTimeout(() => {
                 cesarCharacter.classList.remove('cesar-blinking');
-            }, 350);
+            }, 800);
         }
 
-        // Pestañear cada 2-4 segundos aleatorio
+        // Pestañear cada 1-2.5 segundos aleatorio
         function scheduleNextBlink() {
-            const randomDelay = 2000 + Math.random() * 2000;
+            const randomDelay = 500 + Math.random() * 1000;
             setTimeout(() => {
                 if (!loadingComplete) {
                     cesarBlink();
@@ -4020,6 +4304,7 @@
         }, 15000);
 
     </script>
+
 
 </body>
 </html>
