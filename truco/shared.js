@@ -36,16 +36,24 @@ const ENVIDO_LEVELS = [
 ];
 
 // =====================================================
-// CARD IMAGES — auto-detect available PNGs
+// CARD IMAGES — using imagenes/cartastruco/ PNGs
 // =====================================================
 const CARD_IMAGES = {};
-const _cardBasePath = (typeof CARD_BASE_PATH !== 'undefined') ? CARD_BASE_PATH : 'cartas/';
+const _cardBasePath = (typeof CARD_BASE_PATH !== 'undefined') ? CARD_BASE_PATH : '../imagenes/cartastruco/';
+
+// Mapping from internal suit names to folder/file names
+const SUIT_FOLDER = { espadas: 'Espada', bastos: 'Basto', copas: 'Copa', oros: 'Oro' };
+const SUIT_NAME = { espadas: 'Espada', bastos: 'Basto', copas: 'Copa', oros: 'Oro' };
+
+// Card back image
+const CARD_BACK = `${_cardBasePath}Atras.png`;
 
 (function detectCards() {
     for (const s of SUITS) {
         for (const n of NUMBERS) {
             const key = `${n}-${s}`;
-            const file = `${_cardBasePath}${n}${SUIT_FILE[s]}.png`;
+            // Format: ../imagenes/cartastruco/Espada/1 de Espada.png
+            const file = `${_cardBasePath}${SUIT_FOLDER[s]}/${n} de ${SUIT_NAME[s]}.png`;
             const img = new Image();
             img.onload = function() { CARD_IMAGES[key] = file; };
             img.src = file;

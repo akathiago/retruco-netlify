@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ReTruco - Truco | Juega contra la IA</title>
+    <meta name="description" content="Juega Truco argentino contra rivales con IA unica. Envido, Truco, estrategia y cartas en una experiencia inmersiva.">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ReTruco - Juega Truco">
+    <meta property="og:description" content="Juega Truco argentino contra rivales con IA unica. Envido, Truco y estrategia.">
+    <meta property="og:image" content="https://retruco.xyz/imagenes/hero-01.png">
+    <meta property="og:url" content="https://retruco.xyz/truco/juego.html">
+    <meta property="og:locale" content="es_AR">
+    <meta property="og:site_name" content="ReTruco">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+    <link rel="shortcut icon" href="../favicon/favicon.ico">
+    <link rel="apple-touch-icon" href="../favicon/apple-touch-icon.png">
+    <meta name="theme-color" content="#0a0a0a">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Trevor';
+            src: url('../fuentes/TREVOR.TTF') format('truetype');
+            font-weight: bold;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --rust: #2bb8cd;
+            --paper: #f0f0f0;
+            --ink: #0a0a0a;
+            --bg: #0a0a0a;
+            --card-bg: #f5f0e1;
+            --gold: #d4af37;
+            --red: #ff4757;
+            --green: #2ed573;
+            --table-green: #1a5c3a;
+            --table-border: #0f3d26;
+            --accent: #2bb8cd;
+        }
+
+        body {
+            background: var(--bg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: var(--paper);
+            font-family: 'Montserrat', sans-serif;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* Dark overlay for readability */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(0,0,0,0.7) 0%,
+                rgba(0,0,0,0.4) 30%,
+                rgba(0,0,0,0.4) 70%,
+                rgba(0,0,0,0.8) 100%
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ====== HEADER ====== */
+        .game-header {
+            width: 100%;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .score-display {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            white-space: nowrap;
+            background: rgba(0,0,0,0.6);
+            padding: 12px 24px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.15);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .score-you { color: var(--green); text-shadow: 0 0 10px var(--green); }
+        .score-sep { color: rgba(255,255,255,0.3); font-size: 1.2rem; }
+        .score-opp { color: var(--red); text-shadow: 0 0 10px var(--red); }
+        .score-num { font-size: 1.8rem; font-weight: 700; }
+
+        .back-link {
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            opacity: 0.5;
+            transition: all 0.2s;
+            padding: 8px 12px;
+            border-radius: 20px;
+        }
+        .back-link:hover {
+            opacity: 1;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* ====== OPPONENT AREA ====== */
+        .opponent-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 20px;
+            flex-shrink: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 100%);
+        }
+
+        .opponent-center {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .opponent-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            box-shadow:
+                0 0 20px rgba(43,184,205,0.4),
+                0 4px 15px rgba(0,0,0,0.5);
+            object-fit: cover;
+            object-position: top;
+            transition: all 0.3s ease;
+        }
+
+        .opponent-avatar.angry {
+            border-color: var(--red);
+            box-shadow: 0 0 25px rgba(255,71,87,0.5);
+            animation: shake 0.4s ease;
+        }
+
+        .opponent-avatar.happy {
+            border-color: var(--green);
+            box-shadow: 0 0 20px rgba(46,204,113,0.4);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .opponent-name {
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 4px;
+            color: var(--accent);
+            white-space: nowrap;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Speech bubble */
+        .speech-bubble {
+            background: rgba(0,0,0,0.85);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 12px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            max-width: 280px;
+            min-height: 24px;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.8) translateY(-5px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+        }
+
+        .speech-bubble.show {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        /* ====== PHASER GAME ZONE ====== */
+        .phaser-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 0;
+        }
+
+        #phaser-game {
+            width: 100%;
+            max-width: 800px;
+            height: 100%;
+            max-height: 400px;
+        }
+
+        #phaser-game canvas {
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Envido reveal area (above Phaser) */
+        .envido-reveal {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 8px 0;
+            position: absolute;
+            top: 10px;
+            z-index: 10;
+        }
+
+        .envido-reveal.show { display: flex; }
+
+        .envido-points { text-align: center; }
+
+        .envido-points-label {
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.4);
+            font-family: 'Trevor', sans-serif;
+        }
+
+        .envido-points-value {
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.8rem;
+            animation: countUp 0.5s ease;
+        }
+
+        @keyframes countUp {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .envido-win { color: var(--green); }
+        .envido-lose { color: var(--red); }
+
+        /* Round badges (below Phaser) */
+        .round-badges {
+            display: flex;
+            gap: 8px;
+            position: absolute;
+            bottom: 10px;
+            z-index: 10;
+        }
+
+        .round-badge {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 0.5rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        .badge-win { background: var(--green); color: #fff; box-shadow: 0 0 10px rgba(46,204,113,0.5); }
+        .badge-lose { background: var(--red); color: #fff; box-shadow: 0 0 10px rgba(231,76,60,0.5); }
+        .badge-tie { background: #666; color: #fff; }
+
+        /* ====== GAME MESSAGE ====== */
+        .game-message {
+            font-family: 'Trevor', sans-serif;
+            font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+            letter-spacing: 4px;
+            color: #fff;
+            text-align: center;
+            padding: 10px 20px;
+            flex-shrink: 0;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 0 0 20px var(--accent), 0 2px 10px rgba(0,0,0,0.5);
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.3), transparent);
+        }
+
+        /* ====== PLAYER HAND (Phaser renders this too, but we keep container) ====== */
+        .player-area {
+            flex-shrink: 0;
+            padding: 8px 15px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+        }
+
+        .player-label {
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.55rem;
+            letter-spacing: 5px;
+            color: rgba(255,255,255,0.3);
+            text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+        }
+
+        .hand {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        /* ====== CARDS ====== */
+        .card {
+            width: 100px;
+            height: 144px;
+            border-radius: 10px;
+            border: 3px solid rgba(0,0,0,0.2);
+            box-shadow:
+                2px 4px 12px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+            position: relative;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: default;
+            background: linear-gradient(145deg, #f8f4e8 0%, #e8e0d0 100%);
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 7px;
+            pointer-events: none;
+        }
+
+        .card.playable {
+            cursor: pointer;
+            border-color: var(--accent);
+            box-shadow:
+                2px 4px 12px rgba(0,0,0,0.4),
+                0 0 20px rgba(43,184,205,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+            animation: cardPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes cardPulse {
+            0%, 100% { box-shadow: 2px 4px 12px rgba(0,0,0,0.4), 0 0 15px rgba(43,184,205,0.3); }
+            50% { box-shadow: 2px 4px 12px rgba(0,0,0,0.4), 0 0 25px rgba(43,184,205,0.5); }
+        }
+
+        .card.playable:hover {
+            transform: translateY(-20px) scale(1.08) rotateX(5deg);
+            box-shadow:
+                6px 20px 35px rgba(0,0,0,0.5),
+                0 0 35px rgba(43,184,205,0.5);
+            z-index: 10;
+            animation: none;
+        }
+
+        .card.playable:active {
+            transform: translateY(-10px) scale(1.02);
+            transition: all 0.1s ease;
+        }
+
+        .card.playing {
+            animation: cardFlyOut 0.4s ease-in forwards;
+            pointer-events: none;
+        }
+
+        @keyframes cardFlyOut {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-200px) scale(0.6); opacity: 0; }
+        }
+
+        @media (max-width: 420px) {
+            .card { width: 85px; height: 122px; }
+            .hand { gap: 10px; }
+        }
+
+        /* ====== ACTION BAR ====== */
+        .action-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            min-height: 56px;
+            padding: 8px 15px 20px;
+            flex-shrink: 0;
+            align-items: center;
+        }
+
+        .btn-game {
+            font-family: 'Trevor', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--accent) 0%, #1a8a9c 100%);
+            color: #fff;
+            box-shadow:
+                0 4px 15px rgba(43,184,205,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .btn-game:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow:
+                0 8px 25px rgba(43,184,205,0.5),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-game:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 10px rgba(43,184,205,0.3);
+        }
+
+        .btn-game.btn-accept {
+            background: linear-gradient(135deg, var(--green) 0%, #1e9c5a 100%);
+            box-shadow: 0 4px 15px rgba(46,213,115,0.4);
+        }
+
+        .btn-game.btn-reject {
+            background: linear-gradient(135deg, var(--red) 0%, #c0392b 100%);
+            box-shadow: 0 4px 15px rgba(255,71,87,0.4);
+        }
+
+        .btn-game.btn-envido {
+            background: linear-gradient(135deg, var(--gold) 0%, #b8860b 100%);
+            box-shadow: 0 4px 15px rgba(212,175,55,0.4);
+        }
+
+        .btn-game.btn-mazo {
+            background: linear-gradient(135deg, #555 0%, #333 100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 0.65rem;
+            padding: 10px 18px;
+            opacity: 0.7;
+        }
+        .btn-game.btn-mazo:hover { opacity: 1; }
+
+        /* ====== OVERLAY ====== */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .overlay.show {
+            display: flex;
+            animation: overlayIn 0.4s ease;
+        }
+
+        @keyframes overlayIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .overlay-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top;
+            border: 4px solid;
+            box-shadow: 0 0 40px rgba(0,0,0,0.6), 0 0 60px currentColor;
+        }
+
+        .overlay-text {
+            font-family: 'Trevor', sans-serif;
+            font-size: clamp(2rem, 10vw, 4rem);
+            letter-spacing: 6px;
+            text-shadow: 0 4px 30px currentColor;
+        }
+
+        .overlay-sub {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 3px;
+        }
+
+        .overlay-quote {
+            font-style: italic;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+            max-width: 300px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .overlay .btn-game {
+            font-size: 1rem;
+            padding: 16px 40px;
+            margin-top: 5px;
+        }
+
+        /* ====== MOBILE ====== */
+        @media (max-width: 420px) {
+            .opponent-avatar { width: 50px; height: 50px; }
+            .opponent-name { font-size: 1.1rem; letter-spacing: 2px; }
+            .opponent-center { gap: 10px; }
+            .speech-bubble { font-size: 0.8rem; max-width: 200px; padding: 8px 14px; }
+            .score-display { padding: 8px 16px; gap: 8px; font-size: 0.7rem; }
+            .score-display .score-num { font-size: 1.3rem; }
+            .score-display .score-sep { font-size: 1rem; }
+            .btn-game { padding: 8px 14px; font-size: 0.65rem; }
+        }
+
+        /* ====== PRELOADER ====== */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('../retrucocharacter/assets/fondo/fondocarga.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #A07F56;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .preloader-content {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .preloader-counter {
+            font-family: 'Trevor', sans-serif;
+            font-size: 6rem;
+            color: white;
+            text-shadow: 4px 4px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+            margin: 0;
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+        }
+
+        .preloader-character {
+            position: relative;
+            width: 1800px;
+            height: 1800px;
+        }
+
+        .preloader-character img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .cesar-eyes { opacity: 1; }
+        .cesar-blink { opacity: 0; transition: opacity 0.08s ease; }
+        .cesar-blinking .cesar-blink { opacity: 1; }
+
+        @media (max-width: 768px) {
+            .preloader-counter { font-size: 4rem; }
+            .preloader-character { width: 600px; height: 600px; }
+        }
+
+        /* Call overlay for TRUCO/ENVIDO */
+        .call-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 500;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .call-overlay.show {
+            opacity: 1;
+        }
+
+        .call-text {
+            font-family: 'Trevor', sans-serif;
+            font-size: clamp(3rem, 15vw, 6rem);
+            letter-spacing: 8px;
+            color: var(--accent);
+            text-shadow:
+                4px 4px 0 #000,
+                0 0 30px var(--accent),
+                0 0 60px var(--accent);
+            animation: callPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .call-text.truco { color: var(--accent); text-shadow: 4px 4px 0 #000, 0 0 30px var(--accent); }
+        .call-text.retruco { color: var(--gold); text-shadow: 4px 4px 0 #000, 0 0 30px var(--gold); }
+        .call-text.vale-cuatro { color: var(--red); text-shadow: 4px 4px 0 #000, 0 0 30px var(--red); }
+        .call-text.envido { color: var(--gold); text-shadow: 4px 4px 0 #000, 0 0 30px var(--gold); }
+
+        @keyframes callPop {
+            0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(3deg); }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+    </style>
+
+    <!-- Phaser 3 -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+</head>
+<body>
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-content">
+            <p id="counter" class="preloader-counter">0%</p>
+            <div class="preloader-character">
+                <img id="cesarOjos" src="../imagenes/cesarojosabiertos.png" alt="Cesar cargando" class="cesar-eyes">
+                <img id="cesarPestanea" src="../imagenes/cesarpestañando.png" alt="Cesar pestaneando" class="cesar-blink">
+            </div>
+        </div>
+    </div>
+
+    <!-- CALL OVERLAY -->
+    <div class="call-overlay" id="callOverlay">
+        <div class="call-text" id="callText"></div>
+    </div>
+
+    <div class="game-header">
+        <a href="./" class="back-link" id="backLink">&larr; SALIR</a>
+        <div class="score-display">
+            <span class="score-you">VOS</span>
+            <span class="score-num" id="scorePlayer">0</span>
+            <span class="score-sep">-</span>
+            <span class="score-num" id="scoreCpu">0</span>
+            <span class="score-opp">EL</span>
+        </div>
+        <div style="width: 80px;"></div>
+    </div>
+
+    <!-- OPPONENT -->
+    <div class="opponent-area">
+        <div class="opponent-center">
+            <img src="../imagenes/alfredito.png" alt="Rival" class="opponent-avatar" id="oppAvatar">
+            <div class="opponent-name" id="oppName">RIVAL</div>
+        </div>
+        <div class="speech-bubble" id="speechBubble"></div>
+    </div>
+
+    <!-- PHASER GAME ZONE -->
+    <div class="phaser-container">
+        <!-- Envido reveal -->
+        <div class="envido-reveal" id="envidoReveal">
+            <div class="envido-points">
+                <div class="envido-points-label">VOS</div>
+                <div class="envido-points-value" id="envidoPlayerPts">--</div>
+            </div>
+            <div style="font-family:'Trevor',sans-serif; color:rgba(255,255,255,0.2); font-size:0.7rem;">VS</div>
+            <div class="envido-points">
+                <div class="envido-points-label" id="envidoOppLabel">RIVAL</div>
+                <div class="envido-points-value" id="envidoCpuPts">--</div>
+            </div>
+        </div>
+
+        <!-- Phaser canvas goes here -->
+        <div id="phaser-game"></div>
+
+        <!-- Round badges -->
+        <div class="round-badges" id="roundBadges"></div>
+    </div>
+
+    <!-- MESSAGE -->
+    <div class="game-message" id="gameMessage">CARGANDO...</div>
+
+    <!-- PLAYER AREA -->
+    <div class="player-area">
+        <div class="player-label">TU MANO</div>
+        <div class="hand" id="playerHand"></div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="action-bar" id="actionBar"></div>
+
+    <!-- OVERLAY -->
+    <div class="overlay" id="overlay">
+        <img src="../imagenes/alfredito.png" alt="Rival" class="overlay-img" id="overlayImg">
+        <div class="overlay-text" id="overlayText"></div>
+        <div class="overlay-sub" id="overlaySub"></div>
+        <div class="overlay-quote" id="overlayQuote"></div>
+        <button class="btn-game" id="overlayBtn">OTRA MANO</button>
+    </div>
+
+<script src="shared.js"></script>
+<script>
+// =====================================================
+// RETRUCO PHASER EDITION
+// Phaser handles card rendering, HTML handles UI
+// =====================================================
+
+// =================== LOAD OPPONENT ===================
+const params = new URLSearchParams(window.location.search);
+const rivalId = params.get('rival') || 'alfredito';
+const OPP = OPPONENTS[rivalId] || OPPONENTS.alfredito;
+const AI = OPP.ai;
+const LINES = OPP.lines;
+
+// Apply accent color
+document.documentElement.style.setProperty('--accent', OPP.color);
+
+// Apply opponent background
+if (OPP.background) {
+    document.body.style.backgroundImage = `url('${OPP.background}')`;
+}
+
+// Set opponent info
+document.getElementById('oppName').textContent = OPP.name;
+document.getElementById('envidoOppLabel').textContent = OPP.name;
+document.title = `ReTruco - Truco vs ${OPP.name}`;
+
+const avatarEl = document.getElementById('oppAvatar');
+avatarEl.src = OPP.portrait;
+avatarEl.alt = OPP.name;
+document.getElementById('overlayImg').src = avatarEl.src;
+
+// =================== GAME STATE =====================
+let playerHand = [];
+let cpuHand = [];
+let roundResults = [];
+let currentRound = 0;
+let playerScore = 0;
+let cpuScore = 0;
+
+let trucoLevel = -1;
+let trucoCaller = null;
+let handPoints = 1;
+let waitingForTruco = false;
+
+let envidoLevel = -1;
+let envidoCaller = null;
+let envidoPoints = 0;
+let envidoResolved = false;
+let waitingForEnvido = false;
+let envidoChain = [];
+
+let playerTurn = true;
+let handOver = false;
+let pendingPlayerCard = null;
+let firstCardPlayed = false;
+let cpuFirstCard = null;
+
+let originalPlayerHand = [];
+let originalCpuHand = [];
+
+// =================== PHASER GAME ====================
+class TrucoGameScene extends Phaser.Scene {
+    constructor() {
+        super({ key: 'TrucoGame' });
+        this.pileCards = [];
+        this.cardWidth = 90;
+        this.cardHeight = 130;
+    }
+
+    preload() {
+        // Load all 40 cards
+        const suits = ['espadas', 'bastos', 'copas', 'oros'];
+        const numbers = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12];
+        const suitFolder = { espadas: 'Espada', bastos: 'Basto', copas: 'Copa', oros: 'Oro' };
+        const suitName = { espadas: 'Espada', bastos: 'Basto', copas: 'Copa', oros: 'Oro' };
+
+        suits.forEach(suit => {
+            numbers.forEach(num => {
+                const key = `card_${num}_${suit}`;
+                const path = `../imagenes/cartastruco/${suitFolder[suit]}/${num} de ${suitName[suit]}.png`;
+                this.load.image(key, path);
+            });
+        });
+
+        // Card back
+        this.load.image('card_back', '../imagenes/cartastruco/Atras.png');
+
+        // Track loading progress
+        this.load.on('progress', (value) => {
+            const counter = document.getElementById('counter');
+            if (counter) counter.textContent = `${Math.floor(value * 100)}%`;
+        });
+    }
+
+    create() {
+        // Semi-transparent dark background for the pile area
+        this.add.rectangle(this.scale.width / 2, this.scale.height / 2, this.scale.width, this.scale.height, 0x000000, 0.3);
+
+        // Center positions
+        this.centerX = this.scale.width / 2;
+        this.centerY = this.scale.height / 2;
+
+        // Make scene accessible from outside
+        window.trucoScene = this;
+
+        // Hide preloader and start game
+        setTimeout(() => {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                preloader.style.opacity = '0';
+                preloader.style.pointerEvents = 'none';
+            }
+            startGame();
+        }, 500);
+    }
+
+    // Player plays a card (from HTML hand)
+    playerPlayCard(card) {
+        const key = `card_${card.number}_${card.suit}`;
+        const container = this.add.container(this.centerX, this.scale.height + 100);
+
+        // Card shadow
+        const shadow = this.add.ellipse(5, 10, this.cardWidth * 0.8, 20, 0x000000, 0.3);
+        container.add(shadow);
+
+        // Card image
+        const sprite = this.add.image(0, 0, key);
+        sprite.setDisplaySize(this.cardWidth, this.cardHeight);
+        container.add(sprite);
+
+        // Glow effect
+        const glow = this.add.image(0, 0, key);
+        glow.setDisplaySize(this.cardWidth + 10, this.cardHeight + 10);
+        glow.setTint(0x2bb8cd);
+        glow.setAlpha(0);
+        container.addAt(glow, 0);
+
+        // Animate from bottom to pile
+        const offsetX = (Math.random() - 0.5) * 80;
+        const offsetY = (Math.random() - 0.5) * 50 + 15;
+        const rotation = (Math.random() - 0.5) * 0.35;
+
+        // Flash glow
+        this.tweens.add({
+            targets: glow,
+            alpha: 0.4,
+            duration: 150,
+            yoyo: true
+        });
+
+        this.tweens.add({
+            targets: container,
+            x: this.centerX + offsetX,
+            y: this.centerY + offsetY,
+            scaleX: 0.9,
+            scaleY: 0.9,
+            rotation: rotation,
+            duration: 350,
+            ease: 'Back.easeOut'
+        });
+
+        // Fade shadow
+        this.tweens.add({
+            targets: shadow,
+            alpha: 0.15,
+            scaleX: 0.7,
+            duration: 350
+        });
+
+        this.pileCards.push(container);
+        container.setDepth(this.pileCards.length);
+    }
+
+    // CPU plays a card
+    cpuPlayCard(card) {
+        const key = `card_${card.number}_${card.suit}`;
+        const container = this.add.container(this.centerX, -100);
+
+        // Card shadow
+        const shadow = this.add.ellipse(5, 10, this.cardWidth * 0.8, 20, 0x000000, 0.3);
+        container.add(shadow);
+
+        // Card image
+        const sprite = this.add.image(0, 0, key);
+        sprite.setDisplaySize(this.cardWidth, this.cardHeight);
+        container.add(sprite);
+
+        // Red glow for CPU
+        const glow = this.add.image(0, 0, key);
+        glow.setDisplaySize(this.cardWidth + 10, this.cardHeight + 10);
+        glow.setTint(0xff4757);
+        glow.setAlpha(0);
+        container.addAt(glow, 0);
+
+        // Animate from top to pile
+        const offsetX = (Math.random() - 0.5) * 80;
+        const offsetY = (Math.random() - 0.5) * 50 - 15;
+        const rotation = (Math.random() - 0.5) * 0.35;
+
+        // Flash glow
+        this.tweens.add({
+            targets: glow,
+            alpha: 0.4,
+            duration: 150,
+            yoyo: true
+        });
+
+        this.tweens.add({
+            targets: container,
+            x: this.centerX + offsetX,
+            y: this.centerY + offsetY,
+            scaleX: 0.9,
+            scaleY: 0.9,
+            rotation: rotation,
+            duration: 450,
+            ease: 'Back.easeOut'
+        });
+
+        // Fade shadow
+        this.tweens.add({
+            targets: shadow,
+            alpha: 0.15,
+            scaleX: 0.7,
+            duration: 450
+        });
+
+        this.pileCards.push(container);
+        container.setDepth(this.pileCards.length);
+    }
+
+    // Clear the pile with scatter effect
+    clearPile() {
+        this.pileCards.forEach((card, i) => {
+            const dir = (Math.random() - 0.5) * 400;
+            this.tweens.add({
+                targets: card,
+                x: card.x + dir,
+                y: card.y + 100,
+                alpha: 0,
+                rotation: card.rotation + (Math.random() - 0.5) * 2,
+                duration: 400,
+                delay: i * 50,
+                ease: 'Power2',
+                onComplete: () => card.destroy()
+            });
+        });
+        this.pileCards = [];
+    }
+
+    // Victory particles effect
+    showVictoryEffect() {
+        for (let i = 0; i < 20; i++) {
+            const x = this.centerX + (Math.random() - 0.5) * 300;
+            const y = this.centerY + (Math.random() - 0.5) * 200;
+            const star = this.add.text(x, y, '★', {
+                fontSize: '24px',
+                color: '#2ed573'
+            });
+            star.setOrigin(0.5);
+            star.setAlpha(0);
+
+            this.tweens.add({
+                targets: star,
+                y: y - 100,
+                alpha: { from: 1, to: 0 },
+                scale: { from: 0.5, to: 1.5 },
+                duration: 1000,
+                delay: i * 50,
+                ease: 'Power2',
+                onComplete: () => star.destroy()
+            });
+        }
+    }
+}
+
+// =================== PHASER CONFIG ====================
+const phaserConfig = {
+    type: Phaser.AUTO,
+    width: 600,
+    height: 350,
+    parent: 'phaser-game',
+    transparent: true,
+    scene: TrucoGameScene,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
+    },
+    input: {
+        activePointers: 3
+    }
+};
+
+const game = new Phaser.Game(phaserConfig);
+
+// =================== SPEECH & MOOD ===================
+function oppSay(cat) {
+    const lines = LINES[cat];
+    if (!lines || lines.length === 0) return '';
+    const line = lines[Math.floor(Math.random() * lines.length)];
+    const b = document.getElementById('speechBubble');
+    b.classList.remove('show');
+    setTimeout(() => {
+        b.textContent = line;
+        b.classList.add('show');
+    }, 80);
+    return line;
+}
+
+function setMood(mood) {
+    const a = document.getElementById('oppAvatar');
+    a.classList.remove('angry', 'happy');
+    if (mood) a.classList.add(mood);
+}
+
+// =================== UI FUNCTIONS ===================
+function renderScores() {
+    document.getElementById('scorePlayer').textContent = playerScore;
+    document.getElementById('scoreCpu').textContent = cpuScore;
+}
+
+// Render player hand in HTML
+function renderPlayerHandHTML(canPlay) {
+    const container = document.getElementById('playerHand');
+    container.innerHTML = '';
+
+    playerHand.forEach((card, i) => {
+        const cardEl = document.createElement('div');
+        cardEl.className = 'card' + (canPlay ? ' playable' : '');
+        cardEl.dataset.key = card.key;
+
+        const img = document.createElement('img');
+        const suitFolder = { espadas: 'Espada', bastos: 'Basto', copas: 'Copa', oros: 'Oro' };
+        const suitName = { espadas: 'Espada', bastos: 'Basto', copas: 'Copa', oros: 'Oro' };
+        img.src = `../imagenes/cartastruco/${suitFolder[card.suit]}/${card.number} de ${suitName[card.suit]}.png`;
+        img.alt = `${card.number} de ${card.suit}`;
+        cardEl.appendChild(img);
+
+        if (canPlay) {
+            cardEl.onclick = () => playCard(card.key);
+        }
+
+        container.appendChild(cardEl);
+
+        // Animate in
+        cardEl.style.opacity = '0';
+        cardEl.style.transform = 'translateY(50px)';
+        setTimeout(() => {
+            cardEl.style.transition = 'all 0.3s ease';
+            cardEl.style.opacity = '1';
+            cardEl.style.transform = 'translateY(0)';
+        }, i * 100);
+    });
+}
+
+// Play a card when clicked
+function playCard(key) {
+    if (!playerTurn || waitingForTruco || waitingForEnvido || handOver) return;
+
+    const idx = playerHand.findIndex(c => c.key === key);
+    if (idx === -1) return;
+
+    const card = playerHand[idx];
+
+    // Find and animate the HTML card element
+    const cardEl = document.querySelector(`.card[data-key="${key}"]`);
+    if (cardEl) {
+        cardEl.classList.add('playing');
+    }
+
+    // Delay Phaser animation slightly for visual sync
+    setTimeout(() => {
+        if (window.trucoScene) {
+            window.trucoScene.playerPlayCard(card);
+        }
+    }, 150);
+
+    // Remove from hand after animation
+    playerHand = playerHand.filter((_, i) => i !== idx);
+    setTimeout(() => renderPlayerHandHTML(false), 400);
+
+    if (!firstCardPlayed) firstCardPlayed = true;
+
+    playerTurn = false;
+    renderActions();
+
+    // If CPU already played first
+    if (cpuFirstCard) {
+        const cpuCard = cpuFirstCard;
+        cpuFirstCard = null;
+        setTimeout(() => resolveRound(card, cpuCard), 400);
+        return;
+    }
+
+    setMsg(`${OPP.name} PIENSA...`);
+
+    // CPU might call envido
+    if (!envidoResolved && currentRound === 0 && roundResults.length === 0) {
+        const cpuEnv = calcEnvido(cpuHand);
+        const variance = AI.randomVariance ? (Math.random() * AI.randomVariance * 2 - AI.randomVariance) : 0;
+        if (cpuEnv >= (AI.envidoCallThresholdLow + 1 + variance) && Math.random() < 0.4) {
+            setTimeout(() => {
+                pendingPlayerCard = card;
+                cpuCallEnvido(cpuEnv >= 30 ? 1 : 0);
+            }, 500);
+            return;
+        }
+    }
+
+    setTimeout(() => cpuPlayCard(card), 500 + Math.random() * 600);
+}
+
+function setMsg(m) {
+    document.getElementById('gameMessage').textContent = m;
+}
+
+function addRoundBadge(type) {
+    const container = document.getElementById('roundBadges');
+    const badge = document.createElement('div');
+    badge.className = `round-badge badge-${type}`;
+    badge.textContent = type === 'win' ? '✓' : type === 'lose' ? '✗' : '=';
+    container.appendChild(badge);
+}
+
+function showCall(text, type) {
+    const overlay = document.getElementById('callOverlay');
+    const callText = document.getElementById('callText');
+    callText.textContent = text;
+    callText.className = `call-text ${type}`;
+    overlay.classList.add('show');
+    setTimeout(() => overlay.classList.remove('show'), 1500);
+}
+
+// =================== ACTIONS ========================
+function renderActions() {
+    const bar = document.getElementById('actionBar');
+    bar.innerHTML = '';
+
+    if (waitingForEnvido) {
+        let btns = `<button class="btn-game btn-accept" onclick="respondEnvido(true)">¡QUIERO!</button>`;
+        btns += `<button class="btn-game btn-reject" onclick="respondEnvido(false)">NO QUIERO</button>`;
+        if (envidoLevel === 0) {
+            btns += `<button class="btn-game btn-envido" onclick="raiseEnvido(1)">REAL ENVIDO</button>`;
+            btns += `<button class="btn-game btn-envido" onclick="raiseEnvido(2)">FALTA ENVIDO</button>`;
+        } else if (envidoLevel === 1) {
+            btns += `<button class="btn-game btn-envido" onclick="raiseEnvido(2)">FALTA ENVIDO</button>`;
+        }
+        bar.innerHTML = btns;
+        return;
+    }
+
+    if (waitingForTruco) {
+        const next = trucoLevel < 2 ? TRUCO_LEVELS[trucoLevel + 1] : null;
+        let btns = `<button class="btn-game btn-accept" onclick="respondTruco(true)">¡QUIERO!</button>`;
+        btns += `<button class="btn-game btn-reject" onclick="respondTruco(false)">NO QUIERO</button>`;
+        if (next) btns += `<button class="btn-game" onclick="raiseTruco()">${next.name}</button>`;
+        bar.innerHTML = btns;
+        return;
+    }
+
+    if (playerTurn && !handOver) {
+        let btns = '';
+        if (!envidoResolved && currentRound === 0) {
+            btns += `<button class="btn-game btn-envido" onclick="callEnvido(0)">ENVIDO</button>`;
+            btns += `<button class="btn-game btn-envido" onclick="callEnvido(1)">REAL ENVIDO</button>`;
+            btns += `<button class="btn-game btn-envido" onclick="callEnvido(2)">FALTA ENVIDO</button>`;
+        }
+        const nextT = trucoLevel + 1;
+        if (nextT <= 2 && trucoCaller !== 'player') {
+            btns += `<button class="btn-game" onclick="callTruco()">${TRUCO_LEVELS[nextT].name}</button>`;
+        }
+        btns += `<button class="btn-game btn-mazo" onclick="irAlMazo()">IR AL MAZO</button>`;
+        bar.innerHTML = btns;
+    }
+}
+
+// =================== GAME LOGIC =====================
+function startGame() {
+    deal();
+}
+
+function deal() {
+    const deck = shuffle(createDeck());
+    playerHand = deck.slice(0, 3);
+    cpuHand = deck.slice(3, 6);
+    originalPlayerHand = [...playerHand];
+    originalCpuHand = [...cpuHand];
+
+    currentRound = 0;
+    roundResults = [];
+    trucoLevel = -1;
+    trucoCaller = null;
+    handPoints = 1;
+    waitingForTruco = false;
+    envidoLevel = -1;
+    envidoCaller = null;
+    envidoPoints = 0;
+    envidoResolved = false;
+    waitingForEnvido = false;
+    envidoChain = [];
+    handOver = false;
+    playerTurn = true;
+    pendingPlayerCard = null;
+    firstCardPlayed = false;
+    cpuFirstCard = null;
+
+    // Clear UI
+    document.getElementById('roundBadges').innerHTML = '';
+    document.getElementById('envidoReveal').classList.remove('show');
+
+    // Clear Phaser pile
+    if (window.trucoScene) {
+        window.trucoScene.clearPile();
+    }
+
+    // Render player hand in HTML
+    renderPlayerHandHTML(true);
+
+    renderScores();
+    renderActions();
+    setMsg('ELEGI UNA CARTA');
+    setMood(null);
+    oppSay('start');
+
+    // CPU might call envido first
+    const cpuEnv = calcEnvido(cpuHand);
+    const variance = AI.randomVariance ? (Math.random() * AI.randomVariance * 2 - AI.randomVariance) : 0;
+    if (cpuEnv >= (AI.envidoCallThresholdHigh + variance) && Math.random() < AI.envidoCallChanceHigh) {
+        setTimeout(() => cpuCallEnvido(cpuEnv >= 31 ? 2 : 0), 800);
+    } else if (cpuEnv >= (AI.envidoCallThresholdLow + variance) && Math.random() < AI.envidoCallChanceLow) {
+        setTimeout(() => cpuCallEnvido(0), 800);
+    }
+}
+
+function cpuPlayCard(playerCard) {
+    if (handOver) return;
+
+    const chosen = cpuSelectCard(cpuHand, playerCard, AI.cardStrategy, roundResults);
+    const pp = getPower(playerCard);
+    const cp = getPower(chosen);
+
+    // Maybe call truco
+    if (trucoLevel < 2 && trucoCaller !== 'cpu') {
+        const variance = AI.randomVariance ? (Math.random() * AI.randomVariance * 2 - AI.randomVariance) : 0;
+        if (cp > pp && cp >= (AI.trucoProactiveMinPower + variance) && Math.random() < AI.trucoProactiveChance) {
+            pendingPlayerCard = playerCard;
+            cpuCallTruco();
+            return;
+        }
+        if (cp <= pp && Math.random() < AI.trucoBluffChance) {
+            pendingPlayerCard = playerCard;
+            cpuCallTruco();
+            return;
+        }
+    }
+
+    cpuHand = cpuHand.filter(c => c.key !== chosen.key);
+    if (window.trucoScene) window.trucoScene.cpuPlayCard(chosen);
+
+    setTimeout(() => resolveRound(playerCard, chosen), 400);
+}
+
+function cpuPlaysFirst() {
+    if (handOver) return;
+
+    const sorted = [...cpuHand].sort((a, b) => getPower(a) - getPower(b));
+    let chosen;
+
+    if (AI.cardStrategy === 'aggressive' || roundResults.filter(r => r === 'cpu').length > 0) {
+        chosen = sorted[sorted.length - 1];
+    } else if (AI.cardStrategy === 'conservative') {
+        chosen = sorted[0];
+    } else {
+        chosen = sorted[Math.floor(sorted.length / 2)];
+    }
+
+    // Maybe call truco
+    if (trucoLevel < 2 && trucoCaller !== 'cpu') {
+        const cp = getPower(chosen);
+        const variance = AI.randomVariance ? (Math.random() * AI.randomVariance * 2 - AI.randomVariance) : 0;
+        if (cp >= (AI.trucoProactiveMinPower + variance) && Math.random() < AI.trucoProactiveChance) {
+            cpuFirstCard = chosen;
+            cpuCallTruco();
+            return;
+        }
+    }
+
+    cpuHand = cpuHand.filter(c => c.key !== chosen.key);
+    if (window.trucoScene) window.trucoScene.cpuPlayCard(chosen);
+    cpuFirstCard = chosen;
+
+    setTimeout(() => {
+        playerTurn = true;
+        setMsg('ELEGI UNA CARTA PARA RESPONDER');
+        renderPlayerHandHTML(true);
+        renderActions();
+    }, 400);
+}
+
+function resolveRound(pCard, cCard) {
+    const pp = getPower(pCard);
+    const cp = getPower(cCard);
+
+    let result = pp > cp ? 'player' : cp > pp ? 'cpu' : 'tie';
+    roundResults.push(result);
+
+    addRoundBadge(result === 'player' ? 'win' : result === 'cpu' ? 'lose' : 'tie');
+
+    if (result === 'player') {
+        oppSay('loseRound');
+        setMood('angry');
+    } else if (result === 'cpu') {
+        oppSay('winRound');
+        setMood('happy');
+    }
+
+    const pWins = roundResults.filter(r => r === 'player').length;
+    const cWins = roundResults.filter(r => r === 'cpu').length;
+
+    let winner = null;
+
+    if (pWins >= 2) winner = 'player';
+    else if (cWins >= 2) winner = 'cpu';
+    else if (currentRound === 2) {
+        if (pWins > cWins) winner = 'player';
+        else if (cWins > pWins) winner = 'cpu';
+        else {
+            if (roundResults[0] === 'player') winner = 'player';
+            else if (roundResults[0] === 'cpu') winner = 'cpu';
+            else winner = 'player';
+        }
+    } else if (currentRound === 1 && roundResults[0] === 'tie' && result === 'tie') {
+        winner = 'player';
+    }
+
+    if (winner) {
+        setTimeout(() => endHand(winner), 500);
+    } else {
+        currentRound++;
+        const nextStarter = result === 'tie' ? 'player' : result === 'player' ? 'player' : 'cpu';
+
+        setTimeout(() => {
+            setMood(null);
+            envidoResolved = true;
+
+            if (nextStarter === 'player') {
+                playerTurn = true;
+                setMsg('ELEGI UNA CARTA');
+                renderPlayerHandHTML(true);
+                renderActions();
+            } else {
+                playerTurn = false;
+                setMsg(`${OPP.name} TIRA PRIMERO...`);
+                renderPlayerHandHTML(false);
+                renderActions();
+                setTimeout(() => cpuPlaysFirst(), 500 + Math.random() * 600);
+            }
+        }, 600);
+    }
+}
+
+function endHand(winner) {
+    handOver = true;
+    const q = winner === 'cpu' ? oppSay('winHand') : oppSay('loseHand');
+
+    if (winner === 'player') {
+        playerScore += handPoints;
+        setMood('angry');
+        // Victory effect
+        if (window.trucoScene) window.trucoScene.showVictoryEffect();
+        showOverlay('¡GANASTE!', `+${handPoints} pts truco${envidoPoints > 0 ? ` | +${envidoPoints} pts envido` : ''}`, false, q);
+    } else {
+        cpuScore += handPoints;
+        setMood('happy');
+        showOverlay('PERDISTE', `${OPP.name} +${handPoints} pts`, true, q);
+    }
+
+    renderScores();
+    renderActions();
+    checkGameEnd();
+}
+
+function checkGameEnd() {
+    if (playerScore >= 15 || cpuScore >= 15) {
+        const gw = playerScore >= 15 ? 'player' : 'cpu';
+        setTimeout(() => {
+            const q = gw === 'cpu' ? oppSay('winGame') : oppSay('loseGame');
+
+            if (gw === 'player') {
+                saveTowerVictory(rivalId);
+                showOverlay('¡PARTIDA GANADA!', `Derrotaste a ${OPP.name}`, false, q);
+                document.getElementById('overlayBtn').textContent = 'SIGUIENTE RIVAL';
+                document.getElementById('overlayBtn').onclick = () => { window.location.href = './'; };
+            } else {
+                resetTowerProgress();
+                showOverlay('PARTIDA PERDIDA', `${OPP.name} te destruyo. Volves al inicio.`, true, q);
+                document.getElementById('overlayBtn').textContent = 'VOLVER A LA TORRE';
+                document.getElementById('overlayBtn').onclick = () => { window.location.href = './'; };
+            }
+        }, 1200);
+    }
+}
+
+function irAlMazo() {
+    oppSay('mazo');
+    setMood('happy');
+    handOver = true;
+    cpuScore += handPoints;
+    renderScores();
+    const q = LINES.mazo[Math.floor(Math.random() * LINES.mazo.length)];
+    showOverlay('TE FUISTE AL MAZO', `${OPP.name} suma ${handPoints} punto${handPoints > 1 ? 's' : ''}`, true, q);
+    checkGameEnd();
+}
+
+// ================ ENVIDO ============================
+function callEnvido(level) {
+    if (envidoResolved) return;
+    envidoLevel = level;
+    envidoCaller = 'player';
+    envidoChain.push(level);
+
+    showCall(ENVIDO_LEVELS[level].name, 'envido');
+    setMsg(`¡CANTASTE ${ENVIDO_LEVELS[level].name}!`);
+    renderActions();
+    setTimeout(() => cpuRespondEnvido(), 1800);
+}
+
+function cpuCallEnvido(level) {
+    if (envidoResolved) return;
+    envidoLevel = level;
+    envidoCaller = 'cpu';
+    waitingForEnvido = true;
+    envidoChain.push(level);
+
+    const cat = level === 0 ? 'envido' : level === 1 ? 'realEnvido' : 'faltaEnvido';
+    showCall(ENVIDO_LEVELS[level].name, 'envido');
+
+    setTimeout(() => {
+        oppSay(cat);
+        setMood('happy');
+        setMsg(`${OPP.name} CANTA ${ENVIDO_LEVELS[level].name}!`);
+        renderPlayerHandHTML(false);
+        renderActions();
+    }, 1200);
+}
+
+function respondEnvido(accept) {
+    waitingForEnvido = false;
+
+    if (accept) {
+        setMsg('¡QUIERO!');
+        setTimeout(() => resolveEnvido(), 500);
+    } else {
+        setMsg('NO QUIERO...');
+        const pts = calcEnvidoNoQuieroPoints();
+        cpuScore += pts;
+        envidoResolved = true;
+        renderScores();
+        oppSay('envidoWin');
+        setMood('happy');
+        setTimeout(() => {
+            setMsg(`${OPP.name} +${pts} PTS ENVIDO`);
+            setTimeout(() => resumeAfterEnvido(), 800);
+        }, 400);
+    }
+}
+
+function raiseEnvido(level) {
+    waitingForEnvido = false;
+    envidoLevel = level;
+    envidoCaller = 'player';
+    envidoChain.push(level);
+    showCall(ENVIDO_LEVELS[level].name, 'envido');
+    setMsg(`¡${ENVIDO_LEVELS[level].name}!`);
+    setTimeout(() => cpuRespondEnvido(), 1600);
+}
+
+function cpuRespondEnvido() {
+    const cpuEnv = calcEnvido(cpuHand);
+    const variance = AI.randomVariance ? (Math.random() * AI.randomVariance * 2 - AI.randomVariance) : 0;
+    const threshold = (envidoLevel === 2 ? AI.envidoAcceptThreshold + 4 : envidoLevel === 1 ? AI.envidoAcceptThreshold + 2 : AI.envidoAcceptThreshold) + variance;
+    const accept = cpuEnv >= threshold || Math.random() < (1 - AI.foldChance);
+
+    if (accept) {
+        if (envidoLevel < 2 && cpuEnv >= (AI.envidoRaiseThreshold + variance) && Math.random() < AI.envidoRaiseChance) {
+            const newLevel = envidoLevel + 1;
+            envidoLevel = newLevel;
+            envidoCaller = 'cpu';
+            waitingForEnvido = true;
+            envidoChain.push(newLevel);
+            const cat = newLevel === 1 ? 'realEnvido' : 'faltaEnvido';
+            oppSay(cat);
+            setMood('happy');
+            setMsg(`${OPP.name} CANTA ${ENVIDO_LEVELS[newLevel].name}!`);
+            renderPlayerHandHTML(false);
+            renderActions();
+            return;
+        }
+
+        oppSay('envidoQuiero');
+        setMsg(`${OPP.name}: ¡QUIERO!`);
+        setTimeout(() => resolveEnvido(), 600);
+    } else {
+        oppSay('envidoNoQuiero');
+        setMood('angry');
+        const pts = calcEnvidoNoQuieroPoints();
+        playerScore += pts;
+        envidoResolved = true;
+        renderScores();
+        setTimeout(() => {
+            setMsg(`VOS +${pts} PTS ENVIDO`);
+            setTimeout(() => resumeAfterEnvido(), 800);
+        }, 400);
+    }
+}
+
+function calcEnvidoNoQuieroPoints() {
+    if (envidoChain.length <= 1) return 1;
+    let pts = 0;
+    for (let i = 0; i < envidoChain.length - 1; i++) {
+        const lvl = envidoChain[i];
+        pts += lvl === 0 ? 2 : lvl === 1 ? 3 : 0;
+    }
+    return Math.max(pts, 1);
+}
+
+function calcEnvidoWinPoints() {
+    let pts = 0;
+    for (const lvl of envidoChain) {
+        if (lvl === 0) pts += 2;
+        else if (lvl === 1) pts += 3;
+        else if (lvl === 2) {
+            const gap = 15 - Math.min(playerScore, cpuScore);
+            pts += Math.max(gap, 1);
+        }
+    }
+    return Math.max(pts, 2);
+}
+
+function resolveEnvido() {
+    const pEnv = calcEnvido(originalPlayerHand);
+    const cEnv = calcEnvido(originalCpuHand);
+
+    const reveal = document.getElementById('envidoReveal');
+    reveal.classList.add('show');
+
+    const pEl = document.getElementById('envidoPlayerPts');
+    const cEl = document.getElementById('envidoCpuPts');
+
+    pEl.textContent = pEnv;
+    cEl.textContent = cEnv;
+
+    const winner = pEnv >= cEnv ? 'player' : 'cpu';
+    pEl.className = `envido-points-value ${winner === 'player' ? 'envido-win' : 'envido-lose'}`;
+    cEl.className = `envido-points-value ${winner === 'cpu' ? 'envido-win' : 'envido-lose'}`;
+
+    const pts = calcEnvidoWinPoints();
+    envidoPoints = pts;
+
+    if (winner === 'player') {
+        playerScore += pts;
+        oppSay('envidoLose');
+        setMood('angry');
+        setMsg(`¡GANASTE EL ENVIDO! +${pts} PTS`);
+    } else {
+        cpuScore += pts;
+        oppSay('envidoWin');
+        setMood('happy');
+        setMsg(`${OPP.name} GANA ENVIDO +${pts} PTS`);
+    }
+
+    envidoResolved = true;
+    renderScores();
+
+    setTimeout(() => {
+        reveal.classList.remove('show');
+        resumeAfterEnvido();
+    }, 2000);
+}
+
+function resumeAfterEnvido() {
+    setMood(null);
+    playerTurn = true;
+
+    if (pendingPlayerCard) {
+        const pc = pendingPlayerCard;
+        pendingPlayerCard = null;
+        setMsg(`${OPP.name} PIENSA...`);
+        playerTurn = false;
+        renderPlayerHandHTML(false);
+        renderActions();
+        setTimeout(() => cpuPlayCard(pc), 500);
+    } else {
+        setMsg('ELEGI UNA CARTA');
+        renderPlayerHandHTML(true);
+        renderActions();
+    }
+    checkGameEnd();
+}
+
+// ================ TRUCO =============================
+function callTruco() {
+    const next = trucoLevel + 1;
+    if (next > 2) return;
+    trucoLevel = next;
+    trucoCaller = 'player';
+
+    const callType = trucoLevel === 0 ? 'truco' : trucoLevel === 1 ? 'retruco' : 'vale-cuatro';
+    showCall(TRUCO_LEVELS[trucoLevel].name, callType);
+
+    setMsg(`¡CANTASTE ${TRUCO_LEVELS[trucoLevel].name}!`);
+    renderActions();
+    setTimeout(() => cpuRespondTruco(), 1800);
+}
+
+function cpuCallTruco() {
+    const next = trucoLevel + 1;
+    if (next > 2) return;
+    trucoLevel = next;
+    trucoCaller = 'cpu';
+    waitingForTruco = true;
+
+    const cat = trucoLevel === 0 ? 'truco' : trucoLevel === 1 ? 'retruco' : 'valeCuatro';
+    const callType = trucoLevel === 0 ? 'truco' : trucoLevel === 1 ? 'retruco' : 'vale-cuatro';
+
+    showCall(TRUCO_LEVELS[trucoLevel].name, callType);
+
+    setTimeout(() => {
+        oppSay(cat);
+        setMood('happy');
+        setMsg(`${OPP.name} CANTA ${TRUCO_LEVELS[trucoLevel].name}!`);
+        renderPlayerHandHTML(false);
+        renderActions();
+    }, 1200);
+}
+
+function respondTruco(accept) {
+    waitingForTruco = false;
+
+    if (accept) {
+        handPoints = TRUCO_LEVELS[trucoLevel].points;
+        showCall('¡QUIERO!', 'truco');
+        setMsg('¡QUIERO!');
+
+        setTimeout(() => {
+            setMood(null);
+
+            if (cpuFirstCard) {
+                const chosen = cpuFirstCard;
+                cpuHand = cpuHand.filter(c => c.key !== chosen.key);
+                if (window.trucoScene) window.trucoScene.cpuPlayCard(chosen);
+
+                setTimeout(() => {
+                    playerTurn = true;
+                    setMsg('ELEGI UNA CARTA PARA RESPONDER');
+                    renderPlayerHandHTML(true);
+                    renderActions();
+                }, 400);
+                return;
+            }
+
+            playerTurn = true;
+            setMsg('ELEGI UNA CARTA');
+            renderPlayerHandHTML(true);
+            renderActions();
+
+            if (pendingPlayerCard) {
+                const pc = pendingPlayerCard;
+                pendingPlayerCard = null;
+                playerTurn = false;
+                setMsg(`${OPP.name} PIENSA...`);
+                renderPlayerHandHTML(false);
+                renderActions();
+                setTimeout(() => cpuPlayCard(pc), 500);
+            }
+        }, 500);
+    } else {
+        setMsg('NO QUIERO...');
+        setTimeout(() => endHand('cpu'), 600);
+    }
+}
+
+function raiseTruco() {
+    waitingForTruco = false;
+    trucoLevel++;
+    trucoCaller = 'player';
+    showCall(TRUCO_LEVELS[trucoLevel].name, trucoLevel === 1 ? 'retruco' : 'vale-cuatro');
+    setMsg(`¡${TRUCO_LEVELS[trucoLevel].name}!`);
+    renderActions();
+    setTimeout(() => cpuRespondTruco(), 1600);
+}
+
+function cpuRespondTruco() {
+    const maxP = Math.max(...cpuHand.map(getPower));
+    const variance = AI.randomVariance ? (Math.random() * AI.randomVariance * 2 - AI.randomVariance) : 0;
+    const accept = maxP >= (AI.trucoAcceptMinPower + variance) || Math.random() < (1 - AI.foldChance);
+
+    if (accept) {
+        if (trucoLevel < 2 && maxP >= (AI.trucoRaiseMinPower + variance) && Math.random() < AI.trucoRaiseChance) {
+            trucoLevel++;
+            trucoCaller = 'cpu';
+            waitingForTruco = true;
+            const cat = trucoLevel === 1 ? 'retruco' : 'valeCuatro';
+            oppSay(cat);
+            setMood('happy');
+            setMsg(`${OPP.name} CANTA ${TRUCO_LEVELS[trucoLevel].name}!`);
+            renderPlayerHandHTML(false);
+            renderActions();
+            return;
+        }
+
+        handPoints = TRUCO_LEVELS[trucoLevel].points;
+        oppSay('trucoQuiero');
+        setMsg(`${OPP.name}: ¡QUIERO!`);
+        setTimeout(() => {
+            setMsg('ELEGI UNA CARTA');
+            setMood(null);
+            renderActions();
+        }, 600);
+    } else {
+        oppSay('trucoNoQuiero');
+        setMood('angry');
+        setMsg(`${OPP.name}: NO QUIERO`);
+        setTimeout(() => endHand('player'), 600);
+    }
+}
+
+// ================ OVERLAY ============================
+function showOverlay(text, sub, isLoss, quote) {
+    const o = document.getElementById('overlay');
+    document.getElementById('overlayText').textContent = text;
+    document.getElementById('overlayText').style.color = isLoss ? 'var(--red)' : 'var(--green)';
+    document.getElementById('overlaySub').textContent = sub;
+    document.getElementById('overlayQuote').textContent = quote ? `"${quote}" — ${OPP.name}` : '';
+    document.getElementById('overlayImg').style.borderColor = isLoss ? 'var(--red)' : 'var(--green)';
+    document.getElementById('overlayBtn').textContent = 'OTRA MANO';
+    document.getElementById('overlayBtn').onclick = closeOverlay;
+    o.classList.add('show');
+}
+
+function closeOverlay() {
+    document.getElementById('overlay').classList.remove('show');
+    deal();
+}
+
+// ================ PRELOADER ==========================
+(function() {
+    document.body.style.overflow = 'hidden';
+    const cesarCharacter = document.querySelector('.preloader-character');
+    let loadingComplete = false;
+
+    function cesarBlink() {
+        cesarCharacter.classList.add('cesar-blinking');
+        setTimeout(() => cesarCharacter.classList.remove('cesar-blinking'), 800);
+    }
+
+    function scheduleNextBlink() {
+        const randomDelay = 500 + Math.random() * 1000;
+        setTimeout(() => {
+            if (!loadingComplete) {
+                cesarBlink();
+                scheduleNextBlink();
+            }
+        }, randomDelay);
+    }
+    scheduleNextBlink();
+
+    // Phaser will handle the rest
+    window.addEventListener('load', () => {
+        loadingComplete = true;
+        document.body.style.overflow = '';
+    });
+})();
+</script>
+
+</body>
+</html>
