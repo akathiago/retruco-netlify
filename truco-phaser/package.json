@@ -1,0 +1,21 @@
+{
+  "name": "truco-phaser",
+  "version": "1.0.0",
+  "description": "ReTruco - Truco Argentino con Phaser",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "keywords": ["truco", "phaser", "game", "argentina"],
+  "author": "Thiago",
+  "license": "ISC",
+  "dependencies": {
+    "phaser": "^4.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "vite": "^8.0.9"
+  }
+}

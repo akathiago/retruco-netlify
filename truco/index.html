@@ -136,8 +136,8 @@
             overflow-x: hidden;
             padding: 20px;
             background:
-                linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.7) 100%),
-                url('../imagenes/congreso.png');
+                linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.5) 100%),
+                url('../retrucocharacter/assets/fondo/fondocarga.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -776,9 +776,97 @@
         .floor:nth-child(3) { animation-delay: 0.3s; }
         .floor:nth-child(4) { animation-delay: 0.4s; }
         .floor:nth-child(5) { animation-delay: 0.5s; }
+
+        /* PRELOADER STYLES */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('../retrucocharacter/assets/fondo/fondocarga.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #A07F56;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .preloader-content {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .preloader-counter {
+            font-family: 'Trevor', sans-serif;
+            font-size: 6rem;
+            color: white;
+            text-shadow: 4px 4px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+            margin: 0;
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+        }
+
+        .preloader-character {
+            position: relative;
+            width: 1800px;
+            height: 1800px;
+        }
+
+        .preloader-character img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .cesar-eyes {
+            opacity: 1;
+        }
+
+        .cesar-blink {
+            opacity: 0;
+            transition: opacity 0.08s ease;
+        }
+
+        .cesar-blinking .cesar-blink {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .preloader-counter {
+                font-size: 4rem;
+            }
+            .preloader-character {
+                width: 600px;
+                height: 600px;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-content">
+            <p id="counter" class="preloader-counter">0%</p>
+            <div class="preloader-character">
+                <img id="cesarOjos" src="../imagenes/cesarojosabiertos.png" alt="César cargando" class="cesar-eyes">
+                <img id="cesarPestanea" src="../imagenes/cesarpestañando.png" alt="César pestañeando" class="cesar-blink">
+            </div>
+        </div>
+    </div>
 
     <header class="header">
         <img src="../imagenes/logoretruco.png" alt="ReTruco" class="logo">
@@ -1109,6 +1197,91 @@ document.addEventListener('keydown', (e) => {
 if (allRegularDefeated || bossDefeated) {
     bossFrame.onclick = () => openModal(FINAL_BOSS_ID);
 }
+
+// ====== PRELOADER ======
+(function() {
+    document.body.style.overflow = 'hidden';
+
+    const counterElement = document.getElementById('counter');
+    const preloader = document.getElementById('preloader');
+    const cesarCharacter = document.querySelector('.preloader-character');
+
+    let currentProgress = 0;
+    let targetProgress = 0;
+    let loadingComplete = false;
+
+    // Función para pestañear
+    function cesarBlink() {
+        cesarCharacter.classList.add('cesar-blinking');
+        setTimeout(() => {
+            cesarCharacter.classList.remove('cesar-blinking');
+        }, 800);
+    }
+
+    // Pestañear cada 0.5-1.5 segundos aleatorio
+    function scheduleNextBlink() {
+        const randomDelay = 500 + Math.random() * 1000;
+        setTimeout(() => {
+            if (!loadingComplete) {
+                cesarBlink();
+                scheduleNextBlink();
+            }
+        }, randomDelay);
+    }
+    scheduleNextBlink();
+
+    // Obtener todas las imágenes (excluyendo las del preloader)
+    const images = Array.from(document.querySelectorAll('img:not(.cesar-eyes):not(.cesar-blink)'));
+    const totalResources = images.length + 1;
+    let loadedResources = 0;
+
+    function updateProgress() {
+        targetProgress = Math.min(Math.round((loadedResources / totalResources) * 100), 100);
+    }
+
+    function animateCounter() {
+        if (currentProgress < targetProgress) {
+            currentProgress++;
+            counterElement.textContent = `${currentProgress}%`;
+        }
+
+        if (currentProgress >= 100) {
+            loadingComplete = true;
+            preloader.style.opacity = '0';
+            preloader.style.pointerEvents = 'none';
+            document.body.style.overflow = '';
+            return;
+        }
+
+        requestAnimationFrame(animateCounter);
+    }
+
+    animateCounter();
+
+    // Track image loading
+    images.forEach(img => {
+        if (img.complete) {
+            loadedResources++;
+            updateProgress();
+        } else {
+            img.addEventListener('load', () => { loadedResources++; updateProgress(); });
+            img.addEventListener('error', () => { loadedResources++; updateProgress(); });
+        }
+    });
+
+    // Window load como recurso final
+    window.addEventListener('load', () => {
+        loadedResources++;
+        targetProgress = 100;
+    });
+
+    // Fallback: máximo 10 segundos de espera
+    setTimeout(() => {
+        if (!loadingComplete) {
+            targetProgress = 100;
+        }
+    }, 10000);
+})();
 
 </script>
 

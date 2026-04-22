@@ -2841,6 +2841,39 @@
         </script>
     </div>
 
+    <!-- TRUCOGANG -->
+    <section style="position: relative; line-height: 0; overflow: hidden; margin: 0; padding: 0; background: #0a0a0a;">
+        <img src="imagenes/trucogang.png" alt="Truco Gang" loading="lazy" style="width: 100%; height: auto; display: block;">
+        <a href="/truco" class="trucogang-button">
+            <img src="imagenes/trucobutton.png" alt="Jugar Truco" loading="lazy">
+        </a>
+        <style>
+            .trucogang-button {
+                position: absolute;
+                bottom: 5%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 20%;
+                z-index: 10;
+            }
+            .trucogang-button img {
+                width: 100%;
+                height: auto;
+                filter: drop-shadow(0 0 20px rgba(43, 184, 205, 0.5));
+                animation: trucobutton-glow 2s ease-in-out infinite;
+                transition: filter 0.3s ease, transform 0.3s ease;
+            }
+            .trucogang-button:hover img {
+                filter: drop-shadow(0 0 40px rgba(43, 184, 205, 0.8)) drop-shadow(0 0 60px rgba(43, 184, 205, 0.5));
+                transform: scale(1.02);
+            }
+            @keyframes trucobutton-glow {
+                0%, 100% { filter: drop-shadow(0 0 20px rgba(43, 184, 205, 0.5)); }
+                50% { filter: drop-shadow(0 0 35px rgba(43, 184, 205, 0.7)); }
+            }
+        </style>
+    </section>
+
     <!-- FAQ -->
     <section id="faq" class="faq-section" style="position: relative; line-height: 0; overflow: hidden; margin: 0; padding: 0; font-size: 0;">
         <img src="imagenes/footer_Mesa de trabajo 1.png" alt="" class="faq-bg-img" loading="lazy" style="width: 100%; height: auto; display: block;">

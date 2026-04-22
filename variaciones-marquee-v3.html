@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marquee V3 - Dark Chunky Style con Angulos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Trevor';
+            src: url('fuentes/TREVOR.TTF') format('truetype');
+            font-weight: bold;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a1a24;
+            --bg-mid: #0f2535;
+            --cyan: #2bb8cd;
+            --cyan-dark: #1a8fa5;
+            --paper: #e0f7fa;
+        }
+
+        body {
+            font-family: 'Trevor', 'Montserrat', Impact, sans-serif;
+            background: #030a0f;
+            color: var(--paper);
+            padding: 60px 0;
+            overflow-x: hidden;
+        }
+
+        .section {
+            margin-bottom: 120px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--cyan);
+            margin-bottom: 15px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .section-desc {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            color: rgba(224, 247, 250, 0.5);
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* ========== BASE MARQUEE ========== */
+        .marquee-wrapper {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-track {
+            display: inline-flex;
+            animation: marquee 22s linear infinite;
+        }
+
+        .marquee-track-reverse {
+            display: inline-flex;
+            animation: marquee-reverse 22s linear infinite;
+        }
+
+        .marquee-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 35px;
+            padding: 0 35px;
+            font-size: 1.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .logo {
+            width: 75px;
+            height: 75px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .dot {
+            font-size: 2rem;
+            color: var(--cyan);
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes marquee-reverse {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        .marquee-wrapper:hover .marquee-track,
+        .marquee-wrapper:hover .marquee-track-reverse {
+            animation-play-state: paused;
+        }
+
+        /* ========== BASE DARK CHUNKY STYLE ========== */
+        .dark-chunky {
+            background: var(--bg-dark);
+            padding: 25px 0;
+            border: 5px solid var(--cyan);
+            border-left: none;
+            border-right: none;
+            position: relative;
+        }
+
+        .dark-chunky::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--cyan);
+            opacity: 0.3;
+        }
+
+        .dark-chunky::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--cyan);
+            opacity: 0.3;
+        }
+
+        .dark-chunky .marquee-item {
+            color: var(--paper);
+        }
+
+        /* ========== VARIACION 1: RECTO (0deg) ========== */
+        .v1 {
+            /* Base style, sin rotacion */
+        }
+
+        /* ========== VARIACION 2: -2deg CON SOMBRA OPUESTA ========== */
+        .v2-container {
+            padding: 40px 0;
+            position: relative;
+        }
+
+        .v2-shadow {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%) rotate(2deg) scale(1.04);
+            background: var(--bg-dark);
+            padding: 25px 0;
+            border: 5px solid var(--cyan);
+            border-left: none;
+            border-right: none;
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        .v2 {
+            position: relative;
+            z-index: 2;
+            transform: rotate(-2deg) scale(1.04);
+        }
+
+        /* ========== VARIACION 3: +2deg ========== */
+        .v3-container {
+            padding: 25px 0;
+        }
+
+        .v3 {
+            transform: rotate(2deg) scale(1.04);
+        }
+
+        /* ========== VARIACION 4: -3deg MAS INCLINADO ========== */
+        .v4-container {
+            padding: 30px 0;
+        }
+
+        .v4 {
+            transform: rotate(-3deg) scale(1.06);
+            border-width: 6px;
+        }
+
+        .v4 .marquee-item {
+            font-size: 1.8rem;
+        }
+
+        .v4 .logo {
+            width: 80px;
+            height: 80px;
+        }
+
+        /* ========== VARIACION 5: DOBLE CRUZADO ========== */
+        .v5-container {
+            padding: 20px 0;
+            position: relative;
+            height: 180px;
+        }
+
+        .v5-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            transform: rotate(-2deg) scale(1.04);
+            z-index: 2;
+        }
+
+        .v5-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            transform: rotate(2deg) scale(1.04);
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        .v5-bottom .marquee-item {
+            font-size: 1.4rem;
+        }
+
+        .v5-bottom .logo {
+            width: 60px;
+            height: 60px;
+        }
+
+        /* ========== VARIACION 6: TRIPLE STACK ========== */
+        .v6-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .v6-mid {
+            border-width: 6px;
+            padding: 28px 0;
+        }
+
+        .v6-mid .marquee-item {
+            font-size: 1.9rem;
+        }
+
+        .v6-mid .logo {
+            width: 85px;
+            height: 85px;
+        }
+
+        .v6-small {
+            padding: 15px 0;
+            border-width: 3px;
+        }
+
+        .v6-small::before,
+        .v6-small::after {
+            display: none;
+        }
+
+        .v6-small .marquee-item {
+            font-size: 1rem;
+            gap: 25px;
+        }
+
+        .v6-small .logo {
+            width: 40px;
+            height: 40px;
+        }
+
+        .v6-small .marquee-track {
+            animation-duration: 18s;
+        }
+
+        .v6-small .marquee-track-reverse {
+            animation-duration: 18s;
+        }
+
+        /* ========== VARIACION 7: ANGULO EXTREMO -4deg ========== */
+        .v7-container {
+            padding: 35px 0;
+        }
+
+        .v7 {
+            transform: rotate(-4deg) scale(1.08);
+            border-width: 7px;
+            padding: 30px 0;
+        }
+
+        .v7 .marquee-item {
+            font-size: 2rem;
+        }
+
+        .v7 .logo {
+            width: 90px;
+            height: 90px;
+        }
+
+        /* ========== VARIACION 8: ZIG ZAG DOBLE ========== */
+        .v8-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .v8-top {
+            transform: rotate(-2.5deg) scale(1.05);
+            transform-origin: left center;
+            margin-bottom: -8px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .v8-bottom {
+            transform: rotate(2.5deg) scale(1.05);
+            transform-origin: right center;
+            z-index: 1;
+            position: relative;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            text-align: center;
+            padding: 80px 20px 40px;
+            color: rgba(224, 247, 250, 0.3);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- VARIACION 1: RECTO 0deg -->
+    <section class="section">
+        <h2 class="section-title">Variacion 1</h2>
+        <p class="section-desc">Recto (0deg) - El original</p>
+        <div class="marquee-wrapper dark-chunky v1">
+            <div class="marquee-track">
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="dot">•</span>
+                    <span>RETRUCO</span>
+                    <span class="dot">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="dot">•</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="dot">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="dot">•</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="dot">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="dot">•</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="dot">•</span>
+                </div>
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="dot">•</span>
+                    <span>RETRUCO</span>
+                    <span class="dot">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="dot">•</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="dot">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="dot">•</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="dot">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="dot">•</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="dot">•</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 2: -2deg -->
+    <section class="section">
+        <h2 class="section-title">Variacion 2</h2>
+        <p class="section-desc">Inclinado -2deg con sombra opuesta +2deg</p>
+        <div class="v2-container">
+            <div class="v2-shadow"></div>
+            <div class="marquee-wrapper dark-chunky v2">
+                <div class="marquee-track">
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 3: +2deg -->
+    <section class="section">
+        <h2 class="section-title">Variacion 3</h2>
+        <p class="section-desc">Inclinado +2deg</p>
+        <div class="v3-container">
+            <div class="marquee-wrapper dark-chunky v3">
+                <div class="marquee-track">
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 4: -3deg MAS GRANDE -->
+    <section class="section">
+        <h2 class="section-title">Variacion 4</h2>
+        <p class="section-desc">Inclinado -3deg + mas grande</p>
+        <div class="v4-container">
+            <div class="marquee-wrapper dark-chunky v4">
+                <div class="marquee-track">
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 5: DOBLE CRUZADO -->
+    <section class="section">
+        <h2 class="section-title">Variacion 5</h2>
+        <p class="section-desc">Doble cruzado (-2deg y +2deg superpuestos)</p>
+        <div class="v5-container">
+            <div class="marquee-wrapper dark-chunky v5-top">
+                <div class="marquee-track">
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                </div>
+            </div>
+            <div class="marquee-wrapper dark-chunky v5-bottom">
+                <div class="marquee-track-reverse">
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                    </div>
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 6: TRIPLE STACK -->
+    <section class="section">
+        <h2 class="section-title">Variacion 6</h2>
+        <p class="section-desc">Triple stack - grande en el medio, chicas arriba y abajo</p>
+        <div class="v6-container">
+            <div class="marquee-wrapper dark-chunky v6-small">
+                <div class="marquee-track">
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                </div>
+            </div>
+            <div class="marquee-wrapper dark-chunky v6-mid">
+                <div class="marquee-track-reverse">
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                </div>
+            </div>
+            <div class="marquee-wrapper dark-chunky v6-small">
+                <div class="marquee-track">
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 7: EXTREMO -4deg -->
+    <section class="section">
+        <h2 class="section-title">Variacion 7</h2>
+        <p class="section-desc">Angulo extremo -4deg + extra grande</p>
+        <div class="v7-container">
+            <div class="marquee-wrapper dark-chunky v7">
+                <div class="marquee-track">
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 8: ZIG ZAG -->
+    <section class="section">
+        <h2 class="section-title">Variacion 8</h2>
+        <p class="section-desc">Zig-zag doble (direcciones opuestas cruzadas)</p>
+        <div class="v8-container">
+            <div class="marquee-wrapper dark-chunky v8-top">
+                <div class="marquee-track">
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                    </div>
+                </div>
+            </div>
+            <div class="marquee-wrapper dark-chunky v8-bottom">
+                <div class="marquee-track-reverse">
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                    </div>
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="dot">•</span>
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="dot">•</span>
+                        <span>RETRUCO</span>
+                        <span class="dot">•</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        Hover para pausar • Estilo Dark Chunky con distintos angulos
+    </footer>
+
+</body>
+</html>

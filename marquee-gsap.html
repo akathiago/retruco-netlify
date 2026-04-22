@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marquee GSAP - Retruco</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        @font-face {
+            font-family: 'Trevor';
+            src: url('fuentes/TREVOR.TTF') format('truetype');
+        }
+
+        :root {
+            --concrete-1: #0a1a24;
+            --concrete-2: #0f2535;
+            --concrete-3: #1a3545;
+            --rust: #2bb8cd;
+            --rust-dark: #1a8fa5;
+            --blood: #0e7490;
+            --caution: #7dd4e4;
+            --graffiti: #5eead4;
+            --paper: #e0f7fa;
+            --paper-dark: #b2ebf2;
+            --cyan-bright: #22d3ee;
+            --cyan-glow: rgba(43, 184, 205, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #030a0f;
+            min-height: 100vh;
+            padding: 40px 0;
+            overflow-x: hidden;
+        }
+
+        .section {
+            margin-bottom: 100px;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--rust);
+            letter-spacing: 4px;
+            margin-bottom: 5px;
+        }
+
+        .section-desc {
+            text-align: center;
+            font-family: sans-serif;
+            font-size: 0.65rem;
+            color: rgba(224,247,250,0.4);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .marquee-container {
+            position: relative;
+            padding: 35px 0;
+        }
+
+        .marquee-wrapper {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-content {
+            display: inline-flex;
+            will-change: transform;
+        }
+
+        .marquee-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 30px;
+            padding: 0 30px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .dot {
+            font-size: 1.4rem;
+        }
+
+        /* ========== G1: GSAP SMOOTH INFINITE ========== */
+        .g1 .shadow {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%) rotate(5deg) scale(1.1);
+            background: var(--concrete-1);
+            padding: 8px 0;
+            border: 5px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            opacity: 0.3;
+            z-index: 1;
+        }
+        .g1 .bar {
+            position: relative;
+            z-index: 2;
+            background: var(--concrete-1);
+            border: 5px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 8px 0;
+            transform: rotate(-5deg) scale(1.1);
+        }
+        .g1 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.2rem;
+            color: var(--paper);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .g1 .dot { color: var(--rust); }
+
+        /* ========== G2: DUAL DIRECTION ========== */
+        .g2 .dual-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .g2 .bar-top {
+            position: relative;
+            z-index: 3;
+            background: var(--concrete-1);
+            border: 5px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 8px 0;
+            transform: rotate(-4deg) scale(1.08);
+        }
+        .g2 .bar-bottom {
+            position: relative;
+            z-index: 2;
+            background: var(--concrete-2);
+            border: 4px solid var(--rust-dark);
+            border-left: none;
+            border-right: none;
+            padding: 6px 0;
+            transform: rotate(3deg) scale(1.06);
+            margin-top: -15px;
+            opacity: 0.7;
+        }
+        .g2 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.2rem;
+            color: var(--paper);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .g2 .bar-bottom .marquee-item {
+            font-size: 1rem;
+            color: var(--paper-dark);
+            opacity: 0.8;
+        }
+        .g2 .dot { color: var(--rust); }
+
+        /* ========== G3: SCROLL VELOCITY ========== */
+        .g3 .shadow {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%) rotate(4deg) scale(1.1);
+            background: var(--blood);
+            padding: 8px 0;
+            border: 5px solid var(--cyan-bright);
+            border-left: none;
+            border-right: none;
+            opacity: 0.4;
+            z-index: 1;
+        }
+        .g3 .bar {
+            position: relative;
+            z-index: 2;
+            background: var(--concrete-1);
+            border: 5px solid var(--cyan-bright);
+            border-left: none;
+            border-right: none;
+            padding: 8px 0;
+            transform: rotate(-5deg) scale(1.1);
+        }
+        .g3 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.2rem;
+            color: var(--cyan-bright);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .g3 .dot { color: var(--paper); }
+
+        /* ========== G4: TRIPLE STACK ========== */
+        .g4 .stack-container {
+            position: relative;
+        }
+        .g4 .bar-back {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            background: var(--concrete-1);
+            border: 4px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 6px 0;
+            transform: translateY(-80%) rotate(6deg) scale(1.05);
+            opacity: 0.2;
+        }
+        .g4 .bar-mid {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            z-index: 2;
+            background: var(--concrete-1);
+            border: 4px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 6px 0;
+            transform: translateY(-30%) rotate(-3deg) scale(1.08);
+            opacity: 0.35;
+        }
+        .g4 .bar-front {
+            position: relative;
+            z-index: 3;
+            background: var(--concrete-1);
+            border: 5px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 8px 0;
+            transform: rotate(-5deg) scale(1.1);
+        }
+        .g4 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.2rem;
+            color: var(--paper);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .g4 .bar-back .marquee-item,
+        .g4 .bar-mid .marquee-item {
+            font-size: 1rem;
+            color: var(--paper-dark);
+        }
+        .g4 .dot { color: var(--rust); }
+
+        /* ========== G5: HOVER REVERSE ========== */
+        .g5 .glow {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%) rotate(5deg) scale(1.1);
+            background: var(--rust);
+            padding: 12px 0;
+            opacity: 0.3;
+            filter: blur(8px);
+            z-index: 1;
+            transition: opacity 0.3s;
+        }
+        .g5:hover .glow {
+            opacity: 0.5;
+        }
+        .g5 .bar {
+            position: relative;
+            z-index: 2;
+            background: var(--concrete-1);
+            border: 5px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 8px 0;
+            transform: rotate(-5deg) scale(1.1);
+        }
+        .g5 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.2rem;
+            color: var(--paper);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        .g5:hover .marquee-item {
+            color: var(--cyan-bright);
+        }
+        .g5 .dot { color: var(--rust); }
+
+        /* ========== G6: NEON PULSE ========== */
+        .g6 .bar {
+            position: relative;
+            z-index: 2;
+            background: var(--concrete-1);
+            border: 5px solid var(--graffiti);
+            border-left: none;
+            border-right: none;
+            padding: 8px 0;
+            transform: rotate(-5deg) scale(1.1);
+            box-shadow:
+                0 0 10px rgba(94, 234, 212, 0.3),
+                0 0 20px rgba(94, 234, 212, 0.2),
+                0 0 30px rgba(94, 234, 212, 0.1);
+            animation: neonPulse 2s ease-in-out infinite;
+        }
+        @keyframes neonPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(94, 234, 212, 0.3), 0 0 20px rgba(94, 234, 212, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(94, 234, 212, 0.5), 0 0 40px rgba(94, 234, 212, 0.3), 0 0 60px rgba(94, 234, 212, 0.1); }
+        }
+        .g6 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.2rem;
+            color: var(--graffiti);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(94, 234, 212, 0.5);
+        }
+        .g6 .dot { color: var(--paper); }
+
+        /* ========== G7: SCRUB PARALLAX ========== */
+        .g7 .layer-back {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            transform: translateY(-50%) rotate(4deg) scale(1.05);
+            background: var(--concrete-2);
+            border: 3px solid var(--rust-dark);
+            border-left: none;
+            border-right: none;
+            padding: 6px 0;
+            opacity: 0.25;
+        }
+        .g7 .layer-front {
+            position: relative;
+            z-index: 2;
+            background: var(--concrete-1);
+            border: 5px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 8px 0;
+            transform: rotate(-5deg) scale(1.1);
+        }
+        .g7 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.2rem;
+            color: var(--paper);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .g7 .layer-back .marquee-item {
+            font-size: 0.9rem;
+            color: var(--paper-dark);
+        }
+        .g7 .dot { color: var(--rust); }
+
+        /* ========== G8: INVERTED FILL ========== */
+        .g8 .shadow {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%) rotate(5deg) scale(1.1);
+            background: var(--concrete-1);
+            padding: 8px 0;
+            border: 5px solid var(--paper);
+            border-left: none;
+            border-right: none;
+            opacity: 0.2;
+            z-index: 1;
+        }
+        .g8 .bar {
+            position: relative;
+            z-index: 2;
+            background: var(--rust);
+            padding: 8px 0;
+            transform: rotate(-5deg) scale(1.1);
+        }
+        .g8 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.2rem;
+            color: var(--concrete-1);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .g8 .dot { color: var(--paper); }
+
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(224,247,250,0.25);
+            font-family: sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- G1: GSAP SMOOTH INFINITE -->
+    <section class="section g1">
+        <h2 class="section-title">G1 - GSAP SMOOTH</h2>
+        <p class="section-desc">Infinite loop suave con GSAP</p>
+        <div class="marquee-container">
+            <div class="shadow"></div>
+            <div class="marquee-wrapper bar">
+                <div class="marquee-content" data-speed="20">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>DEMO DISPONIBLE</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>BIEN ARGENTO</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>GRATUITO</span><span class="dot">•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- G2: DUAL DIRECTION -->
+    <section class="section g2">
+        <h2 class="section-title">G2 - DUAL DIRECTION</h2>
+        <p class="section-desc">Dos barras direcciones opuestas</p>
+        <div class="marquee-container">
+            <div class="dual-container">
+                <div class="marquee-wrapper bar-top">
+                    <div class="marquee-content" data-speed="18" data-direction="left">
+                        <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>DEMO DISPONIBLE</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>BIEN ARGENTO</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>GRATUITO</span><span class="dot">•</span></div>
+                    </div>
+                </div>
+                <div class="marquee-wrapper bar-bottom">
+                    <div class="marquee-content" data-speed="25" data-direction="right">
+                        <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>RETRUCO</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>VIDEOJUEGO ARGENTINO</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>SOUTH PARK STYLE</span><span class="dot">•</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- G3: SCROLL VELOCITY -->
+    <section class="section g3">
+        <h2 class="section-title">G3 - SCROLL VELOCITY</h2>
+        <p class="section-desc">Acelera al hacer scroll</p>
+        <div class="marquee-container">
+            <div class="shadow"></div>
+            <div class="marquee-wrapper bar">
+                <div class="marquee-content velocity-marquee" data-speed="20">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>DEMO DISPONIBLE</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>BIEN ARGENTO</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>GRATUITO</span><span class="dot">•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- G4: TRIPLE STACK -->
+    <section class="section g4">
+        <h2 class="section-title">G4 - TRIPLE STACK</h2>
+        <p class="section-desc">Tres capas con diferentes velocidades</p>
+        <div class="marquee-container">
+            <div class="stack-container">
+                <div class="marquee-wrapper bar-back">
+                    <div class="marquee-content" data-speed="35" data-direction="right">
+                        <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>RETRUCO</span><span class="dot">•</span><span>INDIE</span><span class="dot">•</span><span>ARGENTINA</span><span class="dot">•</span></div>
+                    </div>
+                </div>
+                <div class="marquee-wrapper bar-mid">
+                    <div class="marquee-content" data-speed="28" data-direction="left">
+                        <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>SOUTH PARK STYLE</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>BUENOS AIRES</span><span class="dot">•</span></div>
+                    </div>
+                </div>
+                <div class="marquee-wrapper bar-front">
+                    <div class="marquee-content" data-speed="20" data-direction="left">
+                        <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>DEMO DISPONIBLE</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>BIEN ARGENTO</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>GRATUITO</span><span class="dot">•</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- G5: HOVER REVERSE -->
+    <section class="section g5">
+        <h2 class="section-title">G5 - HOVER REVERSE</h2>
+        <p class="section-desc">Invierte direccion al pasar el mouse</p>
+        <div class="marquee-container">
+            <div class="glow"></div>
+            <div class="marquee-wrapper bar">
+                <div class="marquee-content hover-reverse" data-speed="20">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>DEMO DISPONIBLE</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>BIEN ARGENTO</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>GRATUITO</span><span class="dot">•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- G6: NEON PULSE -->
+    <section class="section g6">
+        <h2 class="section-title">G6 - NEON PULSE</h2>
+        <p class="section-desc">Efecto neon con pulso</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-content" data-speed="22">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>DEMO DISPONIBLE</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>BIEN ARGENTO</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>GRATUITO</span><span class="dot">•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- G7: SCRUB PARALLAX -->
+    <section class="section g7">
+        <h2 class="section-title">G7 - PARALLAX LAYERS</h2>
+        <p class="section-desc">Capas con parallax al scroll</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper layer-back">
+                <div class="marquee-content parallax-back" data-speed="40">
+                    <div class="marquee-item"><span>RETRUCO</span><span class="dot">•</span><span>INDIE</span><span class="dot">•</span><span>ARGENTINA</span><span class="dot">•</span><span>2024</span><span class="dot">•</span></div>
+                </div>
+            </div>
+            <div class="marquee-wrapper layer-front">
+                <div class="marquee-content parallax-front" data-speed="18">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>DEMO DISPONIBLE</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>BIEN ARGENTO</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>GRATUITO</span><span class="dot">•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- G8: INVERTED FILL -->
+    <section class="section g8">
+        <h2 class="section-title">G8 - INVERTED</h2>
+        <p class="section-desc">Colores invertidos</p>
+        <div class="marquee-container">
+            <div class="shadow"></div>
+            <div class="marquee-wrapper bar">
+                <div class="marquee-content" data-speed="20">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>DEMO DISPONIBLE</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>BIEN ARGENTO</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>GRATUITO</span><span class="dot">•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>RETRUCO GSAP MARQUEE VARIATIONS • Scroll para ver efectos</footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Clone content for seamless loop
+        document.querySelectorAll('.marquee-content').forEach(content => {
+            const item = content.querySelector('.marquee-item');
+            if (item) {
+                // Clone multiple times for seamless loop
+                content.appendChild(item.cloneNode(true));
+                content.appendChild(item.cloneNode(true));
+                content.appendChild(item.cloneNode(true));
+            }
+        });
+
+        // Basic GSAP infinite marquee
+        document.querySelectorAll('.marquee-content:not(.velocity-marquee):not(.hover-reverse):not(.parallax-back):not(.parallax-front)').forEach(content => {
+            const speed = parseInt(content.dataset.speed) || 20;
+            const direction = content.dataset.direction === 'right' ? 1 : -1;
+            const item = content.querySelector('.marquee-item');
+            if (!item) return;
+
+            const itemWidth = item.offsetWidth;
+
+            gsap.to(content, {
+                x: direction * -itemWidth,
+                duration: speed,
+                ease: 'none',
+                repeat: -1,
+                modifiers: {
+                    x: gsap.utils.unitize(x => parseFloat(x) % itemWidth)
+                }
+            });
+        });
+
+        // Velocity-based marquee
+        let scrollVelocity = 0;
+        let lastScrollTop = 0;
+
+        document.querySelectorAll('.velocity-marquee').forEach(content => {
+            const speed = parseInt(content.dataset.speed) || 20;
+            const item = content.querySelector('.marquee-item');
+            if (!item) return;
+
+            const itemWidth = item.offsetWidth;
+            let currentX = 0;
+
+            const animation = gsap.to(content, {
+                x: -itemWidth,
+                duration: speed,
+                ease: 'none',
+                repeat: -1,
+                modifiers: {
+                    x: gsap.utils.unitize(x => parseFloat(x) % itemWidth)
+                }
+            });
+
+            // Speed up on scroll
+            window.addEventListener('scroll', () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                scrollVelocity = Math.abs(st - lastScrollTop);
+                lastScrollTop = st;
+
+                const speedMultiplier = 1 + (scrollVelocity * 0.1);
+                animation.timeScale(Math.min(speedMultiplier, 5));
+
+                gsap.to(animation, {
+                    timeScale: 1,
+                    duration: 0.5,
+                    delay: 0.2,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // Hover reverse marquee
+        document.querySelectorAll('.hover-reverse').forEach(content => {
+            const speed = parseInt(content.dataset.speed) || 20;
+            const item = content.querySelector('.marquee-item');
+            if (!item) return;
+
+            const itemWidth = item.offsetWidth;
+
+            const animation = gsap.to(content, {
+                x: -itemWidth,
+                duration: speed,
+                ease: 'none',
+                repeat: -1,
+                modifiers: {
+                    x: gsap.utils.unitize(x => parseFloat(x) % itemWidth)
+                }
+            });
+
+            const section = content.closest('.section');
+            section.addEventListener('mouseenter', () => {
+                gsap.to(animation, {
+                    timeScale: -1.5,
+                    duration: 0.5,
+                    ease: 'power2.out'
+                });
+            });
+
+            section.addEventListener('mouseleave', () => {
+                gsap.to(animation, {
+                    timeScale: 1,
+                    duration: 0.5,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // Parallax layers
+        document.querySelectorAll('.parallax-back, .parallax-front').forEach(content => {
+            const speed = parseInt(content.dataset.speed) || 20;
+            const item = content.querySelector('.marquee-item');
+            if (!item) return;
+
+            const itemWidth = item.offsetWidth;
+            const isBack = content.classList.contains('parallax-back');
+            const direction = isBack ? 1 : -1;
+
+            gsap.to(content, {
+                x: direction * -itemWidth,
+                duration: speed,
+                ease: 'none',
+                repeat: -1,
+                modifiers: {
+                    x: gsap.utils.unitize(x => parseFloat(x) % itemWidth)
+                }
+            });
+
+            // Add scroll-based speed variation
+            ScrollTrigger.create({
+                trigger: content.closest('.section'),
+                start: 'top bottom',
+                end: 'bottom top',
+                onUpdate: (self) => {
+                    const velocity = self.getVelocity() / 1000;
+                    gsap.to(content, {
+                        skewX: velocity * (isBack ? 0.5 : 1),
+                        duration: 0.3,
+                        ease: 'power1.out'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

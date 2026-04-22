@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>50 Variaciones Marquee - RETRUCO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rock+Salt&family=Covered+By+Your+Grace&family=Shadows+Into+Light&family=Nosifer&family=Creepster&family=Bungee&family=Bungee+Shade&family=Bungee+Inline&family=Press+Start+2P&family=VT323&family=Monoton&family=Black+Ops+One&family=Orbitron:wght@700;900&family=Audiowide&family=Special+Elite&family=Silkscreen&family=Rubik+Mono+One&family=Bangers&family=Bebas+Neue&family=Anton&family=Russo+One&family=Righteous&family=Staatliches&family=Teko:wght@700&family=Protest+Riot&family=Honk&family=Nabla&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Trevor';
+            src: url('fuentes/TREVOR.TTF') format('truetype');
+        }
+
+        :root {
+            --concrete-1: #0a1a24;
+            --concrete-2: #0f2535;
+            --concrete-3: #1a3545;
+            --rust: #2bb8cd;
+            --rust-dark: #1a8fa5;
+            --blood: #0e7490;
+            --caution: #7dd4e4;
+            --graffiti: #5eead4;
+            --paper: #e0f7fa;
+            --paper-dark: #b2ebf2;
+            --ink: #0a1a24;
+            --cyan-bright: #22d3ee;
+            --cyan-glow: rgba(43, 184, 205, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(180deg, #030a0f 0%, #0a1a24 50%, #030a0f 100%);
+            min-height: 100vh;
+            padding: 40px 0;
+            overflow-x: hidden;
+        }
+
+        .section {
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--rust);
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+        }
+
+        .section-desc {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem;
+            color: rgba(224,247,250,0.3);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .marquee-container {
+            position: relative;
+            padding: 30px 0;
+        }
+
+        .marquee-wrapper {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-track {
+            display: inline-flex;
+            animation: scroll 20s linear infinite;
+        }
+
+        .marquee-track-reverse {
+            animation-direction: reverse;
+        }
+
+        .marquee-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 30px;
+            padding: 0 30px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes scroll-fast {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-2px) skewX(1deg); }
+            40% { transform: translateX(2px) skewX(-1deg); }
+            60% { transform: translateX(-1px); }
+            80% { transform: translateX(1px); }
+        }
+
+        @keyframes neon-pulse {
+            0%, 100% { filter: drop-shadow(0 0 5px var(--cyan-bright)) drop-shadow(0 0 10px var(--rust)); }
+            50% { filter: drop-shadow(0 0 20px var(--cyan-bright)) drop-shadow(0 0 40px var(--rust)); }
+        }
+
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        .marquee-wrapper:hover .marquee-track {
+            animation-play-state: paused;
+        }
+
+        /* ========== V1: TREVOR CLASICO ========== */
+        .v1 .bar {
+            background: var(--concrete-1);
+            border: 4px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 8px 0;
+        }
+        .v1 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.4rem;
+            color: var(--paper);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .v1 .dot { color: var(--rust); }
+
+        /* ========== V2: PERMANENT MARKER GRAFFITI ========== */
+        .v2 .bar {
+            background: var(--rust);
+            padding: 12px 0;
+        }
+        .v2 .marquee-item {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 1.6rem;
+            color: var(--concrete-1);
+            letter-spacing: 2px;
+        }
+
+        /* ========== V3: PIXEL ARCADE ========== */
+        .v3 .bar {
+            background: #000;
+            border: 3px solid var(--graffiti);
+            border-left: none;
+            border-right: none;
+            padding: 10px 0;
+        }
+        .v3 .marquee-item {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.7rem;
+            color: var(--graffiti);
+            letter-spacing: 1px;
+        }
+        .v3 .marquee-track { animation-duration: 30s; }
+
+        /* ========== V4: BUNGEE BOLD ========== */
+        .v4 .bar {
+            background: linear-gradient(90deg, var(--concrete-1) 0%, var(--concrete-2) 50%, var(--concrete-1) 100%);
+            padding: 10px 0;
+            border-top: 5px solid var(--cyan-bright);
+            border-bottom: 5px solid var(--rust);
+        }
+        .v4 .marquee-item {
+            font-family: 'Bungee', cursive;
+            font-size: 1.5rem;
+            color: var(--paper);
+        }
+
+        /* ========== V5: ROCK SALT HANDWRITTEN ========== */
+        .v5 .bar {
+            background: var(--paper);
+            padding: 15px 0;
+        }
+        .v5 .marquee-item {
+            font-family: 'Rock Salt', cursive;
+            font-size: 1.1rem;
+            color: var(--ink);
+            letter-spacing: 2px;
+        }
+
+        /* ========== V6: CREEPSTER HORROR ========== */
+        .v6 .bar {
+            background: #000;
+            padding: 10px 0;
+        }
+        .v6 .marquee-item {
+            font-family: 'Creepster', cursive;
+            font-size: 1.8rem;
+            color: #ff3333;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+        }
+
+        /* ========== V7: VT323 RETRO TERMINAL ========== */
+        .v7 .bar {
+            background: #001a00;
+            border: 2px solid #00ff00;
+            border-left: none;
+            border-right: none;
+            padding: 8px 0;
+        }
+        .v7 .marquee-item {
+            font-family: 'VT323', monospace;
+            font-size: 1.6rem;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        /* ========== V8: BANGERS COMIC ========== */
+        .v8 .bar {
+            background: #ffeb3b;
+            padding: 10px 0;
+            border: 4px solid #000;
+            border-left: none;
+            border-right: none;
+        }
+        .v8 .marquee-item {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            color: #000;
+            letter-spacing: 3px;
+        }
+
+        /* ========== V9: MONOTON ART DECO ========== */
+        .v9 .bar {
+            background: var(--concrete-1);
+            padding: 15px 0;
+        }
+        .v9 .marquee-item {
+            font-family: 'Monoton', cursive;
+            font-size: 1.4rem;
+            color: var(--cyan-bright);
+        }
+
+        /* ========== V10: ORBITRON FUTURISTA ========== */
+        .v10 .bar {
+            background: linear-gradient(90deg, #0a0a0a, #1a1a2e, #0a0a0a);
+            padding: 10px 0;
+            border-top: 2px solid var(--rust);
+            border-bottom: 2px solid var(--rust);
+        }
+        .v10 .marquee-item {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--paper);
+            letter-spacing: 5px;
+            font-weight: 700;
+        }
+
+        /* ========== V11: ROTACION -3deg ========== */
+        .v11 .bar {
+            background: var(--concrete-1);
+            border: 5px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 10px 0;
+            transform: rotate(-3deg) scale(1.05);
+        }
+        .v11 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.3rem;
+            color: var(--paper);
+        }
+
+        /* ========== V12: ROTACION +2deg CON SOMBRA ========== */
+        .v12 .shadow {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%) rotate(-2deg) scale(1.04);
+            background: var(--concrete-1);
+            padding: 10px 0;
+            border: 5px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            opacity: 0.3;
+            z-index: 1;
+        }
+        .v12 .bar {
+            position: relative;
+            z-index: 2;
+            background: var(--concrete-1);
+            border: 5px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 10px 0;
+            transform: rotate(2deg) scale(1.04);
+        }
+        .v12 .marquee-item {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            color: var(--paper);
+            letter-spacing: 4px;
+        }
+
+        /* ========== V13: STAATLICHES BOLD ========== */
+        .v13 .bar {
+            background: var(--rust);
+            padding: 8px 0;
+            transform: rotate(-1deg);
+        }
+        .v13 .marquee-item {
+            font-family: 'Staatliches', cursive;
+            font-size: 1.5rem;
+            color: var(--concrete-1);
+            letter-spacing: 3px;
+        }
+
+        /* ========== V14: DOBLE BARRA OPUESTA ========== */
+        .v14 .bar-top {
+            background: var(--concrete-1);
+            border: 3px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 6px 0;
+            margin-bottom: 5px;
+        }
+        .v14 .bar-bottom {
+            background: var(--rust);
+            padding: 6px 0;
+        }
+        .v14 .marquee-item {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+        .v14 .bar-top .marquee-item { color: var(--paper); }
+        .v14 .bar-bottom .marquee-item { color: var(--concrete-1); }
+
+        /* ========== V15: TRIPLE BARRA ========== */
+        .v15 .bar {
+            padding: 5px 0;
+            margin-bottom: 3px;
+        }
+        .v15 .bar:nth-child(1) { background: var(--rust); }
+        .v15 .bar:nth-child(2) { background: var(--concrete-1); border: 2px solid var(--rust); border-left: none; border-right: none; }
+        .v15 .bar:nth-child(3) { background: var(--rust); }
+        .v15 .marquee-item {
+            font-family: 'Teko', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
+        .v15 .bar:nth-child(1) .marquee-item,
+        .v15 .bar:nth-child(3) .marquee-item { color: var(--concrete-1); }
+        .v15 .bar:nth-child(2) .marquee-item { color: var(--paper); }
+
+        /* ========== V16: NEON GLOW ========== */
+        .v16 .bar {
+            background: #000;
+            padding: 12px 0;
+        }
+        .v16 .marquee-item {
+            font-family: 'Audiowide', cursive;
+            font-size: 1.3rem;
+            color: var(--cyan-bright);
+            text-shadow:
+                0 0 5px var(--cyan-bright),
+                0 0 10px var(--cyan-bright),
+                0 0 20px var(--cyan-bright),
+                0 0 40px var(--rust);
+            animation: neon-pulse 2s ease-in-out infinite;
+        }
+
+        /* ========== V17: GLITCH EFFECT ========== */
+        .v17 .bar {
+            background: var(--concrete-1);
+            padding: 10px 0;
+            border: 3px solid var(--rust);
+            border-left: none;
+            border-right: none;
+        }
+        .v17 .marquee-item {
+            font-family: 'Russo One', sans-serif;
+            font-size: 1.4rem;
+            color: var(--paper);
+            position: relative;
+        }
+        .v17 .marquee-item::before,
+        .v17 .marquee-item::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .v17 .marquee-item::before {
+            color: #ff0000;
+            animation: glitch 0.3s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            transform: translateX(-2px);
+        }
+        .v17 .marquee-item::after {
+            color: #00ffff;
+            animation: glitch 0.3s infinite reverse;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            transform: translateX(2px);
+        }
+
+        /* ========== V18: NOSIFER DRIPPING ========== */
+        .v18 .bar {
+            background: #1a0000;
+            padding: 15px 0;
+        }
+        .v18 .marquee-item {
+            font-family: 'Nosifer', cursive;
+            font-size: 1.2rem;
+            color: #cc0000;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        /* ========== V19: RIGHTEOUS GROOVY ========== */
+        .v19 .bar {
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            padding: 10px 0;
+        }
+        .v19 .marquee-item {
+            font-family: 'Righteous', cursive;
+            font-size: 1.5rem;
+            color: #000;
+            letter-spacing: 2px;
+        }
+
+        /* ========== V20: BUNGEE SHADE 3D ========== */
+        .v20 .bar {
+            background: var(--concrete-2);
+            padding: 15px 0;
+        }
+        .v20 .marquee-item {
+            font-family: 'Bungee Shade', cursive;
+            font-size: 1.3rem;
+            color: var(--cyan-bright);
+        }
+
+        /* ========== V21: SPECIAL ELITE TYPEWRITER ========== */
+        .v21 .bar {
+            background: #f5f5dc;
+            padding: 12px 0;
+        }
+        .v21 .marquee-item {
+            font-family: 'Special Elite', cursive;
+            font-size: 1.2rem;
+            color: #333;
+            letter-spacing: 1px;
+        }
+
+        /* ========== V22: SILKSCREEN PIXEL ========== */
+        .v22 .bar {
+            background: #1a1a2e;
+            padding: 10px 0;
+            border: 2px solid var(--graffiti);
+            border-left: none;
+            border-right: none;
+        }
+        .v22 .marquee-item {
+            font-family: 'Silkscreen', cursive;
+            font-size: 0.9rem;
+            color: var(--graffiti);
+        }
+
+        /* ========== V23: BLACK OPS ONE MILITAR ========== */
+        .v23 .bar {
+            background: #2d3436;
+            padding: 10px 0;
+            border-top: 4px solid #d63031;
+            border-bottom: 4px solid #d63031;
+        }
+        .v23 .marquee-item {
+            font-family: 'Black Ops One', cursive;
+            font-size: 1.3rem;
+            color: #dfe6e9;
+            letter-spacing: 3px;
+        }
+
+        /* ========== V24: RUBIK MONO BOLD ========== */
+        .v24 .bar {
+            background: var(--paper);
+            padding: 8px 0;
+        }
+        .v24 .marquee-item {
+            font-family: 'Rubik Mono One', sans-serif;
+            font-size: 0.9rem;
+            color: var(--concrete-1);
+            letter-spacing: 2px;
+        }
+
+        /* ========== V25: PROTEST RIOT STREET ========== */
+        .v25 .bar {
+            background: var(--concrete-1);
+            padding: 12px 0;
+            border: 4px solid var(--caution);
+            border-left: none;
+            border-right: none;
+        }
+        .v25 .marquee-item {
+            font-family: 'Protest Riot', cursive;
+            font-size: 1.6rem;
+            color: var(--caution);
+        }
+
+        /* ========== V26: GRADIENTE CYAN ========== */
+        .v26 .bar {
+            background: linear-gradient(90deg, var(--blood), var(--rust), var(--cyan-bright), var(--rust), var(--blood));
+            padding: 10px 0;
+        }
+        .v26 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.4rem;
+            color: var(--concrete-1);
+            letter-spacing: 3px;
+        }
+
+        /* ========== V27: DOBLE DIRECCION ========== */
+        .v27 .bar {
+            background: var(--concrete-1);
+            border: 3px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 6px 0;
+            margin-bottom: 2px;
+        }
+        .v27 .marquee-item {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--paper);
+            letter-spacing: 3px;
+        }
+
+        /* ========== V28: VELOCIDAD RAPIDA ========== */
+        .v28 .bar {
+            background: #ff4757;
+            padding: 8px 0;
+        }
+        .v28 .marquee-item {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.3rem;
+            color: #fff;
+            letter-spacing: 4px;
+        }
+        .v28 .marquee-track { animation-duration: 8s; }
+
+        /* ========== V29: VELOCIDAD LENTA ========== */
+        .v29 .bar {
+            background: var(--concrete-2);
+            padding: 10px 0;
+        }
+        .v29 .marquee-item {
+            font-family: 'Covered By Your Grace', cursive;
+            font-size: 1.8rem;
+            color: var(--paper-dark);
+        }
+        .v29 .marquee-track { animation-duration: 40s; }
+
+        /* ========== V30: BORDER GRUESO ========== */
+        .v30 .bar {
+            background: var(--concrete-1);
+            padding: 10px 0;
+            border: 10px solid var(--rust);
+            border-left: none;
+            border-right: none;
+        }
+        .v30 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.3rem;
+            color: var(--paper);
+        }
+
+        /* ========== V31: BORDER DOBLE ========== */
+        .v31 .bar {
+            background: var(--concrete-1);
+            padding: 10px 0;
+            border: 4px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            outline: 4px solid var(--cyan-bright);
+            outline-offset: 4px;
+        }
+        .v31 .marquee-item {
+            font-family: 'Staatliches', cursive;
+            font-size: 1.4rem;
+            color: var(--paper);
+        }
+
+        /* ========== V32: BLUR HOVER ========== */
+        .v32 .bar {
+            background: var(--rust);
+            padding: 10px 0;
+            transition: filter 0.3s;
+        }
+        .v32:hover .bar {
+            filter: blur(0);
+        }
+        .v32 .marquee-item {
+            font-family: 'Bangers', cursive;
+            font-size: 1.5rem;
+            color: var(--concrete-1);
+        }
+
+        /* ========== V33: SCALE HOVER ========== */
+        .v33 .bar {
+            background: var(--concrete-1);
+            border: 4px solid var(--graffiti);
+            border-left: none;
+            border-right: none;
+            padding: 10px 0;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .v33:hover .bar {
+            transform: scale(1.02);
+            background: var(--concrete-2);
+        }
+        .v33 .marquee-item {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--graffiti);
+            font-weight: 900;
+        }
+
+        /* ========== V34: COLOR INVERT HOVER ========== */
+        .v34 .bar {
+            background: var(--paper);
+            padding: 10px 0;
+            transition: all 0.3s;
+        }
+        .v34:hover .bar {
+            background: var(--concrete-1);
+        }
+        .v34 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.4rem;
+            color: var(--concrete-1);
+            transition: color 0.3s;
+        }
+        .v34:hover .marquee-item {
+            color: var(--paper);
+        }
+
+        /* ========== V35: EMOJI MIX ========== */
+        .v35 .bar {
+            background: var(--concrete-1);
+            border: 4px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 8px 0;
+        }
+        .v35 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.3rem;
+            color: var(--paper);
+        }
+        .v35 .emoji { font-size: 1.8rem; }
+
+        /* ========== V36: DIAGONAL STRIPES BG ========== */
+        .v36 .bar {
+            background: repeating-linear-gradient(
+                45deg,
+                var(--concrete-1),
+                var(--concrete-1) 10px,
+                var(--concrete-2) 10px,
+                var(--concrete-2) 20px
+            );
+            padding: 12px 0;
+            border: 3px solid var(--rust);
+            border-left: none;
+            border-right: none;
+        }
+        .v36 .marquee-item {
+            font-family: 'Russo One', sans-serif;
+            font-size: 1.3rem;
+            color: var(--paper);
+        }
+
+        /* ========== V37: NOISE TEXTURE ========== */
+        .v37 .bar {
+            background: var(--concrete-1);
+            padding: 10px 0;
+            position: relative;
+        }
+        .v37 .bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        .v37 .marquee-item {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 1.5rem;
+            color: var(--rust);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== V38: SOMBRA LARGA ========== */
+        .v38 .bar {
+            background: var(--rust);
+            padding: 10px 0;
+        }
+        .v38 .marquee-item {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--paper);
+            text-shadow:
+                1px 1px 0 var(--concrete-1),
+                2px 2px 0 var(--concrete-1),
+                3px 3px 0 var(--concrete-1),
+                4px 4px 0 var(--concrete-1),
+                5px 5px 0 var(--concrete-1);
+            letter-spacing: 4px;
+        }
+
+        /* ========== V39: OUTLINE TEXT ========== */
+        .v39 .bar {
+            background: var(--concrete-1);
+            padding: 12px 0;
+        }
+        .v39 .marquee-item {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.6rem;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--cyan-bright);
+            letter-spacing: 3px;
+        }
+
+        /* ========== V40: BUNGEE INLINE ========== */
+        .v40 .bar {
+            background: var(--blood);
+            padding: 12px 0;
+        }
+        .v40 .marquee-item {
+            font-family: 'Bungee Inline', cursive;
+            font-size: 1.4rem;
+            color: var(--paper);
+        }
+
+        /* ========== V41: CRUZADAS X ========== */
+        .v41 .bar-1 {
+            background: var(--concrete-1);
+            border: 3px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 6px 0;
+            transform: rotate(-2deg);
+            position: relative;
+            z-index: 2;
+        }
+        .v41 .bar-2 {
+            background: var(--rust);
+            padding: 6px 0;
+            transform: rotate(2deg);
+            margin-top: -20px;
+            position: relative;
+            z-index: 1;
+        }
+        .v41 .marquee-item {
+            font-family: 'Teko', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .v41 .bar-1 .marquee-item { color: var(--paper); }
+        .v41 .bar-2 .marquee-item { color: var(--concrete-1); }
+
+        /* ========== V42: SHADOWS INTO LIGHT ========== */
+        .v42 .bar {
+            background: #2d3436;
+            padding: 12px 0;
+        }
+        .v42 .marquee-item {
+            font-family: 'Shadows Into Light', cursive;
+            font-size: 1.6rem;
+            color: #fdcb6e;
+        }
+
+        /* ========== V43: RAINBOW ANIMATION ========== */
+        .v43 .bar {
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff, #ff0000);
+            background-size: 200% 100%;
+            animation: rainbow-bg 3s linear infinite;
+            padding: 10px 0;
+        }
+        @keyframes rainbow-bg {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        .v43 .marquee-item {
+            font-family: 'Bangers', cursive;
+            font-size: 1.5rem;
+            color: #000;
+        }
+
+        /* ========== V44: HONK VARIABLE ========== */
+        .v44 .bar {
+            background: var(--concrete-1);
+            padding: 15px 0;
+        }
+        .v44 .marquee-item {
+            font-family: 'Honk', cursive;
+            font-size: 1.8rem;
+            color: var(--cyan-bright);
+        }
+
+        /* ========== V45: ANGULO EXTREMO ========== */
+        .v45 .bar {
+            background: var(--concrete-1);
+            border: 5px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 8px 0;
+            transform: rotate(-5deg) scale(1.1);
+        }
+        .v45 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.2rem;
+            color: var(--paper);
+        }
+
+        /* ========== V46: PAPER TORN ========== */
+        .v46 .bar {
+            background: var(--paper);
+            padding: 10px 0;
+            clip-path: polygon(0 10%, 5% 0, 10% 10%, 15% 0, 20% 10%, 25% 0, 30% 10%, 35% 0, 40% 10%, 45% 0, 50% 10%, 55% 0, 60% 10%, 65% 0, 70% 10%, 75% 0, 80% 10%, 85% 0, 90% 10%, 95% 0, 100% 10%, 100% 90%, 95% 100%, 90% 90%, 85% 100%, 80% 90%, 75% 100%, 70% 90%, 65% 100%, 60% 90%, 55% 100%, 50% 90%, 45% 100%, 40% 90%, 35% 100%, 30% 90%, 25% 100%, 20% 90%, 15% 100%, 10% 90%, 5% 100%, 0 90%);
+        }
+        .v46 .marquee-item {
+            font-family: 'Rock Salt', cursive;
+            font-size: 1rem;
+            color: var(--ink);
+        }
+
+        /* ========== V47: CYBER GRID ========== */
+        .v47 .bar {
+            background:
+                linear-gradient(90deg, rgba(43,184,205,0.1) 1px, transparent 1px),
+                linear-gradient(rgba(43,184,205,0.1) 1px, transparent 1px),
+                var(--concrete-1);
+            background-size: 20px 20px;
+            padding: 12px 0;
+            border: 2px solid var(--rust);
+            border-left: none;
+            border-right: none;
+        }
+        .v47 .marquee-item {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--cyan-bright);
+            font-weight: 700;
+            text-shadow: 0 0 10px var(--cyan-glow);
+        }
+
+        /* ========== V48: DOBLE SOMBRA OFFSET ========== */
+        .v48 .shadow-1 {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-60%) rotate(3deg);
+            background: var(--blood);
+            padding: 10px 0;
+            opacity: 0.3;
+            z-index: 1;
+        }
+        .v48 .shadow-2 {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-40%) rotate(-3deg);
+            background: var(--blood);
+            padding: 10px 0;
+            opacity: 0.2;
+            z-index: 1;
+        }
+        .v48 .bar {
+            position: relative;
+            z-index: 2;
+            background: var(--concrete-1);
+            border: 5px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 10px 0;
+        }
+        .v48 .marquee-item {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--paper);
+            letter-spacing: 4px;
+        }
+
+        /* ========== V49: MEGA STACK ========== */
+        .v49 .bar {
+            padding: 4px 0;
+            margin-bottom: 2px;
+        }
+        .v49 .bar:nth-child(1) { background: var(--rust); }
+        .v49 .bar:nth-child(2) { background: var(--cyan-bright); }
+        .v49 .bar:nth-child(3) { background: var(--concrete-1); border: 2px solid var(--paper); border-left:none; border-right:none; }
+        .v49 .bar:nth-child(4) { background: var(--caution); }
+        .v49 .bar:nth-child(5) { background: var(--graffiti); }
+        .v49 .marquee-item {
+            font-family: 'Anton', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+        .v49 .bar:nth-child(odd) .marquee-item { color: var(--concrete-1); }
+        .v49 .bar:nth-child(3) .marquee-item { color: var(--paper); }
+
+        /* ========== V50: FINAL BOSS ========== */
+        .v50 .shadow {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%) rotate(2deg) scale(1.06);
+            background: linear-gradient(90deg, var(--blood), var(--rust), var(--cyan-bright));
+            padding: 12px 0;
+            opacity: 0.4;
+            z-index: 1;
+            filter: blur(2px);
+        }
+        .v50 .bar {
+            position: relative;
+            z-index: 2;
+            background: var(--concrete-1);
+            border: 6px solid var(--rust);
+            border-left: none;
+            border-right: none;
+            padding: 12px 0;
+            transform: rotate(-2deg) scale(1.04);
+        }
+        .v50 .marquee-item {
+            font-family: 'Trevor', Impact, sans-serif;
+            font-size: 1.6rem;
+            color: var(--paper);
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px var(--cyan-glow);
+        }
+        .v50 .logo { width: 80px; height: 80px; margin: -20px 0; }
+    </style>
+</head>
+<body>
+
+    <!-- V1 -->
+    <section class="section v1">
+        <h2 class="section-title">V1</h2>
+        <p class="section-desc">Trevor Clasico</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>DEMO DISPONIBLE</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>BIEN ARGENTO</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>100% GRATUITO</span><span class="dot">•</span></div>
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>DEMO DISPONIBLE</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>BIEN ARGENTO</span><span class="dot">•</span><img src="imagenes/logoretruco.png" class="logo"><span class="dot">•</span><span>100% GRATUITO</span><span class="dot">•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V2 -->
+    <section class="section v2">
+        <h2 class="section-title">V2</h2>
+        <p class="section-desc">Permanent Marker Graffiti</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>★</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>★</span><span>BIEN ARGENTO</span><span>★</span><span>100% GRATUITO</span><span>★</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>★</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>★</span><span>BIEN ARGENTO</span><span>★</span><span>100% GRATUITO</span><span>★</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V3 -->
+    <section class="section v3">
+        <h2 class="section-title">V3</h2>
+        <p class="section-desc">Pixel Arcade</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>►</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>►</span><span>BIEN ARGENTO</span><span>►</span><span>100% GRATUITO</span><span>►</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>►</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>►</span><span>BIEN ARGENTO</span><span>►</span><span>100% GRATUITO</span><span>►</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V4 -->
+    <section class="section v4">
+        <h2 class="section-title">V4</h2>
+        <p class="section-desc">Bungee Bold</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◆</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>BIEN ARGENTO</span><span>◆</span><span>100% GRATUITO</span><span>◆</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◆</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>BIEN ARGENTO</span><span>◆</span><span>100% GRATUITO</span><span>◆</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V5 -->
+    <section class="section v5">
+        <h2 class="section-title">V5</h2>
+        <p class="section-desc">Rock Salt Handwritten</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>Demo Disponible</span><span>~</span><span>Una Historia Bien Criolla</span><span>~</span><span>Bien Argento</span><span>~</span><span>100% Gratuito</span><span>~</span></div>
+                    <div class="marquee-item"><span>Demo Disponible</span><span>~</span><span>Una Historia Bien Criolla</span><span>~</span><span>Bien Argento</span><span>~</span><span>100% Gratuito</span><span>~</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V6 -->
+    <section class="section v6">
+        <h2 class="section-title">V6</h2>
+        <p class="section-desc">Creepster Horror</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>☠</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>☠</span><span>BIEN ARGENTO</span><span>☠</span><span>100% GRATUITO</span><span>☠</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>☠</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>☠</span><span>BIEN ARGENTO</span><span>☠</span><span>100% GRATUITO</span><span>☠</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V7 -->
+    <section class="section v7">
+        <h2 class="section-title">V7</h2>
+        <p class="section-desc">VT323 Retro Terminal</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>> DEMO DISPONIBLE</span><span>|</span><span>> UNA HISTORIA BIEN CRIOLLA</span><span>|</span><span>> BIEN ARGENTO</span><span>|</span><span>> 100% GRATUITO</span><span>|</span></div>
+                    <div class="marquee-item"><span>> DEMO DISPONIBLE</span><span>|</span><span>> UNA HISTORIA BIEN CRIOLLA</span><span>|</span><span>> BIEN ARGENTO</span><span>|</span><span>> 100% GRATUITO</span><span>|</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V8 -->
+    <section class="section v8">
+        <h2 class="section-title">V8</h2>
+        <p class="section-desc">Bangers Comic</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE!</span><span>★</span><span>UNA HISTORIA BIEN CRIOLLA!</span><span>★</span><span>BIEN ARGENTO!</span><span>★</span><span>100% GRATUITO!</span><span>★</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE!</span><span>★</span><span>UNA HISTORIA BIEN CRIOLLA!</span><span>★</span><span>BIEN ARGENTO!</span><span>★</span><span>100% GRATUITO!</span><span>★</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V9 -->
+    <section class="section v9">
+        <h2 class="section-title">V9</h2>
+        <p class="section-desc">Monoton Art Deco</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◇</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◇</span><span>BIEN ARGENTO</span><span>◇</span><span>100% GRATUITO</span><span>◇</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◇</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◇</span><span>BIEN ARGENTO</span><span>◇</span><span>100% GRATUITO</span><span>◇</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V10 -->
+    <section class="section v10">
+        <h2 class="section-title">V10</h2>
+        <p class="section-desc">Orbitron Futurista</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>●</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>●</span><span>BIEN ARGENTO</span><span>●</span><span>100% GRATUITO</span><span>●</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>●</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>●</span><span>BIEN ARGENTO</span><span>●</span><span>100% GRATUITO</span><span>●</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V11 -->
+    <section class="section v11">
+        <h2 class="section-title">V11</h2>
+        <p class="section-desc">Rotacion -3deg</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V12 -->
+    <section class="section v12">
+        <h2 class="section-title">V12</h2>
+        <p class="section-desc">Rotacion +2deg con Sombra</p>
+        <div class="marquee-container">
+            <div class="shadow"></div>
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V13 -->
+    <section class="section v13">
+        <h2 class="section-title">V13</h2>
+        <p class="section-desc">Staatliches Bold</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>■</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>■</span><span>BIEN ARGENTO</span><span>■</span><span>100% GRATUITO</span><span>■</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>■</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>■</span><span>BIEN ARGENTO</span><span>■</span><span>100% GRATUITO</span><span>■</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V14 -->
+    <section class="section v14">
+        <h2 class="section-title">V14</h2>
+        <p class="section-desc">Doble Barra Opuesta</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar-top">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                </div>
+            </div>
+            <div class="marquee-wrapper bar-bottom">
+                <div class="marquee-track marquee-track-reverse">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V15 -->
+    <section class="section v15">
+        <h2 class="section-title">V15</h2>
+        <p class="section-desc">Triple Barra</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track" style="animation-duration: 15s;">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>★</span><span>100% GRATUITO</span><span>★</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>★</span><span>100% GRATUITO</span><span>★</span></div>
+                </div>
+            </div>
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track marquee-track-reverse" style="animation-duration: 18s;">
+                    <div class="marquee-item"><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>BIEN ARGENTO</span><span>◆</span></div>
+                    <div class="marquee-item"><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>BIEN ARGENTO</span><span>◆</span></div>
+                </div>
+            </div>
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track" style="animation-duration: 12s;">
+                    <div class="marquee-item"><span>RETRUCO</span><span>●</span><span>RETRUCO</span><span>●</span><span>RETRUCO</span><span>●</span></div>
+                    <div class="marquee-item"><span>RETRUCO</span><span>●</span><span>RETRUCO</span><span>●</span><span>RETRUCO</span><span>●</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V16 -->
+    <section class="section v16">
+        <h2 class="section-title">V16</h2>
+        <p class="section-desc">Neon Glow</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◈</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◈</span><span>BIEN ARGENTO</span><span>◈</span><span>100% GRATUITO</span><span>◈</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◈</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◈</span><span>BIEN ARGENTO</span><span>◈</span><span>100% GRATUITO</span><span>◈</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V17 -->
+    <section class="section v17">
+        <h2 class="section-title">V17</h2>
+        <p class="section-desc">Glitch Effect</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span data-text="DEMO DISPONIBLE">DEMO DISPONIBLE</span><span>▓</span><span data-text="UNA HISTORIA BIEN CRIOLLA">UNA HISTORIA BIEN CRIOLLA</span><span>▓</span><span data-text="BIEN ARGENTO">BIEN ARGENTO</span><span>▓</span></div>
+                    <div class="marquee-item"><span data-text="DEMO DISPONIBLE">DEMO DISPONIBLE</span><span>▓</span><span data-text="UNA HISTORIA BIEN CRIOLLA">UNA HISTORIA BIEN CRIOLLA</span><span>▓</span><span data-text="BIEN ARGENTO">BIEN ARGENTO</span><span>▓</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V18 -->
+    <section class="section v18">
+        <h2 class="section-title">V18</h2>
+        <p class="section-desc">Nosifer Dripping</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>†</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>†</span><span>BIEN ARGENTO</span><span>†</span><span>100% GRATUITO</span><span>†</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>†</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>†</span><span>BIEN ARGENTO</span><span>†</span><span>100% GRATUITO</span><span>†</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V19 -->
+    <section class="section v19">
+        <h2 class="section-title">V19</h2>
+        <p class="section-desc">Righteous Groovy Rainbow</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>✿</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>✿</span><span>BIEN ARGENTO</span><span>✿</span><span>100% GRATUITO</span><span>✿</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>✿</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>✿</span><span>BIEN ARGENTO</span><span>✿</span><span>100% GRATUITO</span><span>✿</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V20 -->
+    <section class="section v20">
+        <h2 class="section-title">V20</h2>
+        <p class="section-desc">Bungee Shade 3D</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◆</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>BIEN ARGENTO</span><span>◆</span><span>100% GRATUITO</span><span>◆</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◆</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>BIEN ARGENTO</span><span>◆</span><span>100% GRATUITO</span><span>◆</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V21-V30 -->
+    <section class="section v21">
+        <h2 class="section-title">V21</h2>
+        <p class="section-desc">Special Elite Typewriter</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>—</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>—</span><span>BIEN ARGENTO</span><span>—</span><span>100% GRATUITO</span><span>—</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>—</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>—</span><span>BIEN ARGENTO</span><span>—</span><span>100% GRATUITO</span><span>—</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v22">
+        <h2 class="section-title">V22</h2>
+        <p class="section-desc">Silkscreen Pixel</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>▶</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>▶</span><span>BIEN ARGENTO</span><span>▶</span><span>100% GRATUITO</span><span>▶</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>▶</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>▶</span><span>BIEN ARGENTO</span><span>▶</span><span>100% GRATUITO</span><span>▶</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v23">
+        <h2 class="section-title">V23</h2>
+        <p class="section-desc">Black Ops One Militar</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>✦</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>✦</span><span>BIEN ARGENTO</span><span>✦</span><span>100% GRATUITO</span><span>✦</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>✦</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>✦</span><span>BIEN ARGENTO</span><span>✦</span><span>100% GRATUITO</span><span>✦</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v24">
+        <h2 class="section-title">V24</h2>
+        <p class="section-desc">Rubik Mono Bold</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>■</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>■</span><span>BIEN ARGENTO</span><span>■</span><span>100% GRATUITO</span><span>■</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>■</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>■</span><span>BIEN ARGENTO</span><span>■</span><span>100% GRATUITO</span><span>■</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v25">
+        <h2 class="section-title">V25</h2>
+        <p class="section-desc">Protest Riot Street</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>✗</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>✗</span><span>BIEN ARGENTO</span><span>✗</span><span>100% GRATUITO</span><span>✗</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>✗</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>✗</span><span>BIEN ARGENTO</span><span>✗</span><span>100% GRATUITO</span><span>✗</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v26">
+        <h2 class="section-title">V26</h2>
+        <p class="section-desc">Gradiente Cyan</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v27">
+        <h2 class="section-title">V27</h2>
+        <p class="section-desc">Doble Direccion</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>→</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>→</span><span>BIEN ARGENTO</span><span>→</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>→</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>→</span><span>BIEN ARGENTO</span><span>→</span></div>
+                </div>
+            </div>
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track marquee-track-reverse">
+                    <div class="marquee-item"><span>100% GRATUITO</span><span>←</span><span>RETRUCO</span><span>←</span><span>JUEGO ARGENTINO</span><span>←</span></div>
+                    <div class="marquee-item"><span>100% GRATUITO</span><span>←</span><span>RETRUCO</span><span>←</span><span>JUEGO ARGENTINO</span><span>←</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v28">
+        <h2 class="section-title">V28</h2>
+        <p class="section-desc">Velocidad Rapida</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>⚡</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>⚡</span><span>BIEN ARGENTO</span><span>⚡</span><span>100% GRATUITO</span><span>⚡</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>⚡</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>⚡</span><span>BIEN ARGENTO</span><span>⚡</span><span>100% GRATUITO</span><span>⚡</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v29">
+        <h2 class="section-title">V29</h2>
+        <p class="section-desc">Velocidad Lenta</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>Demo Disponible</span><span>~</span><span>Una Historia Bien Criolla</span><span>~</span><span>Bien Argento</span><span>~</span><span>100% Gratuito</span><span>~</span></div>
+                    <div class="marquee-item"><span>Demo Disponible</span><span>~</span><span>Una Historia Bien Criolla</span><span>~</span><span>Bien Argento</span><span>~</span><span>100% Gratuito</span><span>~</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v30">
+        <h2 class="section-title">V30</h2>
+        <p class="section-desc">Border Grueso</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V31-V40 -->
+    <section class="section v31">
+        <h2 class="section-title">V31</h2>
+        <p class="section-desc">Border Doble</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◆</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>BIEN ARGENTO</span><span>◆</span><span>100% GRATUITO</span><span>◆</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◆</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>BIEN ARGENTO</span><span>◆</span><span>100% GRATUITO</span><span>◆</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v32">
+        <h2 class="section-title">V32</h2>
+        <p class="section-desc">Color Hover</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>★</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>★</span><span>BIEN ARGENTO</span><span>★</span><span>100% GRATUITO</span><span>★</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>★</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>★</span><span>BIEN ARGENTO</span><span>★</span><span>100% GRATUITO</span><span>★</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v33">
+        <h2 class="section-title">V33</h2>
+        <p class="section-desc">Scale Hover</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>●</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>●</span><span>BIEN ARGENTO</span><span>●</span><span>100% GRATUITO</span><span>●</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>●</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>●</span><span>BIEN ARGENTO</span><span>●</span><span>100% GRATUITO</span><span>●</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v34">
+        <h2 class="section-title">V34</h2>
+        <p class="section-desc">Color Invert Hover</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v35">
+        <h2 class="section-title">V35</h2>
+        <p class="section-desc">Emoji Mix</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span class="emoji">🎮</span><span>DEMO DISPONIBLE</span><span class="emoji">🇦🇷</span><span>UNA HISTORIA BIEN CRIOLLA</span><span class="emoji">🎯</span><span>BIEN ARGENTO</span><span class="emoji">🆓</span><span>100% GRATUITO</span></div>
+                    <div class="marquee-item"><span class="emoji">🎮</span><span>DEMO DISPONIBLE</span><span class="emoji">🇦🇷</span><span>UNA HISTORIA BIEN CRIOLLA</span><span class="emoji">🎯</span><span>BIEN ARGENTO</span><span class="emoji">🆓</span><span>100% GRATUITO</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v36">
+        <h2 class="section-title">V36</h2>
+        <p class="section-desc">Diagonal Stripes BG</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◆</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>BIEN ARGENTO</span><span>◆</span><span>100% GRATUITO</span><span>◆</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◆</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>BIEN ARGENTO</span><span>◆</span><span>100% GRATUITO</span><span>◆</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v37">
+        <h2 class="section-title">V37</h2>
+        <p class="section-desc">Noise Texture</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>★</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>★</span><span>BIEN ARGENTO</span><span>★</span><span>100% GRATUITO</span><span>★</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>★</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>★</span><span>BIEN ARGENTO</span><span>★</span><span>100% GRATUITO</span><span>★</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v38">
+        <h2 class="section-title">V38</h2>
+        <p class="section-desc">Sombra Larga</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v39">
+        <h2 class="section-title">V39</h2>
+        <p class="section-desc">Outline Text</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◇</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◇</span><span>BIEN ARGENTO</span><span>◇</span><span>100% GRATUITO</span><span>◇</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◇</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◇</span><span>BIEN ARGENTO</span><span>◇</span><span>100% GRATUITO</span><span>◇</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v40">
+        <h2 class="section-title">V40</h2>
+        <p class="section-desc">Bungee Inline</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◆</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>BIEN ARGENTO</span><span>◆</span><span>100% GRATUITO</span><span>◆</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◆</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>BIEN ARGENTO</span><span>◆</span><span>100% GRATUITO</span><span>◆</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V41-V50 -->
+    <section class="section v41">
+        <h2 class="section-title">V41</h2>
+        <p class="section-desc">Cruzadas X</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar-1">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>✗</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>✗</span><span>BIEN ARGENTO</span><span>✗</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>✗</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>✗</span><span>BIEN ARGENTO</span><span>✗</span></div>
+                </div>
+            </div>
+            <div class="marquee-wrapper bar-2">
+                <div class="marquee-track marquee-track-reverse">
+                    <div class="marquee-item"><span>100% GRATUITO</span><span>✗</span><span>RETRUCO</span><span>✗</span><span>JUEGA YA</span><span>✗</span></div>
+                    <div class="marquee-item"><span>100% GRATUITO</span><span>✗</span><span>RETRUCO</span><span>✗</span><span>JUEGA YA</span><span>✗</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v42">
+        <h2 class="section-title">V42</h2>
+        <p class="section-desc">Shadows Into Light</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>Demo Disponible</span><span>★</span><span>Una Historia Bien Criolla</span><span>★</span><span>Bien Argento</span><span>★</span><span>100% Gratuito</span><span>★</span></div>
+                    <div class="marquee-item"><span>Demo Disponible</span><span>★</span><span>Una Historia Bien Criolla</span><span>★</span><span>Bien Argento</span><span>★</span><span>100% Gratuito</span><span>★</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v43">
+        <h2 class="section-title">V43</h2>
+        <p class="section-desc">Rainbow Animation</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>✦</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>✦</span><span>BIEN ARGENTO</span><span>✦</span><span>100% GRATUITO</span><span>✦</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>✦</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>✦</span><span>BIEN ARGENTO</span><span>✦</span><span>100% GRATUITO</span><span>✦</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v44">
+        <h2 class="section-title">V44</h2>
+        <p class="section-desc">Honk Variable</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>●</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>●</span><span>BIEN ARGENTO</span><span>●</span><span>100% GRATUITO</span><span>●</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>●</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>●</span><span>BIEN ARGENTO</span><span>●</span><span>100% GRATUITO</span><span>●</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v45">
+        <h2 class="section-title">V45</h2>
+        <p class="section-desc">Angulo Extremo -5deg</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v46">
+        <h2 class="section-title">V46</h2>
+        <p class="section-desc">Paper Torn</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>Demo Disponible</span><span>~</span><span>Una Historia Bien Criolla</span><span>~</span><span>Bien Argento</span><span>~</span><span>100% Gratuito</span><span>~</span></div>
+                    <div class="marquee-item"><span>Demo Disponible</span><span>~</span><span>Una Historia Bien Criolla</span><span>~</span><span>Bien Argento</span><span>~</span><span>100% Gratuito</span><span>~</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v47">
+        <h2 class="section-title">V47</h2>
+        <p class="section-desc">Cyber Grid</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◈</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◈</span><span>BIEN ARGENTO</span><span>◈</span><span>100% GRATUITO</span><span>◈</span></div>
+                    <div class="marquee-item"><span>DEMO DISPONIBLE</span><span>◈</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◈</span><span>BIEN ARGENTO</span><span>◈</span><span>100% GRATUITO</span><span>◈</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v48">
+        <h2 class="section-title">V48</h2>
+        <p class="section-desc">Doble Sombra Offset</p>
+        <div class="marquee-container">
+            <div class="shadow-1"></div>
+            <div class="shadow-2"></div>
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><span>BIEN ARGENTO</span><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section v49">
+        <h2 class="section-title">V49</h2>
+        <p class="section-desc">Mega Stack 5 Barras</p>
+        <div class="marquee-container">
+            <div class="marquee-wrapper bar"><div class="marquee-track" style="animation-duration:12s;"><div class="marquee-item"><span>RETRUCO</span><span>•</span><span>RETRUCO</span><span>•</span><span>RETRUCO</span><span>•</span></div><div class="marquee-item"><span>RETRUCO</span><span>•</span><span>RETRUCO</span><span>•</span><span>RETRUCO</span><span>•</span></div></div></div>
+            <div class="marquee-wrapper bar"><div class="marquee-track marquee-track-reverse" style="animation-duration:15s;"><div class="marquee-item"><span>DEMO DISPONIBLE</span><span>★</span><span>DEMO DISPONIBLE</span><span>★</span></div><div class="marquee-item"><span>DEMO DISPONIBLE</span><span>★</span><span>DEMO DISPONIBLE</span><span>★</span></div></div></div>
+            <div class="marquee-wrapper bar"><div class="marquee-track" style="animation-duration:18s;"><div class="marquee-item"><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span></div><div class="marquee-item"><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>◆</span></div></div></div>
+            <div class="marquee-wrapper bar"><div class="marquee-track marquee-track-reverse" style="animation-duration:14s;"><div class="marquee-item"><span>BIEN ARGENTO</span><span>●</span><span>BIEN ARGENTO</span><span>●</span></div><div class="marquee-item"><span>BIEN ARGENTO</span><span>●</span><span>BIEN ARGENTO</span><span>●</span></div></div></div>
+            <div class="marquee-wrapper bar"><div class="marquee-track" style="animation-duration:10s;"><div class="marquee-item"><span>100% GRATUITO</span><span>✦</span><span>100% GRATUITO</span><span>✦</span></div><div class="marquee-item"><span>100% GRATUITO</span><span>✦</span><span>100% GRATUITO</span><span>✦</span></div></div></div>
+        </div>
+    </section>
+
+    <section class="section v50">
+        <h2 class="section-title">V50</h2>
+        <p class="section-desc">Final Boss - Trevor + Logo Grande + Sombra Glow</p>
+        <div class="marquee-container">
+            <div class="shadow"></div>
+            <div class="marquee-wrapper bar">
+                <div class="marquee-track">
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>BIEN ARGENTO</span><span>•</span><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                    <div class="marquee-item"><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>DEMO DISPONIBLE</span><span>•</span><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>UNA HISTORIA BIEN CRIOLLA</span><span>•</span><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>BIEN ARGENTO</span><span>•</span><img src="imagenes/logoretruco.png" class="logo"><span>•</span><span>100% GRATUITO</span><span>•</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align:center; padding:60px; color:rgba(224,247,250,0.3); font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:2px;">
+        RETRUCO - 50 VARIACIONES DE MARQUEE<br>
+        Hover para pausar
+    </footer>
+
+</body>
+</html>

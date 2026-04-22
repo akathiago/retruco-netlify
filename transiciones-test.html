@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Transiciones - RETRUCO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #111;
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 2rem;
+            color: #00d4ff;
+            background: #0a0a0a;
+        }
+
+        .label {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            background: #1a1a2e;
+            border-bottom: 2px solid #ff6b6b;
+        }
+
+        /* ========================================
+           SECCIONES REALES
+           ======================================== */
+
+        .section-personajes {
+            position: relative;
+            width: 100%;
+            line-height: 0;
+            overflow: hidden;
+        }
+
+        .section-personajes img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .section-alfredito {
+            position: relative;
+            width: 100%;
+            background: #0a0a0a;
+            line-height: 0;
+            overflow: hidden;
+        }
+
+        .section-alfredito img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ========================================
+           1A: PAPEL RASGADO ESTILO SOUTH PARK
+           Bordes irregulares pero "limpios" como
+           papel de construcción cortado a mano
+           ======================================== */
+
+        .torn-southpark {
+            position: relative;
+            height: 45px;
+            background: #0a0a0a;
+            overflow: visible;
+            margin-top: -45px;
+            z-index: 10;
+        }
+
+        .torn-southpark::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 45px;
+            background: #2d3436;
+            /* Estilo South Park: cortes más grandes y simples */
+            clip-path: polygon(
+                0% 100%,
+                0% 35%,
+                3% 40%,
+                6% 20%,
+                10% 45%,
+                14% 15%,
+                18% 50%,
+                22% 25%,
+                26% 55%,
+                30% 20%,
+                35% 48%,
+                40% 18%,
+                45% 52%,
+                50% 22%,
+                55% 50%,
+                60% 15%,
+                65% 45%,
+                70% 25%,
+                75% 55%,
+                80% 18%,
+                85% 48%,
+                90% 28%,
+                95% 52%,
+                100% 20%,
+                100% 100%
+            );
+            filter: drop-shadow(0 3px 4px rgba(0,0,0,0.8));
+        }
+
+        /* ========================================
+           1B: TORN PAPER CON SVG WAVE
+           Más suave, estilo "rasgado limpio"
+           ======================================== */
+
+        .torn-wave {
+            position: relative;
+            height: 60px;
+            background: #0a0a0a;
+            overflow: hidden;
+            margin-top: -60px;
+            z-index: 10;
+        }
+
+        .torn-wave svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.7));
+        }
+
+        /* ========================================
+           1C: TORN PAPER DRAMÁTICO
+           Más "destruido"
+           ======================================== */
+
+        .torn-dramatic {
+            position: relative;
+            height: 70px;
+            background: #0a0a0a;
+            overflow: visible;
+            margin-top: -70px;
+            z-index: 10;
+        }
+
+        .torn-dramatic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -2%;
+            right: -2%;
+            height: 70px;
+            background: linear-gradient(180deg, #3d3d3d 0%, #2d2d2d 100%);
+            clip-path: polygon(
+                0% 100%,
+                0% 30%,
+                1% 50%, 2% 20%, 3% 60%, 4% 10%, 5% 45%,
+                6% 25%, 7% 55%, 8% 15%, 9% 50%, 10% 30%,
+                11% 60%, 12% 20%, 13% 48%, 14% 35%, 15% 55%,
+                16% 18%, 17% 52%, 18% 28%, 19% 58%, 20% 22%,
+                21% 50%, 22% 32%, 23% 55%, 24% 15%, 25% 48%,
+                26% 38%, 27% 58%, 28% 20%, 29% 52%, 30% 30%,
+                31% 55%, 32% 18%, 33% 50%, 34% 35%, 35% 58%,
+                36% 22%, 37% 52%, 38% 28%, 39% 55%, 40% 18%,
+                41% 48%, 42% 32%, 43% 58%, 44% 20%, 45% 50%,
+                46% 35%, 47% 55%, 48% 15%, 49% 52%, 50% 28%,
+                51% 58%, 52% 22%, 53% 50%, 54% 38%, 55% 55%,
+                56% 18%, 57% 52%, 58% 30%, 59% 58%, 60% 20%,
+                61% 48%, 62% 35%, 63% 55%, 64% 15%, 65% 52%,
+                66% 28%, 67% 58%, 68% 22%, 69% 50%, 70% 38%,
+                71% 55%, 72% 18%, 73% 52%, 74% 30%, 75% 58%,
+                76% 20%, 77% 48%, 78% 35%, 79% 55%, 80% 15%,
+                81% 52%, 82% 28%, 83% 58%, 84% 22%, 85% 50%,
+                86% 38%, 87% 55%, 88% 18%, 89% 52%, 90% 30%,
+                91% 58%, 92% 20%, 93% 48%, 94% 35%, 95% 55%,
+                96% 15%, 97% 52%, 98% 28%, 99% 45%, 100% 25%,
+                100% 100%
+            );
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.9));
+        }
+
+        /* ========================================
+           4A: CINTA ESTILO SOUTH PARK
+           Papel de construcción, colores sólidos,
+           bordes ligeramente irregulares
+           ======================================== */
+
+        .tape-southpark {
+            position: relative;
+            height: 0;
+            overflow: visible;
+            z-index: 20;
+        }
+
+        .sp-tape {
+            position: absolute;
+            height: 38px;
+            box-shadow:
+                3px 4px 0 rgba(0,0,0,0.4),
+                inset 0 2px 0 rgba(255,255,255,0.15);
+            z-index: 20;
+            /* Borde ligeramente irregular estilo paper cutout */
+            clip-path: polygon(
+                0% 5%, 5% 0%, 15% 3%, 25% 0%, 35% 4%, 45% 1%, 55% 3%, 65% 0%, 75% 2%, 85% 0%, 95% 4%, 100% 2%,
+                100% 95%, 95% 100%, 85% 97%, 75% 100%, 65% 96%, 55% 99%, 45% 97%, 35% 100%, 25% 96%, 15% 100%, 5% 97%, 0% 98%
+            );
+        }
+
+        .sp-tape.tape-1 {
+            left: 4%;
+            width: 220px;
+            top: -19px;
+            transform: rotate(-3deg);
+            background: #f4d03f; /* Amarillo South Park */
+        }
+
+        .sp-tape.tape-2 {
+            left: 40%;
+            width: 200px;
+            top: -19px;
+            transform: rotate(2deg);
+            background: #3498db; /* Azul */
+        }
+
+        .sp-tape.tape-3 {
+            right: 5%;
+            width: 190px;
+            top: -19px;
+            transform: rotate(-1.5deg);
+            background: #e74c3c; /* Rojo */
+        }
+
+        /* ========================================
+           4B: MASKING TAPE REALISTA
+           Color crema, textura de cinta real
+           ======================================== */
+
+        .tape-masking {
+            position: relative;
+            height: 0;
+            overflow: visible;
+            z-index: 20;
+        }
+
+        .masking-strip {
+            position: absolute;
+            height: 42px;
+            background: linear-gradient(180deg,
+                rgba(245, 235, 200, 0.92) 0%,
+                rgba(230, 218, 180, 0.95) 50%,
+                rgba(245, 235, 200, 0.92) 100%
+            );
+            box-shadow:
+                2px 3px 6px rgba(0,0,0,0.4),
+                inset 0 1px 2px rgba(255,255,255,0.5),
+                inset 0 -1px 1px rgba(0,0,0,0.1);
+            z-index: 20;
+            /* Bordes rasgados de cinta */
+            clip-path: polygon(
+                0% 8%, 2% 0%, 5% 5%, 8% 2%, 12% 6%, 15% 0%, 18% 4%, 22% 1%, 25% 5%, 28% 0%, 32% 3%, 35% 6%, 38% 2%, 42% 5%, 45% 0%, 48% 4%, 52% 1%, 55% 6%, 58% 2%, 62% 5%, 65% 0%, 68% 3%, 72% 6%, 75% 1%, 78% 4%, 82% 0%, 85% 5%, 88% 2%, 92% 6%, 95% 0%, 98% 4%, 100% 6%,
+                100% 92%, 98% 100%, 95% 95%, 92% 98%, 88% 94%, 85% 100%, 82% 96%, 78% 99%, 75% 95%, 72% 100%, 68% 94%, 65% 97%, 62% 100%, 58% 95%, 55% 98%, 52% 94%, 48% 100%, 45% 96%, 42% 99%, 38% 94%, 35% 100%, 32% 97%, 28% 94%, 25% 100%, 22% 95%, 18% 98%, 15% 94%, 12% 100%, 8% 96%, 5% 99%, 2% 94%, 0% 100%
+            );
+        }
+
+        .masking-strip::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent 0px,
+                transparent 6px,
+                rgba(0,0,0,0.02) 6px,
+                rgba(0,0,0,0.02) 12px
+            );
+        }
+
+        .masking-strip.m-1 {
+            left: 6%;
+            width: 200px;
+            top: -21px;
+            transform: rotate(-2.5deg);
+        }
+
+        .masking-strip.m-2 {
+            left: 42%;
+            width: 240px;
+            top: -21px;
+            transform: rotate(1.5deg);
+        }
+
+        .masking-strip.m-3 {
+            right: 4%;
+            width: 180px;
+            top: -21px;
+            transform: rotate(-1deg);
+        }
+
+        /* ========================================
+           4C: WASHI TAPE COLORES RETRUCO
+           Patrones diagonales, colores del juego
+           ======================================== */
+
+        .tape-washi {
+            position: relative;
+            height: 0;
+            overflow: visible;
+            z-index: 20;
+        }
+
+        .washi-strip {
+            position: absolute;
+            height: 30px;
+            box-shadow:
+                2px 3px 5px rgba(0,0,0,0.35),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            z-index: 20;
+            opacity: 0.9;
+        }
+
+        .washi-strip.w-1 {
+            left: 5%;
+            width: 230px;
+            top: -15px;
+            transform: rotate(-2.8deg);
+            background: repeating-linear-gradient(
+                45deg,
+                #00d4ff 0px,
+                #00d4ff 10px,
+                #0a1a2a 10px,
+                #0a1a2a 20px
+            );
+        }
+
+        .washi-strip.w-2 {
+            left: 38%;
+            width: 210px;
+            top: -15px;
+            transform: rotate(1.2deg);
+            background: repeating-linear-gradient(
+                -45deg,
+                #ff4757 0px,
+                #ff4757 8px,
+                #2a0a0a 8px,
+                #2a0a0a 16px
+            );
+        }
+
+        .washi-strip.w-3 {
+            right: 6%;
+            width: 200px;
+            top: -15px;
+            transform: rotate(-1.5deg);
+            background: repeating-linear-gradient(
+                45deg,
+                #ffd93d 0px,
+                #ffd93d 12px,
+                #2a2a0a 12px,
+                #2a2a0a 24px
+            );
+        }
+
+        /* ========================================
+           COMBO: TORN PAPER + TAPE
+           Lo mejor de ambos mundos
+           ======================================== */
+
+        .combo-transition {
+            position: relative;
+            height: 50px;
+            background: #0a0a0a;
+            overflow: visible;
+            margin-top: -50px;
+            z-index: 10;
+        }
+
+        .combo-transition::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: #2a2a2a;
+            clip-path: polygon(
+                0% 100%,
+                0% 40%,
+                5% 25%,
+                10% 45%,
+                15% 20%,
+                20% 50%,
+                25% 28%,
+                30% 48%,
+                35% 22%,
+                40% 52%,
+                45% 30%,
+                50% 50%,
+                55% 25%,
+                60% 48%,
+                65% 32%,
+                70% 55%,
+                75% 22%,
+                80% 50%,
+                85% 28%,
+                90% 52%,
+                95% 35%,
+                100% 45%,
+                100% 100%
+            );
+            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.7));
+        }
+
+        .combo-tape {
+            position: absolute;
+            height: 35px;
+            top: -17px;
+            z-index: 25;
+            box-shadow: 2px 3px 0 rgba(0,0,0,0.4);
+            clip-path: polygon(
+                0% 5%, 10% 0%, 20% 4%, 30% 1%, 40% 5%, 50% 0%, 60% 3%, 70% 0%, 80% 4%, 90% 1%, 100% 3%,
+                100% 97%, 90% 100%, 80% 96%, 70% 100%, 60% 97%, 50% 100%, 40% 96%, 30% 100%, 20% 97%, 10% 100%, 0% 95%
+            );
+        }
+
+        .combo-tape.ct-1 {
+            left: 8%;
+            width: 180px;
+            transform: rotate(-2deg);
+            background: #f39c12;
+        }
+
+        .combo-tape.ct-2 {
+            left: 45%;
+            width: 160px;
+            transform: rotate(1.5deg);
+            background: #00d4ff;
+        }
+
+        .combo-tape.ct-3 {
+            right: 8%;
+            width: 170px;
+            transform: rotate(-1deg);
+            background: #e74c3c;
+        }
+
+        /* ========================================
+           SEPARADORES
+           ======================================== */
+
+        .divider {
+            height: 80px;
+            background: linear-gradient(to bottom, #0a0a0a, #1a1a2e, #0a0a0a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .divider span {
+            color: #444;
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>TEST DE TRANSICIONES v2 - ESTILO SOUTH PARK</h1>
+
+    <!-- ======================================== -->
+    <div class="label">1A: Papel Rasgado - Estilo South Park (cortes grandes)</div>
+    <!-- ======================================== -->
+
+    <div class="section-personajes">
+        <img src="imagenes/fondopersonajes.png" alt="Personajes">
+    </div>
+
+    <div class="torn-southpark"></div>
+
+    <div class="section-alfredito">
+        <img src="imagenes/alfredito.png" alt="Alfredito">
+    </div>
+
+    <div class="divider"><span>• • •</span></div>
+
+    <!-- ======================================== -->
+    <div class="label">1B: Papel Rasgado - SVG Wave suave</div>
+    <!-- ======================================== -->
+
+    <div class="section-personajes">
+        <img src="imagenes/fondopersonajes.png" alt="Personajes">
+    </div>
+
+    <div class="torn-wave">
+        <svg viewBox="0 0 1200 60" preserveAspectRatio="none">
+            <path d="M0,60 L0,25
+                Q30,45 60,20
+                T120,30 T180,15 T240,35 T300,20
+                T360,40 T420,18 T480,32 T540,22
+                T600,38 T660,15 T720,30 T780,25
+                T840,42 T900,18 T960,35 T1020,22
+                T1080,38 T1140,20 T1200,30
+                L1200,60 Z"
+                fill="#3d3d3d"/>
+        </svg>
+    </div>
+
+    <div class="section-alfredito">
+        <img src="imagenes/alfredito.png" alt="Alfredito">
+    </div>
+
+    <div class="divider"><span>• • •</span></div>
+
+    <!-- ======================================== -->
+    <div class="label">1C: Papel Rasgado - Dramático (muchos cortes)</div>
+    <!-- ======================================== -->
+
+    <div class="section-personajes">
+        <img src="imagenes/fondopersonajes.png" alt="Personajes">
+    </div>
+
+    <div class="torn-dramatic"></div>
+
+    <div class="section-alfredito">
+        <img src="imagenes/alfredito.png" alt="Alfredito">
+    </div>
+
+    <div class="divider"><span>• • •</span></div>
+
+    <!-- ======================================== -->
+    <div class="label">4A: Cinta Estilo South Park (colores sólidos)</div>
+    <!-- ======================================== -->
+
+    <div class="section-personajes">
+        <img src="imagenes/fondopersonajes.png" alt="Personajes">
+    </div>
+
+    <div class="tape-southpark">
+        <div class="sp-tape tape-1"></div>
+        <div class="sp-tape tape-2"></div>
+        <div class="sp-tape tape-3"></div>
+    </div>
+
+    <div class="section-alfredito">
+        <img src="imagenes/alfredito.png" alt="Alfredito">
+    </div>
+
+    <div class="divider"><span>• • •</span></div>
+
+    <!-- ======================================== -->
+    <div class="label">4B: Masking Tape Realista (crema/beige)</div>
+    <!-- ======================================== -->
+
+    <div class="section-personajes">
+        <img src="imagenes/fondopersonajes.png" alt="Personajes">
+    </div>
+
+    <div class="tape-masking">
+        <div class="masking-strip m-1"></div>
+        <div class="masking-strip m-2"></div>
+        <div class="masking-strip m-3"></div>
+    </div>
+
+    <div class="section-alfredito">
+        <img src="imagenes/alfredito.png" alt="Alfredito">
+    </div>
+
+    <div class="divider"><span>• • •</span></div>
+
+    <!-- ======================================== -->
+    <div class="label">4C: Washi Tape (colores RETRUCO)</div>
+    <!-- ======================================== -->
+
+    <div class="section-personajes">
+        <img src="imagenes/fondopersonajes.png" alt="Personajes">
+    </div>
+
+    <div class="tape-washi">
+        <div class="washi-strip w-1"></div>
+        <div class="washi-strip w-2"></div>
+        <div class="washi-strip w-3"></div>
+    </div>
+
+    <div class="section-alfredito">
+        <img src="imagenes/alfredito.png" alt="Alfredito">
+    </div>
+
+    <div class="divider"><span>• • •</span></div>
+
+    <!-- ======================================== -->
+    <div class="label">COMBO: Papel Rasgado + Cinta South Park</div>
+    <!-- ======================================== -->
+
+    <div class="section-personajes">
+        <img src="imagenes/fondopersonajes.png" alt="Personajes">
+    </div>
+
+    <div class="combo-transition">
+        <div class="combo-tape ct-1"></div>
+        <div class="combo-tape ct-2"></div>
+        <div class="combo-tape ct-3"></div>
+    </div>
+
+    <div class="section-alfredito">
+        <img src="imagenes/alfredito.png" alt="Alfredito">
+    </div>
+
+    <div class="divider"><span>• • •</span></div>
+
+    <div style="padding: 60px; text-align: center; background: #0a0a0a;">
+        <p style="color: #666;">FIN - Scrolleá para ver todas las opciones</p>
+        <p style="color: #444; margin-top: 10px; font-size: 0.8rem;">
+            Recursos: CodeShack CSS Separator Generator, TornPaper.js, FreeSVG
+        </p>
+    </div>
+
+</body>
+</html>

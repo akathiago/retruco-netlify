@@ -28,6 +28,13 @@
     <link rel="shortcut icon" href="../favicon/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'Trevor';
+            src: url('../fuentes/TREVOR.TTF') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
         :root {
             --rust: #2bb8cd;
             --rust-dark: #1a8fa5;
@@ -1238,6 +1245,83 @@
             }
         }
 
+        /* PRELOADER STYLES */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('assets/fondo/fondocarga.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #A07F56;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .preloader-content {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .preloader-counter {
+            font-family: 'Trevor', sans-serif;
+            font-size: 6rem;
+            color: white;
+            text-shadow: 4px 4px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+            margin: 0;
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+        }
+
+        .preloader-character {
+            position: relative;
+            width: 1800px;
+            height: 1800px;
+        }
+
+        .preloader-character img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .cesar-eyes {
+            opacity: 1;
+        }
+
+        .cesar-blink {
+            opacity: 0;
+            transition: opacity 0.08s ease;
+        }
+
+        .cesar-blinking .cesar-blink {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .preloader-counter {
+                font-size: 4rem;
+            }
+            .preloader-character {
+                width: 600px;
+                height: 600px;
+            }
+        }
+
         /* Download Modal - Clean Design */
         .download-modal {
             display: none;
@@ -1467,6 +1551,17 @@
     </style>
 </head>
 <body>
+    <!-- PRELOADER -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-content">
+            <p id="counter" class="preloader-counter">0%</p>
+            <div class="preloader-character">
+                <img id="cesarOjos" src="../imagenes/cesarojosabiertos.png" alt="César cargando" class="cesar-eyes">
+                <img id="cesarPestanea" src="../imagenes/cesarpestañando.png" alt="César pestañeando" class="cesar-blink">
+            </div>
+        </div>
+    </div>
+
     <div class="bg-texture"></div>
     <div class="noise"></div>
 
@@ -1651,7 +1746,7 @@
             fondo: {
                 title: 'FONDO',
                 badge: 'FONDO',
-                items: ['fondocielo', 'fondopersonajes', 'fondopatron_Mesa de trabajo 1', 'fondo9dejulio_Mesa de trabajo 1']
+                items: ['fondocielo', 'fondopersonajes', 'fondopatron_Mesa de trabajo 1', 'fondo9dejulio_Mesa de trabajo 1', 'fondocarga']
             }
         };
 
@@ -2344,6 +2439,92 @@
         if (window.innerWidth <= 768) {
             console.log('[Mobile] Mobile layout active. Viewport:', window.innerWidth, 'x', window.innerHeight);
         }
+
+        // ===== PRELOADER =====
+        (function() {
+            // Bloquear scroll mientras carga
+            document.body.style.overflow = 'hidden';
+
+            const counterElement = document.getElementById('counter');
+            const preloader = document.getElementById('preloader');
+            const cesarCharacter = document.querySelector('.preloader-character');
+
+            let currentProgress = 0;
+            let targetProgress = 0;
+            let loadingComplete = false;
+
+            // Función para pestañear
+            function cesarBlink() {
+                cesarCharacter.classList.add('cesar-blinking');
+                setTimeout(() => {
+                    cesarCharacter.classList.remove('cesar-blinking');
+                }, 800);
+            }
+
+            // Pestañear cada 1-2.5 segundos aleatorio
+            function scheduleNextBlink() {
+                const randomDelay = 500 + Math.random() * 1000;
+                setTimeout(() => {
+                    if (!loadingComplete) {
+                        cesarBlink();
+                        scheduleNextBlink();
+                    }
+                }, randomDelay);
+            }
+            scheduleNextBlink();
+
+            // Obtener todas las imágenes (excluyendo las del preloader)
+            const images = Array.from(document.querySelectorAll('img:not(.cesar-eyes):not(.cesar-blink)'));
+            const totalResources = images.length + 1; // +1 para window load
+            let loadedResources = 0;
+
+            function updateProgress() {
+                targetProgress = Math.min(Math.round((loadedResources / totalResources) * 100), 100);
+            }
+
+            function animateCounter() {
+                if (currentProgress < targetProgress) {
+                    currentProgress++;
+                    counterElement.textContent = `${currentProgress}%`;
+                }
+
+                if (currentProgress >= 100) {
+                    loadingComplete = true;
+                    preloader.style.opacity = '0';
+                    preloader.style.pointerEvents = 'none';
+                    document.body.style.overflow = '';
+                    return;
+                }
+
+                requestAnimationFrame(animateCounter);
+            }
+
+            animateCounter();
+
+            // Track image loading
+            images.forEach(img => {
+                if (img.complete) {
+                    loadedResources++;
+                    updateProgress();
+                } else {
+                    img.addEventListener('load', () => { loadedResources++; updateProgress(); });
+                    img.addEventListener('error', () => { loadedResources++; updateProgress(); });
+                }
+            });
+
+            // Window load como recurso final
+            window.addEventListener('load', () => {
+                loadedResources++;
+                targetProgress = 100;
+            });
+
+            // Fallback: máximo 10 segundos de espera
+            setTimeout(() => {
+                if (!loadingComplete) {
+                    targetProgress = 100;
+                }
+            }, 10000);
+        })();
     </script>
 </body>
 </html>

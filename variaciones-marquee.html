@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variaciones Marquee - Retruco</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Trevor';
+            src: url('fuentes/TREVOR.TTF') format('truetype');
+            font-weight: bold;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a1a24;
+            --bg-dark-2: #1a3545;
+            --paper: #e0f7fa;
+            --cyan-bright: #22d3ee;
+            --cyan-main: #2bb8cd;
+            --cyan-glow: rgba(43, 184, 205, 0.5);
+        }
+
+        body {
+            font-family: 'Trevor', 'Montserrat', Impact, sans-serif;
+            background: #050d12;
+            color: var(--paper);
+            padding: 40px 0;
+        }
+
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--cyan-bright);
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .section-desc {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(224, 247, 250, 0.6);
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        /* ========== BASE MARQUEE STYLES ========== */
+        .marquee-wrapper {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .marquee-content {
+            display: inline-flex;
+            animation: scroll-left 20s linear infinite;
+        }
+
+        .marquee-content-reverse {
+            display: inline-flex;
+            animation: scroll-right 20s linear infinite;
+        }
+
+        .marquee-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            padding: 0 20px;
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .marquee-item .logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .separator {
+            opacity: 0.6;
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes scroll-right {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        /* ========== VARIACION 1: Fondo oscuro + texto cyan con glow ========== */
+        .v1-wrapper {
+            background: var(--bg-dark);
+            padding: 20px 0;
+        }
+
+        .v1-wrapper .marquee-item {
+            color: var(--cyan-bright);
+            text-shadow:
+                0 0 10px var(--cyan-glow),
+                0 0 20px var(--cyan-glow),
+                0 0 40px var(--cyan-glow);
+        }
+
+        /* ========== VARIACION 2: Fondo cyan + texto oscuro ========== */
+        .v2-wrapper {
+            background: var(--cyan-main);
+            padding: 20px 0;
+        }
+
+        .v2-wrapper .marquee-item {
+            color: var(--bg-dark);
+            text-shadow: none;
+        }
+
+        /* ========== VARIACION 3: Solo logos rotando ========== */
+        .v3-wrapper {
+            background: var(--bg-dark);
+            padding: 25px 0;
+        }
+
+        .v3-wrapper .marquee-item {
+            gap: 40px;
+            padding: 0 40px;
+        }
+
+        .v3-wrapper .logo {
+            width: 60px;
+            height: 60px;
+            filter: drop-shadow(0 0 10px var(--cyan-glow));
+            transition: transform 0.3s;
+        }
+
+        .v3-wrapper .marquee-content {
+            animation-duration: 15s;
+        }
+
+        /* ========== VARIACION 4: Logos + texto alternados ========== */
+        .v4-wrapper {
+            background: linear-gradient(90deg, var(--bg-dark) 0%, var(--bg-dark-2) 50%, var(--bg-dark) 100%);
+            padding: 18px 0;
+            border-top: 2px solid var(--cyan-main);
+            border-bottom: 2px solid var(--cyan-main);
+        }
+
+        .v4-wrapper .marquee-item {
+            color: var(--paper);
+            font-size: 1.2rem;
+        }
+
+        .v4-wrapper .logo {
+            width: 35px;
+            height: 35px;
+            filter: brightness(1.2);
+        }
+
+        /* ========== VARIACION 5: Barra rotada -2deg ========== */
+        .v5-wrapper {
+            background: var(--cyan-main);
+            padding: 15px 0;
+            transform: rotate(-2deg) scale(1.05);
+            margin: 20px -20px;
+        }
+
+        .v5-wrapper .marquee-item {
+            color: var(--bg-dark);
+            font-size: 1.3rem;
+        }
+
+        /* ========== VARIACION 6: Barra rotada +2deg ========== */
+        .v6-wrapper {
+            background: var(--bg-dark);
+            padding: 15px 0;
+            transform: rotate(2deg) scale(1.05);
+            margin: 20px -20px;
+            border-top: 3px solid var(--cyan-bright);
+            border-bottom: 3px solid var(--cyan-bright);
+        }
+
+        .v6-wrapper .marquee-item {
+            color: var(--cyan-bright);
+            text-shadow: 0 0 15px var(--cyan-glow);
+            font-size: 1.3rem;
+        }
+
+        /* ========== VARIACION 7: Doble barra ========== */
+        .v7-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .v7-top {
+            background: var(--bg-dark);
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(43, 184, 205, 0.3);
+        }
+
+        .v7-bottom {
+            background: var(--bg-dark-2);
+            padding: 12px 0;
+        }
+
+        .v7-top .marquee-item,
+        .v7-bottom .marquee-item {
+            color: var(--cyan-bright);
+            font-size: 1.1rem;
+            text-shadow: 0 0 10px var(--cyan-glow);
+        }
+
+        .v7-bottom .marquee-item {
+            color: var(--paper);
+            opacity: 0.8;
+        }
+
+        /* ========== VARIACION 8: Bordes retro ========== */
+        .v8-wrapper {
+            background: var(--bg-dark);
+            padding: 20px 0;
+            border: 4px solid var(--cyan-main);
+            border-left: none;
+            border-right: none;
+            position: relative;
+        }
+
+        .v8-wrapper::before,
+        .v8-wrapper::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--cyan-bright) 0px,
+                var(--cyan-bright) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+        }
+
+        .v8-wrapper::before { top: 8px; }
+        .v8-wrapper::after { bottom: 8px; }
+
+        .v8-wrapper .marquee-item {
+            color: var(--paper);
+            font-size: 1.3rem;
+            -webkit-text-stroke: 1px var(--cyan-main);
+        }
+
+        /* ========== VARIACION 9: Efecto glitch ========== */
+        .v9-wrapper {
+            background: var(--bg-dark);
+            padding: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .v9-wrapper .marquee-item {
+            color: var(--paper);
+            font-size: 1.4rem;
+            position: relative;
+            animation: glitch-text 3s infinite;
+        }
+
+        .v9-wrapper .marquee-item::before,
+        .v9-wrapper .marquee-item::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .v9-wrapper .marquee-item::before {
+            color: #ff0040;
+            animation: glitch-1 2s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+        }
+
+        .v9-wrapper .marquee-item::after {
+            color: #00ffff;
+            animation: glitch-2 2s infinite;
+            clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+        }
+
+        @keyframes glitch-1 {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-3px); }
+            40% { transform: translateX(3px); }
+            60% { transform: translateX(-1px); }
+            80% { transform: translateX(2px); }
+        }
+
+        @keyframes glitch-2 {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(3px); }
+            40% { transform: translateX(-3px); }
+            60% { transform: translateX(1px); }
+            80% { transform: translateX(-2px); }
+        }
+
+        @keyframes glitch-text {
+            0%, 100% { opacity: 1; }
+            92% { opacity: 1; }
+            93% { opacity: 0.8; transform: skewX(2deg); }
+            94% { opacity: 1; transform: skewX(0); }
+            95% { opacity: 0.9; transform: skewX(-1deg); }
+            96% { opacity: 1; transform: skewX(0); }
+        }
+
+        /* ========== VARIACION 10: Minimalista ========== */
+        .v10-wrapper {
+            background: transparent;
+            padding: 30px 0;
+            border-top: 1px solid rgba(43, 184, 205, 0.2);
+            border-bottom: 1px solid rgba(43, 184, 205, 0.2);
+        }
+
+        .v10-wrapper .marquee-item {
+            color: rgba(224, 247, 250, 0.7);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 8px;
+            font-weight: 700;
+        }
+
+        .v10-wrapper .separator {
+            color: var(--cyan-main);
+            font-size: 0.6rem;
+        }
+
+        .v10-wrapper .marquee-content {
+            animation-duration: 30s;
+        }
+
+        /* ========== BONUS: Hover effects ========== */
+        .marquee-wrapper:hover .marquee-content,
+        .marquee-wrapper:hover .marquee-content-reverse {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- VARIACION 1 -->
+    <section class="section">
+        <h2 class="section-title">Variacion 1</h2>
+        <p class="section-desc">Fondo oscuro + texto cyan con glow</p>
+        <div class="marquee-wrapper v1-wrapper">
+            <div class="marquee-content">
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">•</span>
+                    <span>RETRUCO</span>
+                    <span class="separator">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">•</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">•</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">•</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">•</span>
+                </div>
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">•</span>
+                    <span>RETRUCO</span>
+                    <span class="separator">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">•</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">•</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">•</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">•</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 2 -->
+    <section class="section">
+        <h2 class="section-title">Variacion 2</h2>
+        <p class="section-desc">Fondo cyan + texto oscuro</p>
+        <div class="marquee-wrapper v2-wrapper">
+            <div class="marquee-content">
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo" style="filter: brightness(0);">
+                    <span class="separator">•</span>
+                    <span>RETRUCO</span>
+                    <span class="separator">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo" style="filter: brightness(0);">
+                    <span class="separator">•</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo" style="filter: brightness(0);">
+                    <span class="separator">•</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo" style="filter: brightness(0);">
+                    <span class="separator">•</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">•</span>
+                </div>
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo" style="filter: brightness(0);">
+                    <span class="separator">•</span>
+                    <span>RETRUCO</span>
+                    <span class="separator">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo" style="filter: brightness(0);">
+                    <span class="separator">•</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo" style="filter: brightness(0);">
+                    <span class="separator">•</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">•</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo" style="filter: brightness(0);">
+                    <span class="separator">•</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">•</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 3 -->
+    <section class="section">
+        <h2 class="section-title">Variacion 3</h2>
+        <p class="section-desc">Solo logos rotando</p>
+        <div class="marquee-wrapper v3-wrapper">
+            <div class="marquee-content">
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                </div>
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 4 -->
+    <section class="section">
+        <h2 class="section-title">Variacion 4</h2>
+        <p class="section-desc">Logos + texto alternados con gradiente</p>
+        <div class="marquee-wrapper v4-wrapper">
+            <div class="marquee-content">
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span>RETRUCO</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span>DEMO GRATIS</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span>BIEN ARGENTO</span>
+                </div>
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span>RETRUCO</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span>DEMO GRATIS</span>
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span>BIEN ARGENTO</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 5 -->
+    <section class="section">
+        <h2 class="section-title">Variacion 5</h2>
+        <p class="section-desc">Barra rotada -2deg</p>
+        <div class="marquee-wrapper v5-wrapper">
+            <div class="marquee-content">
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo" style="filter: brightness(0);">
+                    <span class="separator">•</span>
+                    <span>RETRUCO</span>
+                    <span class="separator">•</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">•</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">•</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">•</span>
+                </div>
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo" style="filter: brightness(0);">
+                    <span class="separator">•</span>
+                    <span>RETRUCO</span>
+                    <span class="separator">•</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">•</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">•</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">•</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 6 -->
+    <section class="section">
+        <h2 class="section-title">Variacion 6</h2>
+        <p class="section-desc">Barra rotada +2deg con bordes cyan</p>
+        <div class="marquee-wrapper v6-wrapper">
+            <div class="marquee-content">
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">•</span>
+                    <span>RETRUCO</span>
+                    <span class="separator">•</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">•</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">•</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">•</span>
+                </div>
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">•</span>
+                    <span>RETRUCO</span>
+                    <span class="separator">•</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">•</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">•</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">•</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 7 -->
+    <section class="section">
+        <h2 class="section-title">Variacion 7</h2>
+        <p class="section-desc">Doble barra (una va izquierda, otra derecha)</p>
+        <div class="v7-container">
+            <div class="marquee-wrapper v7-top">
+                <div class="marquee-content">
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="separator">•</span>
+                        <span>RETRUCO</span>
+                        <span class="separator">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="separator">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="separator">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="separator">•</span>
+                    </div>
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="separator">•</span>
+                        <span>RETRUCO</span>
+                        <span class="separator">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="separator">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="separator">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="separator">•</span>
+                    </div>
+                </div>
+            </div>
+            <div class="marquee-wrapper v7-bottom">
+                <div class="marquee-content-reverse">
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="separator">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="separator">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="separator">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="separator">•</span>
+                        <span>RETRUCO</span>
+                        <span class="separator">•</span>
+                    </div>
+                    <div class="marquee-item">
+                        <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                        <span class="separator">•</span>
+                        <span>BIEN ARGENTO</span>
+                        <span class="separator">•</span>
+                        <span>DEMO GRATIS</span>
+                        <span class="separator">•</span>
+                        <span>UNA HISTORIA BIEN CRIOLLA</span>
+                        <span class="separator">•</span>
+                        <span>RETRUCO</span>
+                        <span class="separator">•</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 8 -->
+    <section class="section">
+        <h2 class="section-title">Variacion 8</h2>
+        <p class="section-desc">Con bordes/outline estilo retro</p>
+        <div class="marquee-wrapper v8-wrapper">
+            <div class="marquee-content">
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">★</span>
+                    <span>RETRUCO</span>
+                    <span class="separator">★</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">★</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">★</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">★</span>
+                </div>
+                <div class="marquee-item">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">★</span>
+                    <span>RETRUCO</span>
+                    <span class="separator">★</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">★</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">★</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">★</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 9 -->
+    <section class="section">
+        <h2 class="section-title">Variacion 9</h2>
+        <p class="section-desc">Con efecto glitch/distorsion sutil</p>
+        <div class="marquee-wrapper v9-wrapper">
+            <div class="marquee-content">
+                <div class="marquee-item" data-text="RETRUCO • UNA HISTORIA BIEN CRIOLLA • DEMO GRATIS • BIEN ARGENTO •">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">•</span>
+                    <span>RETRUCO</span>
+                    <span class="separator">•</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">•</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">•</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">•</span>
+                </div>
+                <div class="marquee-item" data-text="RETRUCO • UNA HISTORIA BIEN CRIOLLA • DEMO GRATIS • BIEN ARGENTO •">
+                    <img src="imagenes/logoretruco.png" alt="Logo" class="logo">
+                    <span class="separator">•</span>
+                    <span>RETRUCO</span>
+                    <span class="separator">•</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">•</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">•</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">•</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIACION 10 -->
+    <section class="section">
+        <h2 class="section-title">Variacion 10</h2>
+        <p class="section-desc">Minimalista solo texto uppercase</p>
+        <div class="marquee-wrapper v10-wrapper">
+            <div class="marquee-content">
+                <div class="marquee-item">
+                    <span>RETRUCO</span>
+                    <span class="separator">/</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">/</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">/</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">/</span>
+                </div>
+                <div class="marquee-item">
+                    <span>RETRUCO</span>
+                    <span class="separator">/</span>
+                    <span>UNA HISTORIA BIEN CRIOLLA</span>
+                    <span class="separator">/</span>
+                    <span>DEMO GRATIS</span>
+                    <span class="separator">/</span>
+                    <span>BIEN ARGENTO</span>
+                    <span class="separator">/</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 60px 20px; color: rgba(224, 247, 250, 0.4); font-size: 0.8rem; letter-spacing: 2px;">
+        HOVER SOBRE CUALQUIER BARRA PARA PAUSAR
+    </footer>
+
+</body>
+</html>
