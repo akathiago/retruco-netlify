@@ -775,6 +775,14 @@
             background: var(--concrete-2);
         }
 
+        /* Ocultar en desktop */
+        @media (min-width: 901px) {
+            #about,
+            #screenshots {
+                display: none;
+            }
+        }
+
         .section-header {
             text-align: center;
             margin-bottom: 80px;
@@ -2283,6 +2291,143 @@
                 width: 90px;
             }
         }
+
+        /* SECTION DAROTV */
+        .section-darotv {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio (1080/1920) */
+            background: #0a0a0a;
+            overflow: hidden;
+        }
+
+        .darotv-video {
+            position: absolute;
+            z-index: 1;
+            top: 46%;
+            left: 48%;
+            transform: translate(-50%, -50%);
+            width: 46%;
+            height: 53%;
+            border: none;
+        }
+
+        .darotv-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 2;
+            pointer-events: none;
+            /* Si la imagen no tiene transparencia en la pantalla del TV,
+               el video no se verá. Asegurate que DaroTV.png tenga
+               la pantalla transparente */
+        }
+
+        /* SECTION SOUNDTRACK */
+        .section-soundtrack {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background: #0a0a0a;
+            overflow: hidden;
+        }
+
+        .soundtrack-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .soundtrack-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .soundtrack-lista {
+            position: absolute;
+            left: 8%;
+            top: 48%;
+            transform: translateY(-50%);
+            width: 45%;
+            max-width: 700px;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+        }
+
+        .soundtrack-disco-wrapper {
+            position: absolute;
+            right: 8.5%;
+            top: 71.5%;
+            transform: translateY(-50%);
+            width: 25%;
+            max-width: 350px;
+            z-index: 2;
+        }
+
+        .soundtrack-disco {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+            animation: disco-spin 4s linear infinite;
+        }
+
+        /* Lista de canciones clickeable */
+        .soundtrack-songs {
+            position: absolute;
+            left: 12%;
+            top: 56%;
+            transform: translateY(-50%);
+            z-index: 3;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .soundtrack-songs li {
+            font-family: 'TrashHand', sans-serif;
+            font-size: clamp(1.93rem, 4vw, 3.22rem);
+            color: #685030;
+            cursor: pointer;
+            padding: 8px 0;
+            transition: all 0.2s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .soundtrack-songs li:hover {
+            color: #8B6914;
+            transform: translateX(10px);
+        }
+
+        .soundtrack-songs li.active {
+            color: #B8860B;
+            text-shadow: 0 0 10px rgba(184, 134, 11, 0.5);
+        }
+
+        @keyframes disco-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile: ocultar estas secciones o ajustar */
+        @media (max-width: 900px) {
+            .section-darotv,
+            .section-soundtrack {
+                display: none;
+            }
+        }
     </style>
 
 
@@ -2510,11 +2655,6 @@
         </div>
     </div>
 
-    <!-- ESCAPE Section -->
-    <section id="escape" class="escape-section">
-        <img src="imagenes/ESCAPE1.png" alt="Escape" class="escape-img" id="escapeSprite">
-    </section>
-
     <!-- BANNER YA DISPONIBLE -->
     <section id="banner-disponible">
         <img src="imagenes/YaDisponible.png" alt="Ya Disponible" class="banner-disponible-img" loading="lazy">
@@ -2638,12 +2778,36 @@
         <img src="imagenes/laverde.png" alt="La Verde" class="personaje-layer" loading="lazy" data-char="laverde">
     </section>
 
-    <!-- MASKING TAPE TRANSITION -->
-    <div class="tape-transition">
-        <div class="masking-tape tape-1"></div>
-        <div class="masking-tape tape-2"></div>
-        <div class="masking-tape tape-3"></div>
-    </div>
+    <!-- SECTION DAROTV -->
+    <section class="section-darotv">
+        <iframe
+            class="darotv-video"
+            src="https://www.youtube.com/embed/xhI3DA2SXg8?rel=0&modestbranding=1"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+        <img src="imagenes/DaroTV.png" alt="DaroTV" class="darotv-frame" loading="lazy">
+    </section>
+
+    <!-- SECTION SOUNDTRACK -->
+    <section class="section-soundtrack">
+        <img src="imagenes/play2mesa.png" alt="Soundtrack Background" class="soundtrack-bg" loading="lazy">
+        <div class="soundtrack-overlay">
+            <img src="imagenes/listasoundtrack.png" alt="Lista Soundtrack" class="soundtrack-lista" loading="lazy">
+            <ul class="soundtrack-songs">
+                <li data-song="songs/ReTruco Main -Double T.mp3">1. RETRUCO MAIN</li>
+                <li data-song="songs/Ciudad Porteña -Double T.mp3">2. CIUDAD PORTEÑA</li>
+                <li data-song="songs/Chacarera del Gil -Double T.mp3">3. CHACARERA DEL GIL</li>
+                <li data-song="songs/Sneaky Sneaky -Double T.mp3">4. SNEAKY SNEAKY</li>
+                <li data-song="songs/Ricky Fort Bossfight -necrofantasy.mp3">5. RICKY FORT BOSS</li>
+                <li data-song="songs/Communist song -Double T.mp3">6. COMMUNIST SONG</li>
+            </ul>
+            <div class="soundtrack-disco-wrapper">
+                <img src="imagenes/disco.png" alt="Disco" id="discoDisco" loading="lazy" style="width:100%;">
+            </div>
+        </div>
+    </section>
 
     <!-- MODAL PERSONAJE -->
     <div class="char-modal" id="charModal">
@@ -3297,6 +3461,13 @@
             overflow: hidden;
         }
 
+        /* Ocultar OST viejo en desktop */
+        @media (min-width: 901px) {
+            .ost-section {
+                display: none;
+            }
+        }
+
         .ost-section::before {
             content: '';
             position: absolute;
@@ -3310,8 +3481,9 @@
             pointer-events: none;
         }
 
-        /* Wachin Animation */
+        /* Wachin Animation - OCULTO */
         .wachin-sprite {
+            display: none;
             position: absolute;
             left: 5%;
             top: 50%;
@@ -3928,6 +4100,11 @@
         </div>
     </section>
 
+    <!-- ESCAPE Section (movido al fondo) -->
+    <section id="escape" class="escape-section">
+        <img src="imagenes/ESCAPE1.png" alt="Escape" class="escape-img" id="escapeSprite">
+    </section>
+
     <!-- EN CONSTRUCCION -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <style>
@@ -4425,6 +4602,71 @@
             });
         })();
 
+    </script>
+
+    <!-- Soundtrack Player -->
+    <script>
+        (function() {
+            const disco = document.getElementById('discoDisco');
+            const songItems = document.querySelectorAll('.soundtrack-songs li');
+            let currentAudio = null;
+            let currentItem = null;
+            let isPlaying = false;
+            let rotation = 0;
+
+            // Rotación con JavaScript
+            function spinDisco() {
+                if (isPlaying) {
+                    rotation += 1;
+                    disco.style.transform = 'rotate(' + rotation + 'deg)';
+                }
+                requestAnimationFrame(spinDisco);
+            }
+            spinDisco();
+
+            songItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const songSrc = this.getAttribute('data-song');
+
+                    // Si clickeamos la misma canción que está sonando, la pausamos
+                    if (currentItem === this && currentAudio && !currentAudio.paused) {
+                        currentAudio.pause();
+                        isPlaying = false;
+                        this.classList.remove('active');
+                        return;
+                    }
+
+                    // Parar canción anterior si existe
+                    if (currentAudio) {
+                        currentAudio.pause();
+                        currentAudio = null;
+                    }
+
+                    // Quitar clase active de todos
+                    songItems.forEach(s => s.classList.remove('active'));
+
+                    // Reproducir nueva canción
+                    currentAudio = new Audio(songSrc);
+                    currentItem = this;
+
+                    currentAudio.play().then(() => {
+                        isPlaying = true;
+                        this.classList.add('active');
+                    }).catch(err => {
+                        console.log('Error playing audio:', err);
+                        isPlaying = false;
+                    });
+
+                    // Cuando termina la canción
+                    currentAudio.addEventListener('ended', () => {
+                        isPlaying = false;
+                        this.classList.remove('active');
+                        currentAudio = null;
+                        currentItem = null;
+                    });
+                });
+            });
+        })();
     </script>
 
 
