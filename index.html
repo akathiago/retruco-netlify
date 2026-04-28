@@ -4614,10 +4614,341 @@
             let isPlaying = false;
             let rotation = 0;
 
-            // Rotación con JavaScript
+            // === DRAG/SCRATCH VARIABLES ===
+            let isDragging = false;
+            let lastAngle = 0;
+            let dragVelocity = 0;
+            let smoothVelocity = 0;
+            let momentumInterval = null;
+            let playbackRecoveryInterval = null;
+
+            // Sensibilidad del drag (menor = más suave)
+            const DRAG_SENSITIVITY = 0.6;
+            // Velocidad normal del disco cuando reproduce
+            const NORMAL_SPIN_SPEED = 0.8;
+
+            // === DJ SCRATCH/REWIND SFX SYSTEM (Web Audio API) ===
+            let scratchCtx = null;
+            let scratchOsc = null;
+            let scratchOsc2 = null;
+            let scratchNoise = null;
+            let scratchNoiseBuffer = null;
+            let scratchGain = null;
+            let scratchFilter = null;
+            let scratchDistortion = null;
+            let lastDirection = 0;
+
+            // Crear curva de distorsión para el sonido "sucio"
+            function makeDistortionCurve(amount) {
+                const samples = 44100;
+                const curve = new Float32Array(samples);
+                for (let i = 0; i < samples; i++) {
+                    const x = (i * 2) / samples - 1;
+                    curve[i] = ((3 + amount) * x * 20 * (Math.PI / 180)) / (Math.PI + amount * Math.abs(x));
+                }
+                return curve;
+            }
+
+            // Inicializar Web Audio para scratch
+            function initScratchAudio() {
+                if (scratchCtx) return;
+
+                scratchCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+                // Buffer de ruido para textura
+                const bufferSize = scratchCtx.sampleRate * 0.3;
+                scratchNoiseBuffer = scratchCtx.createBuffer(1, bufferSize, scratchCtx.sampleRate);
+                const noiseData = scratchNoiseBuffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    noiseData[i] = (Math.random() * 2 - 1);
+                }
+            }
+
+            // Empezar sonido de scratch DJ
+            function startScratchSound() {
+                if (!scratchCtx) initScratchAudio();
+                if (scratchCtx.state === 'suspended') scratchCtx.resume();
+
+                // Limpiar sonidos anteriores
+                stopScratchSound();
+
+                // === OSCILADOR PRINCIPAL (el "beeowww" del rewind) ===
+                scratchOsc = scratchCtx.createOscillator();
+                scratchOsc.type = 'sawtooth';
+                scratchOsc.frequency.value = 200;
+
+                // === OSCILADOR SECUNDARIO (armónico) ===
+                scratchOsc2 = scratchCtx.createOscillator();
+                scratchOsc2.type = 'square';
+                scratchOsc2.frequency.value = 150;
+
+                // === RUIDO (textura de vinilo) ===
+                scratchNoise = scratchCtx.createBufferSource();
+                scratchNoise.buffer = scratchNoiseBuffer;
+                scratchNoise.loop = true;
+
+                // === FILTRO (controla el brillo) ===
+                scratchFilter = scratchCtx.createBiquadFilter();
+                scratchFilter.type = 'lowpass';
+                scratchFilter.frequency.value = 800;
+                scratchFilter.Q.value = 8;
+
+                // === DISTORSIÓN (sonido "sucio" de DJ) ===
+                scratchDistortion = scratchCtx.createWaveShaper();
+                scratchDistortion.curve = makeDistortionCurve(20);
+                scratchDistortion.oversample = '2x';
+
+                // === GAIN MASTER ===
+                scratchGain = scratchCtx.createGain();
+                scratchGain.gain.value = 0;
+
+                // Gains individuales
+                const oscGain = scratchCtx.createGain();
+                oscGain.gain.value = 0.3;
+
+                const osc2Gain = scratchCtx.createGain();
+                osc2Gain.gain.value = 0.15;
+
+                const noiseGain = scratchCtx.createGain();
+                noiseGain.gain.value = 0.1;
+
+                // Conectar todo
+                scratchOsc.connect(oscGain);
+                scratchOsc2.connect(osc2Gain);
+                scratchNoise.connect(noiseGain);
+
+                oscGain.connect(scratchFilter);
+                osc2Gain.connect(scratchFilter);
+                noiseGain.connect(scratchFilter);
+
+                scratchFilter.connect(scratchDistortion);
+                scratchDistortion.connect(scratchGain);
+                scratchGain.connect(scratchCtx.destination);
+
+                // Iniciar
+                scratchOsc.start();
+                scratchOsc2.start();
+                scratchNoise.start();
+            }
+
+            // Actualizar scratch basado en velocidad - SONIDO DJ AGRESIVO
+            function updateScratchSound(velocity) {
+                if (!scratchGain || !scratchOsc || !scratchFilter) return;
+
+                const absVel = Math.abs(velocity);
+                const direction = velocity >= 0 ? 1 : -1;
+
+                // Detectar cambio de dirección para "chirp"
+                if (direction !== lastDirection && absVel > 0.5) {
+                    // Chirp rápido al cambiar dirección
+                    scratchFilter.frequency.setValueAtTime(2500, scratchCtx.currentTime);
+                    scratchFilter.frequency.linearRampToValueAtTime(800, scratchCtx.currentTime + 0.05);
+                }
+                lastDirection = direction;
+
+                // === VOLUMEN (más movimiento = más fuerte) ===
+                const targetGain = Math.min(0.4, absVel * 0.06);
+                scratchGain.gain.value = scratchGain.gain.value * 0.6 + targetGain * 0.4;
+
+                // === PITCH del oscilador (velocidad = pitch) ===
+                // Hacia adelante = sube pitch, hacia atrás = baja pitch
+                const basePitch = 200;
+                const pitchMod = velocity * 40;
+                const targetPitch = Math.max(50, Math.min(1200, basePitch + pitchMod));
+
+                scratchOsc.frequency.value = scratchOsc.frequency.value * 0.7 + targetPitch * 0.3;
+                scratchOsc2.frequency.value = scratchOsc2.frequency.value * 0.7 + (targetPitch * 0.75) * 0.3;
+
+                // === FILTRO (más rápido = más brillante) ===
+                const targetFreq = 400 + absVel * 200;
+                scratchFilter.frequency.value = Math.min(4000, targetFreq);
+
+                // === Q del filtro (resonancia para ese sonido "wah") ===
+                scratchFilter.Q.value = 5 + absVel * 2;
+            }
+
+            // Parar sonido de scratch
+            function stopScratchSound() {
+                if (scratchGain) {
+                    scratchGain.gain.value = 0;
+                }
+                if (scratchOsc) {
+                    try { scratchOsc.stop(); } catch(e) {}
+                    scratchOsc = null;
+                }
+                if (scratchOsc2) {
+                    try { scratchOsc2.stop(); } catch(e) {}
+                    scratchOsc2 = null;
+                }
+                if (scratchNoise) {
+                    try { scratchNoise.stop(); } catch(e) {}
+                    scratchNoise = null;
+                }
+            }
+
+            // Obtener centro del disco
+            function getDiscCenter() {
+                const rect = disco.getBoundingClientRect();
+                return {
+                    x: rect.left + rect.width / 2,
+                    y: rect.top + rect.height / 2
+                };
+            }
+
+            // Calcular ángulo desde el centro del disco al punto del cursor
+            function getAngle(clientX, clientY) {
+                const center = getDiscCenter();
+                return Math.atan2(clientY - center.y, clientX - center.x) * (180 / Math.PI);
+            }
+
+            // Actualizar playbackRate del audio basado en velocidad del drag
+            function updatePlaybackRate(velocity) {
+                if (!currentAudio || currentAudio.paused) return;
+
+                // Mapear velocidad del drag a playbackRate
+                // velocity positivo = dirección normal, negativo = reversa
+                // Rango de playbackRate: 0.25 a 3.0
+
+                const normalizedVelocity = velocity / 8; // Normalizar
+                let rate = 1 + normalizedVelocity;
+
+                // Clampear entre 0.1 y 3.0 (browsers no soportan negativo)
+                rate = Math.max(0.1, Math.min(3.0, rate));
+
+                currentAudio.playbackRate = rate;
+            }
+
+            // Recuperar playbackRate gradualmente a 1.0
+            function recoverPlaybackRate() {
+                if (playbackRecoveryInterval) {
+                    clearInterval(playbackRecoveryInterval);
+                }
+
+                playbackRecoveryInterval = setInterval(() => {
+                    if (!currentAudio || currentAudio.paused) {
+                        clearInterval(playbackRecoveryInterval);
+                        playbackRecoveryInterval = null;
+                        return;
+                    }
+
+                    const currentRate = currentAudio.playbackRate;
+                    const diff = 1 - currentRate;
+
+                    if (Math.abs(diff) < 0.02) {
+                        currentAudio.playbackRate = 1;
+                        clearInterval(playbackRecoveryInterval);
+                        playbackRecoveryInterval = null;
+                    } else {
+                        // Volver suavemente a velocidad normal
+                        currentAudio.playbackRate += diff * 0.15;
+                    }
+                }, 16);
+            }
+
+            // === DRAG HANDLERS ===
+            function onDragStart(e) {
+                e.preventDefault();
+                isDragging = true;
+                disco.style.cursor = 'grabbing';
+
+                // Cancelar intervals existentes
+                if (momentumInterval) {
+                    clearInterval(momentumInterval);
+                    momentumInterval = null;
+                }
+                if (playbackRecoveryInterval) {
+                    clearInterval(playbackRecoveryInterval);
+                    playbackRecoveryInterval = null;
+                }
+
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                lastAngle = getAngle(clientX, clientY);
+                dragVelocity = 0;
+                smoothVelocity = 0;
+
+                // Iniciar sonido de scratch
+                startScratchSound();
+            }
+
+            function onDragMove(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                const currentAngle = getAngle(clientX, clientY);
+
+                // Calcular diferencia de ángulo
+                let delta = currentAngle - lastAngle;
+
+                // Manejar el wrap-around de -180 a 180
+                if (delta > 180) delta -= 360;
+                if (delta < -180) delta += 360;
+
+                // Aplicar sensibilidad (más suave)
+                delta *= DRAG_SENSITIVITY;
+
+                rotation += delta;
+                dragVelocity = delta;
+
+                // Suavizar velocidad para el audio
+                smoothVelocity = smoothVelocity * 0.7 + dragVelocity * 0.3;
+
+                disco.style.transform = 'rotate(' + rotation + 'deg)';
+
+                // Afectar velocidad del audio
+                updatePlaybackRate(smoothVelocity);
+
+                // Actualizar sonido de scratch
+                updateScratchSound(smoothVelocity);
+
+                lastAngle = currentAngle;
+            }
+
+            function onDragEnd(e) {
+                if (!isDragging) return;
+                isDragging = false;
+                disco.style.cursor = 'grab';
+
+                // Parar sonido de scratch
+                stopScratchSound();
+
+                // Recuperar playbackRate gradualmente
+                recoverPlaybackRate();
+
+                // Aplicar momentum al disco
+                if (Math.abs(dragVelocity) > 0.3) {
+                    momentumInterval = setInterval(() => {
+                        dragVelocity *= 0.92; // Fricción
+                        rotation += dragVelocity;
+                        disco.style.transform = 'rotate(' + rotation + 'deg)';
+
+                        if (Math.abs(dragVelocity) < 0.05) {
+                            clearInterval(momentumInterval);
+                            momentumInterval = null;
+                        }
+                    }, 16);
+                }
+            }
+
+            // === EVENT LISTENERS ===
+            disco.style.cursor = 'grab';
+
+            // Mouse events
+            disco.addEventListener('mousedown', onDragStart);
+            document.addEventListener('mousemove', onDragMove);
+            document.addEventListener('mouseup', onDragEnd);
+
+            // Touch events
+            disco.addEventListener('touchstart', onDragStart, { passive: false });
+            document.addEventListener('touchmove', onDragMove, { passive: false });
+            document.addEventListener('touchend', onDragEnd);
+
+            // Rotación con JavaScript (solo cuando no está dragging)
             function spinDisco() {
-                if (isPlaying) {
-                    rotation += 1;
+                if (isPlaying && !isDragging && !momentumInterval) {
+                    rotation += NORMAL_SPIN_SPEED;
                     disco.style.transform = 'rotate(' + rotation + 'deg)';
                 }
                 requestAnimationFrame(spinDisco);
