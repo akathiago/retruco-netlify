@@ -9,13 +9,13 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Retruco">
     <meta property="og:description" content="Una historia bien criolla.">
-    <meta property="og:image" content="https://retruco.xyz/imagenes/hero-01.png">
+    <meta property="og:image" content="https://retruco.xyz/assets/imagenes/hero-01.png">
     <meta property="og:url" content="https://retruco.xyz">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Retruco">
     <meta name="twitter:description" content="Una historia bien criolla.">
-    <meta name="twitter:image" content="https://retruco.xyz/imagenes/hero-01.png">
+    <meta name="twitter:image" content="https://retruco.xyz/assets/imagenes/hero-01.png">
     <!-- Canonical -->
     <link rel="canonical" href="https://retruco.xyz">
     <!-- Theme Color -->
@@ -38,7 +38,7 @@
         "name": "ReTruco",
         "description": "Una aventura satírica y bien argenta en Buenos Aires. Acción, humor y delirio en formato videojuego.",
         "url": "https://retruco.xyz",
-        "image": "https://retruco.xyz/imagenes/hero-01.png",
+        "image": "https://retruco.xyz/assets/imagenes/hero-01.png",
         "genre": ["Run and Gun", "Beat Em Up", "RPG"],
         "gamePlatform": "PC",
         "operatingSystem": "Windows",
@@ -60,8 +60,8 @@
     <link rel="manifest" href="favicon/site.webmanifest">
     <link rel="shortcut icon" href="favicon/favicon.ico">
 
-    <link rel="preload" href="fuentes/TREVOR.TTF" as="font" type="font/ttf" crossorigin>
-    <link rel="preload" href="fuentes/RoodrigueZ ornament.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="assets/fuentes/TREVOR.TTF" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="assets/fuentes/RoodrigueZ ornament.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -69,13 +69,13 @@
     <style>
         @font-face {
             font-family: 'Trevor';
-            src: url('fuentes/TREVOR.TTF') format('truetype');
+            src: url('assets/fuentes/TREVOR.TTF') format('truetype');
             font-weight: bold;
             font-style: normal;
         }
         @font-face {
             font-family: 'Rodriguez Ornament';
-            src: url('fuentes/RoodrigueZ ornament.ttf') format('truetype');
+            src: url('assets/fuentes/RoodrigueZ ornament.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
@@ -173,11 +173,11 @@
             background: var(--concrete-1);
             color: var(--paper);
             overflow-x: hidden;
-            cursor: url("imagenes/Cursor.png"), auto;
+            cursor: url("assets/imagenes/Cursor.png"), auto;
         }
 
         a, button, .btn, .char-card, .play-btn, .social-link, .menu-btn, .nav-logo {
-            cursor: url("imagenes/Cursor.png"), pointer;
+            cursor: url("assets/imagenes/Cursor.png"), pointer;
         }
 
 
@@ -288,7 +288,7 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            background: url('imagenes/hero-01.png') center center / cover no-repeat;
+            background: url('assets/imagenes/hero-01.png') center center / cover no-repeat;
         }
 
         /* Prison bars effect - hidden on desktop, shown on mobile */
@@ -1153,7 +1153,7 @@
         .donate-bg-pattern {
             position: absolute;
             inset: 0;
-            background: url('imagenes/fondoretrucoweb.png') center center / cover no-repeat;
+            background: url('assets/imagenes/fondoretrucoweb.png') center center / cover no-repeat;
             pointer-events: none;
         }
 
@@ -1915,7 +1915,7 @@
 
             /* Hero mobile: hero-01.png como fondo */
             #hero {
-                background: url('imagenes/hero-01.png') center center / cover no-repeat;
+                background: url('assets/imagenes/hero-01.png') center center / cover no-repeat;
                 min-height: 100vh;
                 align-items: flex-start;
                 justify-content: center;
@@ -2140,7 +2140,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url('imagenes/fondocarga.png');
+            background-image: url('assets/imagenes/fondocarga.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -2435,7 +2435,7 @@
         /* Underground Marquee Styles */
         @font-face {
             font-family: 'TrashHand';
-            src: url('./fuentes/TrashHand.TTF') format('truetype');
+            src: url('./assets/fuentes/TrashHand.TTF') format('truetype');
             font-weight: normal;
             font-style: normal;
             font-display: swap;
@@ -2511,8 +2511,8 @@
         <div class="preloader-content">
             <p id="counter" class="preloader-counter">0%</p>
             <div class="preloader-character">
-                <img id="cesarOjos" src="imagenes/cesarojosabiertos.png" alt="César cargando" class="cesar-eyes">
-                <img id="cesarPestanea" src="imagenes/cesarpestañando.png" alt="César pestañeando" class="cesar-blink">
+                <img id="cesarOjos" src="assets/imagenes/cesarojosabiertos.png" alt="César cargando" class="cesar-eyes">
+                <img id="cesarPestanea" src="assets/imagenes/cesarpestañando.png" alt="César pestañeando" class="cesar-blink">
             </div>
         </div>
     </div>
@@ -2520,7 +2520,7 @@
     <!-- NAV -->
     <nav>
         <a href="#">
-            <img src="imagenes/logoretruco.png" alt="RETRUCO" class="nav-logo">
+            <img src="assets/imagenes/logoretruco.png" alt="RETRUCO" class="nav-logo">
         </a>
         <div class="nav-social">
             <a href="https://discord.gg/4hAAKVZWTT" target="_blank" class="social-link" aria-label="Discord">
@@ -2533,7 +2533,7 @@
                 <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
             </a>
             <a href="https://undergroundd.itch.io/retruco" target="_blank" class="social-link" aria-label="Itch.io">
-                <img src="imagenes/undergroundlogoreal-01.png" alt="Itch.io" style="width: 32px; height: 32px; object-fit: contain;">
+                <img src="assets/imagenes/undergroundlogoreal-01.png" alt="Itch.io" style="width: 32px; height: 32px; object-fit: contain;">
             </a>
         </div>
     </nav>
@@ -2545,15 +2545,15 @@
         <div class="concrete-texture"></div>
 
         <div class="hero-logo-container">
-            <img src="imagenes/logotp.png" alt="Logo ReTruco - Una Historia Bien Criolla" class="hero-logo-desktop" width="500" height="200" decoding="async">
-            <img src="imagenes/destello1.png" alt="" class="destello-sprite" id="destelloSprite">
+            <img src="assets/imagenes/logotp.png" alt="Logo ReTruco - Una Historia Bien Criolla" class="hero-logo-desktop" width="500" height="200" decoding="async">
+            <img src="assets/imagenes/destello1.png" alt="" class="destello-sprite" id="destelloSprite">
         </div>
 
         <div class="hero-content">
             <div class="hero-left">
                 <div class="hero-mobile-images">
-                    <img src="imagenes/logotp.png" alt="Logo ReTruco" class="hero-logo-tp" width="400" height="160" decoding="async">
-                    <img src="imagenes/hero-01.png" alt="César, protagonista de ReTruco" class="hero-img-mobile" width="600" height="800" decoding="async">
+                    <img src="assets/imagenes/logotp.png" alt="Logo ReTruco" class="hero-logo-tp" width="400" height="160" decoding="async">
+                    <img src="assets/imagenes/hero-01.png" alt="César, protagonista de ReTruco" class="hero-img-mobile" width="600" height="800" decoding="async">
                 </div>
                 <div class="prison-note">
                     <div class="note-header">
@@ -2576,7 +2576,7 @@
 
             <div class="hero-right">
                 <div class="cesar-container">
-                    <img src="imagenes/poster.png" alt="RETRUCO - Una Historia Bien Criolla - Póster oficial del juego" class="cesar-img hero-poster" width="800" height="1200" decoding="async">
+                    <img src="assets/imagenes/poster.png" alt="RETRUCO - Una Historia Bien Criolla - Póster oficial del juego" class="cesar-img hero-poster" width="800" height="1200" decoding="async">
                 </div>
             </div>
         </div>
@@ -2598,7 +2598,7 @@
             <div class="about-image">
                 <div class="pin pin-1"></div>
                 <div class="pin pin-2"></div>
-                <img src="imagenes/cesarsentado.png" alt="César en la celda" class="about-img" loading="lazy">
+                <img src="assets/imagenes/cesarsentado.png" alt="César en la celda" class="about-img" loading="lazy">
             </div>
 
             <div class="prison-note prison-note-large">
@@ -2618,46 +2618,46 @@
     <!-- UNDERGROUND MARQUEE -->
     <div class="underground-marquee">
         <div class="marquee-track">
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">NO APTO PARA GILES</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">NO APTO PARA GILES</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">NO APTO PARA GILES</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">NO APTO PARA GILES</span>
         </div>
         <div class="marquee-track">
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">NO APTO PARA GILES</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">NO APTO PARA GILES</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">NO APTO PARA GILES</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo">
             <span class="marquee-text">NO APTO PARA GILES</span>
         </div>
     </div>
 
     <!-- BANNER YA DISPONIBLE -->
     <section id="banner-disponible">
-        <img src="imagenes/YaDisponible.png" alt="Ya Disponible" class="banner-disponible-img" loading="lazy">
+        <img src="assets/imagenes/YaDisponible.png" alt="Ya Disponible" class="banner-disponible-img" loading="lazy">
         <a href="https://undergroundd.itch.io/retruco" target="_blank" class="btn-descargar">DESCARGAR</a>
     </section>
 
@@ -2670,16 +2670,16 @@
         <div class="screenshots-container">
             <div class="screenshots-grid">
                 <div class="screenshot-item" onclick="openGallery(0)">
-                    <img src="imagenes/screenshot1.png" alt="Screenshot 1" class="screenshot-img" loading="lazy">
+                    <img src="assets/imagenes/screenshot1.png" alt="Screenshot 1" class="screenshot-img" loading="lazy">
                 </div>
                 <div class="screenshot-item" onclick="openGallery(1)">
-                    <img src="imagenes/screenshot2.png" alt="Screenshot 2" class="screenshot-img" loading="lazy">
+                    <img src="assets/imagenes/screenshot2.png" alt="Screenshot 2" class="screenshot-img" loading="lazy">
                 </div>
                 <div class="screenshot-item" onclick="openGallery(2)">
-                    <img src="imagenes/screenshot3.png" alt="Screenshot 3" class="screenshot-img" loading="lazy">
+                    <img src="assets/imagenes/screenshot3.png" alt="Screenshot 3" class="screenshot-img" loading="lazy">
                 </div>
                 <div class="screenshot-item" onclick="openGallery(3)">
-                    <img src="imagenes/screenshot4.png" alt="Screenshot 4" class="screenshot-img" loading="lazy">
+                    <img src="assets/imagenes/screenshot4.png" alt="Screenshot 4" class="screenshot-img" loading="lazy">
                 </div>
             </div>
         </div>
@@ -2698,7 +2698,7 @@
                 <div class="char-card" onclick="openCharModal('xiao')">
                     <div class="pin"></div>
                     <div class="char-img-container">
-                        <img src="imagenes/xiao.png" alt="Xiao" class="char-img" loading="lazy">
+                        <img src="assets/imagenes/xiao.png" alt="Xiao" class="char-img" loading="lazy">
                     </div>
                     <div class="char-info">
                         <h3 class="char-name">XIAO</h3>
@@ -2709,7 +2709,7 @@
                 <div class="char-card" onclick="openCharModal('dario')">
                     <div class="pin"></div>
                     <div class="char-img-container">
-                        <img src="imagenes/dario.png" alt="Darío" class="char-img" loading="lazy">
+                        <img src="assets/imagenes/dario.png" alt="Darío" class="char-img" loading="lazy">
                     </div>
                     <div class="char-info">
                         <h3 class="char-name">DARÍO</h3>
@@ -2720,7 +2720,7 @@
                 <div class="char-card" onclick="openCharModal('bignone')">
                     <div class="pin"></div>
                     <div class="char-img-container">
-                        <img src="imagenes/bignone.png" alt="Bignone" class="char-img" loading="lazy">
+                        <img src="assets/imagenes/bignone.png" alt="Bignone" class="char-img" loading="lazy">
                     </div>
                     <div class="char-info">
                         <h3 class="char-name">BIGNONE</h3>
@@ -2731,7 +2731,7 @@
                 <div class="char-card" onclick="openCharModal('cesar')">
                     <div class="pin"></div>
                     <div class="char-img-container">
-                        <img src="imagenes/cesar.png" alt="César" class="char-img" loading="lazy">
+                        <img src="assets/imagenes/cesar.png" alt="César" class="char-img" loading="lazy">
                     </div>
                     <div class="char-info">
                         <h3 class="char-name">CÉSAR</h3>
@@ -2745,7 +2745,7 @@
 
     <!-- SECTION PERSONAJES (Desktop) -->
     <section class="section-personajes">
-        <img src="imagenes/fondopersonajes.png" alt="Fondo Personajes" class="personajes-fondo" loading="lazy">
+        <img src="assets/imagenes/fondopersonajes.png" alt="Fondo Personajes" class="personajes-fondo" loading="lazy">
         <!-- Hitboxes invisibles - Personajes -->
         <div class="personaje-hitbox" data-char="bignone" onclick="openCharModal('bignone')"></div>
         <div class="personaje-hitbox" data-char="cesar" onclick="openCharModal('cesar')"></div>
@@ -2762,20 +2762,20 @@
         <div class="personaje-hitbox" data-char="donsatur" onclick="openCharModal('donsatur')"></div>
         <div class="personaje-hitbox" data-char="laverde" onclick="openCharModal('laverde')"></div>
         <!-- Imágenes de personajes -->
-        <img src="imagenes/bignonepersonaje_Mesa de trabajo 1.png" alt="Bignone" class="personaje-layer" loading="lazy" data-char="bignone">
-        <img src="imagenes/cesarpersonaje_Mesa de trabajo 1.png" alt="César" class="personaje-layer" loading="lazy" data-char="cesar">
-        <img src="imagenes/dariopersonaje_Mesa de trabajo 1.png" alt="Dario" class="personaje-layer" loading="lazy" data-char="dario">
-        <img src="imagenes/xiaopersonaje_Mesa de trabajo 1.png" alt="Xiao" class="personaje-layer" loading="lazy" data-char="xiao">
+        <img src="assets/imagenes/bignonepersonaje_Mesa de trabajo 1.png" alt="Bignone" class="personaje-layer" loading="lazy" data-char="bignone">
+        <img src="assets/imagenes/cesarpersonaje_Mesa de trabajo 1.png" alt="César" class="personaje-layer" loading="lazy" data-char="cesar">
+        <img src="assets/imagenes/dariopersonaje_Mesa de trabajo 1.png" alt="Dario" class="personaje-layer" loading="lazy" data-char="dario">
+        <img src="assets/imagenes/xiaopersonaje_Mesa de trabajo 1.png" alt="Xiao" class="personaje-layer" loading="lazy" data-char="xiao">
         <!-- Imágenes de objetos -->
-        <img src="imagenes/estrelladavid.png" alt="Estrella de David" class="personaje-layer" loading="lazy" data-char="estrelladavid">
-        <img src="imagenes/plata_Mesa de trabajo 1.png" alt="Plata" class="personaje-layer" loading="lazy" data-char="plata">
-        <img src="imagenes/fernet_Mesa de trabajo 1.png" alt="Fernet" class="personaje-layer" loading="lazy" data-char="fernet">
-        <img src="imagenes/uzi.png" alt="Uzi" class="personaje-layer" loading="lazy" data-char="uzi">
-        <img src="imagenes/sapphirus.png" alt="Sapphirus" class="personaje-layer" loading="lazy" data-char="sapphirus">
-        <img src="imagenes/encendedor.png" alt="Encendedor" class="personaje-layer" loading="lazy" data-char="encendedor">
-        <img src="imagenes/mandarinas.png" alt="Mandarinas" class="personaje-layer" loading="lazy" data-char="mandarinas">
-        <img src="imagenes/donsatur.png" alt="Don Satur" class="personaje-layer" loading="lazy" data-char="donsatur">
-        <img src="imagenes/laverde.png" alt="La Verde" class="personaje-layer" loading="lazy" data-char="laverde">
+        <img src="assets/imagenes/estrelladavid.png" alt="Estrella de David" class="personaje-layer" loading="lazy" data-char="estrelladavid">
+        <img src="assets/imagenes/plata_Mesa de trabajo 1.png" alt="Plata" class="personaje-layer" loading="lazy" data-char="plata">
+        <img src="assets/imagenes/fernet_Mesa de trabajo 1.png" alt="Fernet" class="personaje-layer" loading="lazy" data-char="fernet">
+        <img src="assets/imagenes/uzi.png" alt="Uzi" class="personaje-layer" loading="lazy" data-char="uzi">
+        <img src="assets/imagenes/sapphirus.png" alt="Sapphirus" class="personaje-layer" loading="lazy" data-char="sapphirus">
+        <img src="assets/imagenes/encendedor.png" alt="Encendedor" class="personaje-layer" loading="lazy" data-char="encendedor">
+        <img src="assets/imagenes/mandarinas.png" alt="Mandarinas" class="personaje-layer" loading="lazy" data-char="mandarinas">
+        <img src="assets/imagenes/donsatur.png" alt="Don Satur" class="personaje-layer" loading="lazy" data-char="donsatur">
+        <img src="assets/imagenes/laverde.png" alt="La Verde" class="personaje-layer" loading="lazy" data-char="laverde">
     </section>
 
     <!-- SECTION DAROTV -->
@@ -2787,24 +2787,24 @@
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen>
         </iframe>
-        <img src="imagenes/DaroTV.png" alt="DaroTV" class="darotv-frame" loading="lazy">
+        <img src="assets/imagenes/DaroTV.png" alt="DaroTV" class="darotv-frame" loading="lazy">
     </section>
 
     <!-- SECTION SOUNDTRACK -->
     <section class="section-soundtrack">
-        <img src="imagenes/play2mesa.png" alt="Soundtrack Background" class="soundtrack-bg" loading="lazy">
+        <img src="assets/imagenes/play2mesa.png" alt="Soundtrack Background" class="soundtrack-bg" loading="lazy">
         <div class="soundtrack-overlay">
-            <img src="imagenes/listasoundtrack.png" alt="Lista Soundtrack" class="soundtrack-lista" loading="lazy">
+            <img src="assets/imagenes/listasoundtrack.png" alt="Lista Soundtrack" class="soundtrack-lista" loading="lazy">
             <ul class="soundtrack-songs">
-                <li data-song="songs/ReTruco Main -Double T.mp3">1. RETRUCO MAIN</li>
-                <li data-song="songs/Ciudad Porteña -Double T.mp3">2. CIUDAD PORTEÑA</li>
-                <li data-song="songs/Chacarera del Gil -Double T.mp3">3. CHACARERA DEL GIL</li>
-                <li data-song="songs/Sneaky Sneaky -Double T.mp3">4. SNEAKY SNEAKY</li>
-                <li data-song="songs/Ricky Fort Bossfight -necrofantasy.mp3">5. RICKY FORT BOSS</li>
-                <li data-song="songs/Communist song -Double T.mp3">6. COMMUNIST SONG</li>
+                <li data-song="assets/songs/ReTruco Main -Double T.mp3">1. RETRUCO MAIN</li>
+                <li data-song="assets/songs/Ciudad Porteña -Double T.mp3">2. CIUDAD PORTEÑA</li>
+                <li data-song="assets/songs/Chacarera del Gil -Double T.mp3">3. CHACARERA DEL GIL</li>
+                <li data-song="assets/songs/Sneaky Sneaky -Double T.mp3">4. SNEAKY SNEAKY</li>
+                <li data-song="assets/songs/Ricky Fort Bossfight -necrofantasy.mp3">5. RICKY FORT BOSS</li>
+                <li data-song="assets/songs/Communist song -Double T.mp3">6. COMMUNIST SONG</li>
             </ul>
             <div class="soundtrack-disco-wrapper">
-                <img src="imagenes/disco.png" alt="Disco" id="discoDisco" loading="lazy" style="width:100%;">
+                <img src="assets/imagenes/disco.png" alt="Disco" id="discoDisco" loading="lazy" style="width:100%;">
             </div>
         </div>
     </section>
@@ -2839,7 +2839,7 @@
 
     <!-- ALFREDITO + CARDS -->
     <div style="position: relative; padding: 0; margin: 0; background: #0a0a0a; line-height: 0; overflow: hidden;">
-        <img src="imagenes/alfredito.png" alt="Alfredito" loading="lazy" style="width: 100%; height: auto; display: block;">
+        <img src="assets/imagenes/alfredito.png" alt="Alfredito" loading="lazy" style="width: 100%; height: auto; display: block;">
         <style>
             .btn-crear {
                 position: absolute;
@@ -2947,19 +2947,19 @@
         <a href="retrucocharacter/indexcharacter.html" class="btn-crear">CREÁ TU PERSONAJE</a>
         <div style="position: absolute; bottom: 5%; left: 0; right: 0; overflow: visible; z-index: 10; padding: 20px 0;">
             <div class="cards-track" id="cardsTrack">
-                <div class="card-wrap" data-name="aang" data-msg="Aguante RETRUCO!"><img src="imagenes/cards/1aang.png" alt="Card"></div>
-                <div class="card-wrap" data-name="iam" data-msg="A mi se me ocurrió RETRUCO"><img src="imagenes/cards/2iam.png" alt="Card"></div>
-                <div class="card-wrap" data-name="akathiago" data-msg="Yo hice esta web"><img src="imagenes/cards/3akathiago.png" alt="Card"></div>
-                <div class="card-wrap" data-name="bananirou" data-msg="El salto del papu"><img src="imagenes/cards/4bananirou.png" alt="Card"></div>
-                <div class="card-wrap" data-name="benny" data-msg="Dale que es un golazo"><img src="imagenes/cards/benny.png" alt="Card"></div>
-                <div class="card-wrap" data-name="doublet" data-msg="Quiero ser NPC"><img src="imagenes/cards/doublet.png" alt="Card"></div>
-                <div class="card-wrap" data-name="elpapichamp" data-msg="Argentina carajo!"><img src="imagenes/cards/elpapichamp.png" alt="Card"></div>
-                <div class="card-wrap" data-name="mateocuf" data-msg="Lo mejor que vi"><img src="imagenes/cards/mateocuf.png" alt="Card"></div>
-                <div class="card-wrap" data-name="mishudev" data-msg="Éxitos loco!"><img src="imagenes/cards/mishudev.png" alt="Card"></div>
-                <div class="card-wrap" data-name="mizkliq" data-msg="Crack total"><img src="imagenes/cards/mizkliq.png" alt="Card"></div>
-                <div class="card-wrap" data-name="salva" data-msg="Dale que va!"><img src="imagenes/cards/salva.png" alt="Card"></div>
-                <div class="card-wrap" data-name="tussiwarriors" data-msg="Genios totales"><img src="imagenes/cards/tussiwarrior.png" alt="Card"></div>
-                <div class="card-wrap" data-name="vava" data-msg="Truco, quiero retruco!"><img src="imagenes/cards/vava.png" alt="Card"></div>
+                <div class="card-wrap" data-name="aang" data-msg="Aguante RETRUCO!"><img src="assets/imagenes/cards/1aang.png" alt="Card"></div>
+                <div class="card-wrap" data-name="iam" data-msg="A mi se me ocurrió RETRUCO"><img src="assets/imagenes/cards/2iam.png" alt="Card"></div>
+                <div class="card-wrap" data-name="akathiago" data-msg="Yo hice esta web"><img src="assets/imagenes/cards/3akathiago.png" alt="Card"></div>
+                <div class="card-wrap" data-name="bananirou" data-msg="El salto del papu"><img src="assets/imagenes/cards/4bananirou.png" alt="Card"></div>
+                <div class="card-wrap" data-name="benny" data-msg="Dale que es un golazo"><img src="assets/imagenes/cards/benny.png" alt="Card"></div>
+                <div class="card-wrap" data-name="doublet" data-msg="Quiero ser NPC"><img src="assets/imagenes/cards/doublet.png" alt="Card"></div>
+                <div class="card-wrap" data-name="elpapichamp" data-msg="Argentina carajo!"><img src="assets/imagenes/cards/elpapichamp.png" alt="Card"></div>
+                <div class="card-wrap" data-name="mateocuf" data-msg="Lo mejor que vi"><img src="assets/imagenes/cards/mateocuf.png" alt="Card"></div>
+                <div class="card-wrap" data-name="mishudev" data-msg="Éxitos loco!"><img src="assets/imagenes/cards/mishudev.png" alt="Card"></div>
+                <div class="card-wrap" data-name="mizkliq" data-msg="Crack total"><img src="assets/imagenes/cards/mizkliq.png" alt="Card"></div>
+                <div class="card-wrap" data-name="salva" data-msg="Dale que va!"><img src="assets/imagenes/cards/salva.png" alt="Card"></div>
+                <div class="card-wrap" data-name="tussiwarriors" data-msg="Genios totales"><img src="assets/imagenes/cards/tussiwarrior.png" alt="Card"></div>
+                <div class="card-wrap" data-name="vava" data-msg="Truco, quiero retruco!"><img src="assets/imagenes/cards/vava.png" alt="Card"></div>
             </div>
         </div>
         <script>
@@ -3005,11 +3005,11 @@
         </script>
     </div>
 
-    <!-- TRUCOGANG - HIDDEN (uncomment to activate)
+    <!-- TRUCOGANG -->
     <section style="position: relative; line-height: 0; overflow: hidden; margin: 0; padding: 0; background: #0a0a0a;">
-        <img src="imagenes/trucogang.png" alt="Truco Gang" loading="lazy" style="width: 100%; height: auto; display: block;">
+        <img src="assets/imagenes/trucogang.png" alt="Truco Gang" loading="lazy" style="width: 100%; height: auto; display: block;">
         <a href="/truco" class="trucogang-button">
-            <img src="imagenes/trucobutton.png" alt="Jugar Truco" loading="lazy">
+            <img src="assets/imagenes/trucobutton.png" alt="Jugar Truco" loading="lazy">
         </a>
         <style>
             .trucogang-button {
@@ -3037,11 +3037,10 @@
             }
         </style>
     </section>
-    -->
 
     <!-- FAQ -->
     <section id="faq" class="faq-section" style="position: relative; line-height: 0; overflow: hidden; margin: 0; padding: 0; font-size: 0;">
-        <img src="imagenes/footer_Mesa de trabajo 1.png" alt="" class="faq-bg-img" loading="lazy" style="width: 100%; height: auto; display: block;">
+        <img src="assets/imagenes/footer_Mesa de trabajo 1.png" alt="" class="faq-bg-img" loading="lazy" style="width: 100%; height: auto; display: block;">
         <div class="faq-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; padding: 15% 20px 40px; z-index: 2; line-height: 1.5;">
             <div style="max-width: 850px; width: 100%; flex-shrink: 0;">
                 <!-- Título con recuadro estilo RETRUCO -->
@@ -3211,7 +3210,7 @@
             .faq-overlay {
                 position: relative !important;
                 padding: 40px 15px 40px !important;
-                background: url('imagenes/footer_Mesa de trabajo 1.png') center center / cover no-repeat;
+                background: url('assets/imagenes/footer_Mesa de trabajo 1.png') center center / cover no-repeat;
             }
             .faq-title-card { padding: 15px 25px; margin-left: 10px; margin-bottom: 20px; }
             .faq-title-text { letter-spacing: 3px; font-size: 1.3rem; }
@@ -3314,39 +3313,39 @@
     <!-- UNDERGROUND MARQUEE INVERTED -->
     <div class="underground-marquee inverted">
         <div class="marquee-track">
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">NO APTO PARA GILES</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">NO APTO PARA GILES</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">NO APTO PARA GILES</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">NO APTO PARA GILES</span>
         </div>
         <div class="marquee-track">
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">NO APTO PARA GILES</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">NO APTO PARA GILES</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">NO APTO PARA GILES</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">CONTENIDO UNDER</span>
-            <img src="imagenes/logounderground.png" class="marquee-logo inverted">
+            <img src="assets/imagenes/logounderground.png" class="marquee-logo inverted">
             <span class="marquee-text">NO APTO PARA GILES</span>
         </div>
     </div>
@@ -3354,7 +3353,7 @@
     <!-- OST / SOUNDTRACK -->
     <section id="ost" class="ost-section">
         <!-- Wachin Animation -->
-        <img src="imagenes/1wachin.png" alt="Wachin" class="wachin-sprite" id="wachinSprite">
+        <img src="assets/imagenes/1wachin.png" alt="Wachin" class="wachin-sprite" id="wachinSprite">
 
         <div class="ost-container">
             <div class="section-header">
@@ -3364,7 +3363,7 @@
             <div class="ost-player">
                 <!-- Disco PS2 Visual -->
                 <div class="cassette">
-                    <img src="imagenes/Disco_ps2.png" alt="RETRUCO OST Disc" class="disc-image" id="discImage">
+                    <img src="assets/imagenes/Disco_ps2.png" alt="RETRUCO OST Disc" class="disc-image" id="discImage">
                 </div>
 
                 <!-- Track Info -->
@@ -3704,7 +3703,7 @@
             border: none;
             border-radius: 50%;
             color: var(--paper);
-            cursor: url("imagenes/Cursor.png"), pointer;
+            cursor: url("assets/imagenes/Cursor.png"), pointer;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -3773,7 +3772,7 @@
             background: var(--rust);
             border: 2px solid var(--ink);
             border-radius: 50%;
-            cursor: url("imagenes/Cursor.png"), pointer;
+            cursor: url("assets/imagenes/Cursor.png"), pointer;
         }
 
         /* PLAYLIST */
@@ -3788,7 +3787,7 @@
             align-items: center;
             padding: 12px 15px;
             border-bottom: 1px solid var(--paper-dark);
-            cursor: url("imagenes/Cursor.png"), pointer;
+            cursor: url("assets/imagenes/Cursor.png"), pointer;
             transition: all 0.2s ease;
         }
 
@@ -3906,11 +3905,11 @@
         (function() {
             // Placeholder tracks - reemplazar con los reales
             const tracks = [
-                { name: 'ReTruco Main', artist: 'Double T', src: 'songs/ReTruco Main -Double T.mp3' },
-                { name: 'Boliche Ambience', artist: 'Double T', src: 'songs/Boliche Ambience 01 -Double T.mp3' },
-                { name: 'Ciudad Porteña', artist: 'Vava', src: 'songs/Ciudad Porteña -Vava.m4a' },
-                { name: 'Communist Song', artist: 'Double T', src: 'songs/Communist song -Double T.mp3' },
-                { name: 'Ricky Fort Bossfight', artist: 'necrofantasy', src: 'songs/Ricky Fort Bossfight -necrofantasy.mp3' }
+                { name: 'ReTruco Main', artist: 'Double T', src: 'assets/songs/ReTruco Main -Double T.mp3' },
+                { name: 'Boliche Ambience', artist: 'Double T', src: 'assets/songs/Boliche Ambience 01 -Double T.mp3' },
+                { name: 'Ciudad Porteña', artist: 'Vava', src: 'assets/songs/Ciudad Porteña -Vava.m4a' },
+                { name: 'Communist Song', artist: 'Double T', src: 'assets/songs/Communist song -Double T.mp3' },
+                { name: 'Ricky Fort Bossfight', artist: 'necrofantasy', src: 'assets/songs/Ricky Fort Bossfight -necrofantasy.mp3' }
             ];
 
             let currentTrack = 0;
@@ -4056,8 +4055,8 @@
             </div>
 
             <div class="donate-images-row">
-                <img src="imagenes/npcjuego..png" alt="NPC del juego" class="donate-img" loading="lazy">
-                <img src="imagenes/mencion creditos.png" alt="Recompensas" class="donate-img" loading="lazy">
+                <img src="assets/imagenes/npcjuego..png" alt="NPC del juego" class="donate-img" loading="lazy">
+                <img src="assets/imagenes/mencion creditos.png" alt="Recompensas" class="donate-img" loading="lazy">
             </div>
 
             <div class="donate-card">
@@ -4073,25 +4072,25 @@
 
                 <div class="donate-benefits-grid">
                     <div class="benefit-item">
-                        <img src="imagenes/empanada.png" alt="Empanada" class="benefit-icon-img" loading="lazy">
+                        <img src="assets/imagenes/empanada.png" alt="Empanada" class="benefit-icon-img" loading="lazy">
                         <span class="benefit-text">Aparecé como NPC</span>
                     </div>
                     <div class="benefit-item">
-                        <img src="imagenes/cigarro.png" alt="Cigarro" class="benefit-icon-img" loading="lazy">
+                        <img src="assets/imagenes/cigarro.png" alt="Cigarro" class="benefit-icon-img" loading="lazy">
                         <span class="benefit-text">Créditos finales</span>
                     </div>
                     <div class="benefit-item">
-                        <img src="imagenes/ddl.png" alt="DDL" class="benefit-icon-img" loading="lazy">
+                        <img src="assets/imagenes/ddl.png" alt="DDL" class="benefit-icon-img" loading="lazy">
                         <span class="benefit-text">Acceso anticipado</span>
                     </div>
                     <div class="benefit-item">
-                        <img src="imagenes/don.png" alt="Don" class="benefit-icon-img" loading="lazy">
+                        <img src="assets/imagenes/don.png" alt="Don" class="benefit-icon-img" loading="lazy">
                         <span class="benefit-text">Contenido exclusivo</span>
                     </div>
                 </div>
 
                 <a href="https://cafecito.app/retrucoeljuego" target="_blank" class="btn btn-donate">
-                    <img src="imagenes/1000pe.png" alt="1000 pesos" class="btn-donate-icon-img" loading="lazy">
+                    <img src="assets/imagenes/1000pe.png" alt="1000 pesos" class="btn-donate-icon-img" loading="lazy">
                     <span class="btn-donate-text">DONAR AHORA</span>
                     <span class="btn-donate-arrow">→</span>
                 </a>
@@ -4102,7 +4101,7 @@
 
     <!-- ESCAPE Section (movido al fondo) -->
     <section id="escape" class="escape-section">
-        <img src="imagenes/ESCAPE1.png" alt="Escape" class="escape-img" id="escapeSprite">
+        <img src="assets/imagenes/ESCAPE1.png" alt="Escape" class="escape-img" id="escapeSprite">
     </section>
 
     <!-- EN CONSTRUCCION -->
@@ -4126,9 +4125,9 @@
 
     </style>
     <section id="construccion" style="padding: 0; width: 100%; background: #0f0f1a; position: relative; overflow: hidden; cursor: pointer;">
-        <img src="imagenes/EnConstruccion1.png" alt="En construcción - fondo" class="cinta-1" style="width: 100%; height: auto; display: block;" loading="lazy">
-        <img src="imagenes/EnConstruccion2.png" alt="En construcción - medio" class="cinta-2" loading="lazy">
-        <img src="imagenes/EnConstruccion3.png" alt="En construcción - frente" class="cinta-3" loading="lazy">
+        <img src="assets/imagenes/EnConstruccion1.png" alt="En construcción - fondo" class="cinta-1" style="width: 100%; height: auto; display: block;" loading="lazy">
+        <img src="assets/imagenes/EnConstruccion2.png" alt="En construcción - medio" class="cinta-2" loading="lazy">
+        <img src="assets/imagenes/EnConstruccion3.png" alt="En construcción - frente" class="cinta-3" loading="lazy">
     </section>
 
     <script>
@@ -4275,10 +4274,10 @@
 
         // Gallery Lightbox
         const galleryImages = [
-            'imagenes/screenshot1.png',
-            'imagenes/screenshot2.png',
-            'imagenes/screenshot3.png',
-            'imagenes/screenshot4.png'
+            'assets/imagenes/screenshot1.png',
+            'assets/imagenes/screenshot2.png',
+            'assets/imagenes/screenshot3.png',
+            'assets/imagenes/screenshot4.png'
         ];
         let currentSlide = 0;
 
@@ -4543,7 +4542,7 @@
             let direction = 1;
 
             setInterval(() => {
-                wachinSprite.src = `imagenes/${frame}wachin.png`;
+                wachinSprite.src = `assets/imagenes/${frame}wachin.png`;
                 frame += direction;
                 if (frame >= 11) direction = -1;
                 if (frame <= 1) direction = 1;
@@ -4559,7 +4558,7 @@
             let index = 0;
 
             setInterval(() => {
-                escapeSprite.src = `imagenes/ESCAPE${frames[index]}.png`;
+                escapeSprite.src = `assets/imagenes/ESCAPE${frames[index]}.png`;
                 index = (index + 1) % frames.length;
             }, 500);
         })();
@@ -4577,10 +4576,10 @@
 
             logoContainer.addEventListener('mouseenter', () => {
                 index = 0;
-                destelloSprite.src = `imagenes/destello${frames[index]}.png`;
+                destelloSprite.src = `assets/imagenes/destello${frames[index]}.png`;
                 animationInterval = setInterval(() => {
                     index = (index + 1) % frames.length;
-                    destelloSprite.src = `imagenes/destello${frames[index]}.png`;
+                    destelloSprite.src = `assets/imagenes/destello${frames[index]}.png`;
                 }, 80);
             });
 

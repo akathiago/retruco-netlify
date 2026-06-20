@@ -542,10 +542,10 @@ abraham: {
     role: 'El Veterano',
     difficulty: 1,
     tier: 1,
-    portrait: '../imagenes/abraham.png',
+    portrait: '../assets/imagenes/abraham.png',
     placeholderPortrait: true,
     color: '#8B7355',
-    background: '../imagenes/fondotruco1.png',
+    background: '../assets/imagenes/fondotruco1.png',
 
     lore: 'Viejo zorro del pabellón. Lleva 30 años jugando truco y nunca perdió una partida importante.',
 

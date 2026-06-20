@@ -125,7 +125,7 @@ rgba(0, 0, 0, 0.7)        /* Black dark */
 ```css
 @font-face {
     font-family: 'Trevor';
-    src: url('/fuentes/TREVOR.TTF') format('truetype');
+    src: url('/assets/fuentes/TREVOR.TTF') format('truetype');
     font-weight: bold;
     font-style: normal;
 }

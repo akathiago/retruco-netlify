@@ -17,11 +17,11 @@ class AudioManager {
 
         // OST Soundtrack playlist
         this.soundtrack = [
-            { file: '../songs/ReTruco Main -Double T.mp3', title: 'ReTruco Main', artist: 'Double T' },
-            { file: '../songs/Boliche Ambience 01 -Double T.mp3', title: 'Boliche Ambience', artist: 'Double T' },
-            { file: '../songs/Ciudad Porteña -Vava.m4a', title: 'Ciudad Porteña', artist: 'Vava' },
-            { file: '../songs/Communist song -Double T.mp3', title: 'Communist Song', artist: 'Double T' },
-            { file: '../songs/Ricky Fort Bossfight -necrofantasy.mp3', title: 'Ricky Fort Bossfight', artist: 'necrofantasy' },
+            { file: '../assets/songs/ReTruco Main -Double T.mp3', title: 'ReTruco Main', artist: 'Double T' },
+            { file: '../assets/songs/Boliche Ambience 01 -Double T.mp3', title: 'Boliche Ambience', artist: 'Double T' },
+            { file: '../assets/songs/Ciudad Porteña -Vava.m4a', title: 'Ciudad Porteña', artist: 'Vava' },
+            { file: '../assets/songs/Communist song -Double T.mp3', title: 'Communist Song', artist: 'Double T' },
+            { file: '../assets/songs/Ricky Fort Bossfight -necrofantasy.mp3', title: 'Ricky Fort Bossfight', artist: 'necrofantasy' },
         ];
         this.currentTrackIndex = 0;
         this.shuffle = false;

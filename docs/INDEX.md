@@ -81,8 +81,8 @@ retruco_netlify/
 │   ├── audio/                  # Archivos de audio
 │   ├── cartas/                 # Imágenes de cartas (40)
 │   └── ...
-├── imagenes/                    # Imágenes del sitio
-├── fuentes/                     # Tipografías
+├── assets/imagenes/                    # Imágenes del sitio
+├── assets/fuentes/                     # Tipografías
 ├── favicon/                     # Icons y manifest
 └── ...
 ```

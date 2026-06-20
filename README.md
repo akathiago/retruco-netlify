@@ -70,50 +70,54 @@ retruco_netlify/
 ├── 404.html                # Página de error personalizada
 ├── robots.txt              # SEO: robots.txt
 ├── sitemap.xml             # SEO: sitemap
-├── _redirects              # Configuración de redirects Netlify
-├── _headers                # Headers personalizados Netlify
+├── _redirects              # Redirects de Netlify (www → no-www)
+├── _headers                # Headers y cache de Netlify
 │
-├── favicon/                # Iconos y manifest
-│   ├── favicon.ico
-│   ├── favicon-32x32.png
-│   ├── apple-touch-icon.png
-│   └── site.webmanifest
+├── favicon/                # Iconos y manifest PWA
 │
-├── fuentes/                # Tipografías personalizadas
-│   ├── TREVOR.TTF          # Fuente bold para títulos
-│   └── RoodrigueZ ornament.ttf
+├── assets/                 # Todos los recursos multimedia, agrupados
+│   ├── imagenes/           # Imágenes del sitio y del juego (personajes, fondos, UI, sprites)
+│   ├── fuentes/            # Tipografías (TREVOR.TTF, RoodrigueZ ornament.ttf, TrashHand.TTF)
+│   └── songs/              # Soundtrack (.mp3 / .m4a)
 │
-├── imagenes/               # Imágenes del proyecto
-│   ├── hero-01.png         # Hero para OG tags
-│   ├── congreso.png        # Fondo para la torre
-│   ├── fondotruco1.png     # Fondo del juego
-│   ├── [personajes].png    # Retratos de personajes
-│   └── ...
+├── truco/                  # Minijuego: La Torre (juego de cartas, vanilla JS)
+│   ├── index.html          # Selección de rivales (La Torre)
+│   ├── juego.html          # Pantalla principal del juego
+│   ├── tutorial.html       # Tutorial interactivo
+│   ├── shared.js           # Lógica compartida, constantes, IA
+│   ├── js/                 # audio.js · animations.js · particles.js
+│   ├── css/                # animations.css
+│   └── cartas/             # Imágenes de cartas PNG
 │
-└── truco/                  # Minijuego: La Torre
-    ├── index.html          # Pantalla de selección de personajes
-    ├── juego.html          # Pantalla principal del juego
-    ├── tutorial.html       # Tutorial interactivo
-    ├── shared.js           # Lógica compartida, constantes, IA (867 líneas)
-    │
-    ├── js/
-    │   ├── audio.js        # Gestor de audio y música
-    │   ├── animations.js   # Animaciones estilo Flash
-    │   └── particles.js    # Sistema de partículas (efectos)
-    │
-    ├── css/
-    │   └── animations.css   # Keyframes y animaciones globales
-    │
-    ├── audio/              # Assets de audio
-    │   └── README.md       # Documentación de audio
-    │
-    └── cartas/             # Imágenes de cartas (40 archivos PNG)
-        ├── 1deespada.png
-        ├── 1debasto.png
-        ├── 1decopa.png
-        ├── 1deoro.png
-        └── ...
+├── retrucocharacter/       # Character creator — "armá tu personaje" (vanilla JS)
+│   ├── indexcharacter.html # App de página única
+│   └── assets/             # Partes del personaje (ojos, boca, pelo, ropa, tonos…)
+│
+├── docs/                   # Documentación técnica
+│   └── roadmap/            # Diseño narrativo NO implementado (guión y gameplay futuro)
+│
+└── _experiments/           # Prototipos de animación descartados (marquees, transiciones)
 ```
+
+---
+
+## 🧭 Notas para quien recibe el proyecto
+
+Sitio **estático** (HTML/CSS/JS vanilla, sin build ni `node_modules`). Se sirve tal cual desde Netlify.
+
+**Convención de assets:** todo lo multimedia vive en `assets/` (`imagenes/`, `fuentes/`, `songs/`).
+- Desde la raíz (`index.html`, `404.html`) se referencia como `assets/imagenes/...`
+- Desde los subproyectos (`truco/`, `retrucocharacter/`) como `../assets/imagenes/...`
+- Si movés o renombrás un asset, actualizá **ambas** formas y la regla de cache en `_headers`.
+
+**Carpetas especiales:**
+- `_experiments/` → prototipos viejos de animación, NO forman parte del sitio. Referencia/inspiración, descartables.
+- `docs/roadmap/` → guión y gameplay de un juego de acción **que no está construido**. Es diseño a futuro, no refleja lo que hoy existe (solo hay landing + minijuego de truco + character creator).
+
+**Issues conocidos (assets faltantes, pre-existentes — falta el arte/audio fuente):**
+- `truco/shared.js`: faltan 6 retratos de rivales → `assets/imagenes/{abraham,aliado,momo,littleboogie,wachin,chino}.png`
+- `index.html`: referencia `assets/songs/Ciudad Porteña -Double T.mp3` pero solo existe `…-Vava.m4a`
+- `retrucocharacter/fuentes/Trevor.ttf` quedó sin uso (el character creator usa la fuente de `assets/fuentes/`).
 
 ---
 
@@ -451,7 +455,7 @@ El sitio está deployado en **Netlify** con la siguiente config:
 /favicon/*
   Cache-Control: public, max-age=2592000
 
-/imagenes/*
+/assets/imagenes/*
   Cache-Control: public, max-age=2592000
 
 # Gzip compression

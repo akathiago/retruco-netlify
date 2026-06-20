@@ -10,7 +10,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="ReTruco - La Torre">
     <meta property="og:description" content="Escala la Torre derrotando a 6 rivales en Truco argentino. Estrategia y competencia real.">
-    <meta property="og:image" content="https://retruco.xyz/imagenes/hero-01.png">
+    <meta property="og:image" content="https://retruco.xyz/assets/imagenes/hero-01.png">
     <meta property="og:url" content="https://retruco.xyz/truco/">
     <meta property="og:locale" content="es_AR">
     <meta property="og:site_name" content="ReTruco">
@@ -19,7 +19,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ReTruco - La Torre">
     <meta name="twitter:description" content="Escala la Torre derrotando a 6 rivales en Truco argentino.">
-    <meta name="twitter:image" content="https://retruco.xyz/imagenes/hero-01.png">
+    <meta name="twitter:image" content="https://retruco.xyz/assets/imagenes/hero-01.png">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://retruco.xyz/truco/">
@@ -34,7 +34,7 @@
     <style>
         @font-face {
             font-family: 'Trevor';
-            src: url('../fuentes/TREVOR.TTF') format('truetype');
+            src: url('../assets/fuentes/TREVOR.TTF') format('truetype');
             font-weight: bold;
         }
 
@@ -862,14 +862,14 @@
         <div class="preloader-content">
             <p id="counter" class="preloader-counter">0%</p>
             <div class="preloader-character">
-                <img id="cesarOjos" src="../imagenes/cesarojosabiertos.png" alt="César cargando" class="cesar-eyes">
-                <img id="cesarPestanea" src="../imagenes/cesarpestañando.png" alt="César pestañeando" class="cesar-blink">
+                <img id="cesarOjos" src="../assets/imagenes/cesarojosabiertos.png" alt="César cargando" class="cesar-eyes">
+                <img id="cesarPestanea" src="../assets/imagenes/cesarpestañando.png" alt="César pestañeando" class="cesar-blink">
             </div>
         </div>
     </div>
 
     <header class="header">
-        <img src="../imagenes/logoretruco.png" alt="ReTruco" class="logo">
+        <img src="../assets/imagenes/logoretruco.png" alt="ReTruco" class="logo">
         <a href="../index.html" class="back">&larr; VOLVER</a>
     </header>
 
@@ -878,7 +878,7 @@
             <!-- Boss at top -->
             <div class="boss-section">
                 <div class="boss-frame" id="bossFrame">
-                    <img src="../imagenes/bignone.png" alt="Bignone" class="boss-portrait" id="bossPortrait">
+                    <img src="../assets/imagenes/bignone.png" alt="Bignone" class="boss-portrait" id="bossPortrait">
                 </div>
                 <div class="boss-name" id="bossName">BIGNONE</div>
                 <div class="boss-title">EL JEFE FINAL</div>
@@ -1043,7 +1043,7 @@ for (let t = 3; t >= 1; t--) {
         const status = getRivalStatus(rival.id, t);
 
         let portrait = rival.portrait;
-        if (rival.placeholderPortrait) portrait = '../imagenes/alfredito.png';
+        if (rival.placeholderPortrait) portrait = '../assets/imagenes/alfredito.png';
 
         const card = document.createElement('div');
         card.className = `rival ${status}`;
@@ -1115,7 +1115,7 @@ function openModal(rivalId) {
 
     // Set portrait
     const avatar = document.getElementById('modalAvatar');
-    avatar.src = rival.placeholderPortrait ? '../imagenes/alfredito.png' : rival.portrait;
+    avatar.src = rival.placeholderPortrait ? '../assets/imagenes/alfredito.png' : rival.portrait;
     avatar.alt = rival.name;
     avatar.style.borderColor = rival.color;
 

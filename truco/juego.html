@@ -10,7 +10,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="ReTruco - Juega Truco">
     <meta property="og:description" content="Juega Truco argentino contra rivales con IA unica. Envido, Truco y estrategia.">
-    <meta property="og:image" content="https://retruco.xyz/imagenes/hero-01.png">
+    <meta property="og:image" content="https://retruco.xyz/assets/imagenes/hero-01.png">
     <meta property="og:url" content="https://retruco.xyz/truco/juego.html">
     <meta property="og:locale" content="es_AR">
     <meta property="og:site_name" content="ReTruco">
@@ -19,7 +19,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ReTruco - Juega Truco">
     <meta name="twitter:description" content="Juega Truco argentino contra rivales con IA unica.">
-    <meta name="twitter:image" content="https://retruco.xyz/imagenes/hero-01.png">
+    <meta name="twitter:image" content="https://retruco.xyz/assets/imagenes/hero-01.png">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://retruco.xyz/truco/juego.html">
@@ -35,7 +35,7 @@
     <style>
         @font-face {
             font-family: 'Trevor';
-            src: url('../fuentes/TREVOR.TTF') format('truetype');
+            src: url('../assets/fuentes/TREVOR.TTF') format('truetype');
             font-weight: bold;
         }
 
@@ -973,8 +973,8 @@
         <div class="preloader-content">
             <p id="counter" class="preloader-counter">0%</p>
             <div class="preloader-character">
-                <img id="cesarOjos" src="../imagenes/cesarojosabiertos.png" alt="César cargando" class="cesar-eyes">
-                <img id="cesarPestanea" src="../imagenes/cesarpestañando.png" alt="César pestañeando" class="cesar-blink">
+                <img id="cesarOjos" src="../assets/imagenes/cesarojosabiertos.png" alt="César cargando" class="cesar-eyes">
+                <img id="cesarPestanea" src="../assets/imagenes/cesarpestañando.png" alt="César pestañeando" class="cesar-blink">
             </div>
         </div>
     </div>
@@ -1006,7 +1006,7 @@
     <!-- OPPONENT -->
     <div class="opponent-area">
         <div class="opponent-center">
-            <img src="../imagenes/alfredito.png" alt="Rival" class="opponent-avatar" id="oppAvatar">
+            <img src="../assets/imagenes/alfredito.png" alt="Rival" class="opponent-avatar" id="oppAvatar">
             <div class="opponent-name" id="oppName">RIVAL</div>
         </div>
         <div class="speech-bubble" id="speechBubble"></div>
@@ -1046,7 +1046,7 @@
 
     <!-- OVERLAY -->
     <div class="overlay" id="overlay">
-        <img src="../imagenes/alfredito.png" alt="Rival" class="overlay-img" id="overlayImg">
+        <img src="../assets/imagenes/alfredito.png" alt="Rival" class="overlay-img" id="overlayImg">
         <div class="overlay-text" id="overlayText"></div>
         <div class="overlay-sub" id="overlaySub"></div>
         <div class="overlay-quote" id="overlayQuote"></div>
@@ -1172,7 +1172,7 @@ const avatarEl = document.getElementById('oppAvatar');
 avatarEl.src = OPP.portrait;
 avatarEl.alt = OPP.name;
 if (OPP.placeholderPortrait) {
-    avatarEl.src = '../imagenes/alfredito.png'; // fallback silhouette
+    avatarEl.src = '../assets/imagenes/alfredito.png'; // fallback silhouette
     avatarEl.classList.add('placeholder-portrait');
 }
 
