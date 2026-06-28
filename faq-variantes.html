@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReTruco - Variantes FAQ</title>
+    <link rel="preload" href="assets/fuentes/TREVOR.TTF" as="font" type="font/ttf" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bebas+Neue&family=Montserrat:wght@400;600;700;800&family=Rubik+Glitch&family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: Trevor;
+            src: url("assets/fuentes/TREVOR.TTF") format("truetype");
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        :root {
+            --ink: #071016;
+            --concrete: #0a1a24;
+            --concrete-2: #102a38;
+            --cyan: #2bb8cd;
+            --cyan-soft: #b9f7ff;
+            --paper: #e0f7fa;
+            --paper-2: #c4edf2;
+            --warning: #f2e35e;
+            --red: #e6574f;
+            --green: #1e7f5c;
+            --line: rgba(224, 247, 250, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Montserrat, sans-serif;
+            color: var(--paper);
+            background:
+                linear-gradient(rgba(7, 16, 22, 0.72), rgba(7, 16, 22, 0.9)),
+                url("assets/imagenes/fondoretrucoweb.png") center top / cover fixed;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.18;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 28px 28px;
+            z-index: 0;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            width: min(1240px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 28px 0 64px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .brand {
+            width: 172px;
+            height: auto;
+            filter: drop-shadow(0 8px 0 rgba(0,0,0,0.45));
+        }
+
+        .back-link {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            padding: 0 16px;
+            border: 2px solid var(--paper);
+            color: var(--paper);
+            background: rgba(7, 16, 22, 0.72);
+            font: 800 0.76rem Montserrat, sans-serif;
+            letter-spacing: 0.08em;
+            text-decoration: none;
+            text-transform: uppercase;
+            box-shadow: 4px 4px 0 var(--cyan);
+        }
+
+        .intro {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 280px;
+            gap: 24px;
+            align-items: end;
+            margin-bottom: 22px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid var(--line);
+        }
+
+        .eyebrow {
+            color: var(--cyan-soft);
+            font-weight: 800;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-family: Trevor, Montserrat, sans-serif;
+            font-size: clamp(2rem, 7vw, 5rem);
+            line-height: 0.92;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            text-shadow: 5px 5px 0 var(--ink), 0 0 26px rgba(43,184,205,0.4);
+        }
+
+        .research-note {
+            border: 3px solid var(--ink);
+            background: var(--paper);
+            color: var(--ink);
+            padding: 18px;
+            box-shadow: 7px 7px 0 var(--cyan);
+            transform: rotate(1deg);
+            font-size: 0.9rem;
+            line-height: 1.55;
+            font-weight: 700;
+        }
+
+        .tabs {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 8px;
+            padding: 12px 0;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, rgba(7,16,22,0.98), rgba(7,16,22,0.76));
+            backdrop-filter: blur(8px);
+        }
+
+        .tab-button {
+            min-height: 48px;
+            border: 2px solid rgba(224,247,250,0.75);
+            background: rgba(10,26,36,0.9);
+            color: var(--paper);
+            font: 800 0.78rem Montserrat, sans-serif;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 0 transparent;
+        }
+
+        .tab-button[aria-selected="true"] {
+            color: var(--ink);
+            background: var(--cyan-soft);
+            border-color: var(--ink);
+            box-shadow: 5px 5px 0 var(--cyan);
+        }
+
+        .variant-panel {
+            display: none;
+            min-height: 680px;
+        }
+
+        .variant-panel.active {
+            display: block;
+        }
+
+        .panel-label {
+            margin-bottom: 18px;
+            display: inline-flex;
+            align-items: center;
+            min-height: 36px;
+            padding: 0 12px;
+            border: 2px solid var(--paper);
+            background: var(--ink);
+            color: var(--cyan-soft);
+            font-weight: 800;
+            font-size: 0.76rem;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+        }
+
+        .faq-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .faq-item {
+            color: var(--ink);
+        }
+
+        .faq-trigger {
+            width: 100%;
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            border: 0;
+            color: inherit;
+            background: transparent;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .faq-question {
+            font-family: Trevor, Montserrat, sans-serif;
+            letter-spacing: 0.04em;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        .faq-icon {
+            width: 34px;
+            height: 34px;
+            flex: 0 0 34px;
+            display: grid;
+            place-items: center;
+            border: 2px solid currentColor;
+            font-weight: 900;
+            line-height: 1;
+            transition: transform 0.25s ease;
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.28s ease;
+        }
+
+        .faq-answer-inner {
+            overflow: hidden;
+            font-size: 0.95rem;
+            line-height: 1.65;
+        }
+
+        .faq-item.open .faq-answer {
+            grid-template-rows: 1fr;
+        }
+
+        .current-shell {
+            position: relative;
+            min-height: 720px;
+            overflow: hidden;
+            padding: clamp(84px, 14vw, 160px) 24px 44px;
+            background: url("assets/imagenes/footer_Mesa de trabajo 1.png") center / cover no-repeat;
+        }
+
+        .current-inner {
+            width: min(850px, 100%);
+            margin: 0 auto;
+        }
+
+        .current-title {
+            display: inline-block;
+            position: relative;
+            margin: 0 0 48px 20px;
+            padding: 20px 40px;
+            background: var(--paper);
+            color: var(--ink);
+            border: 4px solid var(--ink);
+            box-shadow: 8px 8px 0 var(--ink);
+            transform: rotate(-1.5deg);
+            font-family: Trevor, Montserrat, sans-serif;
+            font-size: clamp(1.4rem, 4vw, 2.7rem);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .current-title::before {
+            content: "";
+            position: absolute;
+            top: -11px;
+            left: 50%;
+            width: 21px;
+            height: 21px;
+            transform: translateX(-50%);
+            border: 3px solid var(--ink);
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 2px 2px 0 var(--ink);
+        }
+
+        .current .faq-item {
+            background: var(--paper);
+            border: 3px solid var(--ink);
+            box-shadow: 5px 5px 0 var(--ink);
+            transform: rotate(var(--r, 0deg));
+        }
+
+        .current .faq-item:nth-child(odd) { --r: -0.4deg; }
+        .current .faq-item:nth-child(even) { --r: 0.4deg; }
+        .current .faq-trigger { padding: 18px 22px; }
+        .current .faq-question { font-size: 1.05rem; }
+        .current .faq-icon { color: var(--cyan); }
+        .current .faq-answer-inner { padding: 0 22px 18px; border-top: 2px dashed var(--ink); }
+
+        .skin-shell {
+            isolation: isolate;
+        }
+
+        .skin-shell::before,
+        .skin-shell::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .skin-shell .current-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .skin-shell .faq-list {
+            position: relative;
+            z-index: 1;
+        }
+
+        .skin-shell .faq-item {
+            transform: translateX(var(--x, 0)) rotate(var(--r, 0deg));
+        }
+
+        .skin-shell .faq-item:nth-child(1) { --x: 0; --r: -0.8deg; }
+        .skin-shell .faq-item:nth-child(2) { --x: 22px; --r: 0.6deg; }
+        .skin-shell .faq-item:nth-child(3) { --x: 44px; --r: -0.35deg; }
+        .skin-shell .faq-item:nth-child(4) { --x: 22px; --r: 0.75deg; }
+        .skin-shell .faq-item:nth-child(5) { --x: 0; --r: -0.45deg; }
+
+        .skin-neon {
+            background:
+                linear-gradient(180deg, rgba(2, 12, 18, 0.1), rgba(2, 12, 18, 0.18)),
+                url("assets/imagenes/footer_Mesa de trabajo 1.png") center / cover no-repeat;
+        }
+
+        .skin-neon::before {
+            background: repeating-linear-gradient(0deg, rgba(185,247,255,0.1) 0 1px, transparent 1px 7px);
+            mix-blend-mode: screen;
+        }
+
+        .skin-neon .current-title {
+            font-family: "Rubik Glitch", Trevor, sans-serif;
+            color: #dfffff;
+            background: #06131b;
+            border-color: #b9f7ff;
+            box-shadow: 9px 9px 0 #2bb8cd, 0 0 28px rgba(43,184,205,0.62);
+            text-shadow: 2px 2px 0 #071016;
+        }
+
+        .skin-neon .current-title::before {
+            background: #e6574f;
+            border-color: #b9f7ff;
+        }
+
+        .skin-neon .faq-item {
+            color: #dfffff;
+            background: rgba(5, 21, 30, 0.9);
+            border: 3px solid #b9f7ff;
+            box-shadow: 7px 7px 0 #2bb8cd, inset 0 0 24px rgba(43,184,205,0.12);
+        }
+
+        .skin-neon .faq-question {
+            font-family: "Bebas Neue", Trevor, sans-serif;
+            font-size: 1.35rem;
+            letter-spacing: 0.09em;
+        }
+
+        .skin-neon .faq-icon {
+            color: #e6574f;
+        }
+
+        .skin-neon .faq-answer-inner {
+            color: #e8feff;
+            border-top: 1px solid rgba(185,247,255,0.45);
+        }
+
+        .skin-punk::before {
+            background:
+                linear-gradient(135deg, transparent 0 48%, rgba(242,227,94,0.84) 48% 52%, transparent 52%),
+                linear-gradient(45deg, transparent 0 48%, rgba(230,87,79,0.72) 48% 52%, transparent 52%);
+            background-size: 72px 72px, 96px 96px;
+            opacity: 0.36;
+        }
+
+        .skin-punk .current-title {
+            font-family: Bangers, Trevor, sans-serif;
+            color: #071016;
+            background: #f2e35e;
+            border-color: #071016;
+            box-shadow: 10px 10px 0 #e6574f;
+            letter-spacing: 0.06em;
+        }
+
+        .skin-punk .current-title::before {
+            background: #2bb8cd;
+        }
+
+        .skin-punk .faq-item {
+            color: #071016;
+            background: #fff6b0;
+            border: 4px solid #071016;
+            box-shadow: 8px 8px 0 #e6574f;
+        }
+
+        .skin-punk .faq-item:nth-child(even) {
+            background: #d8fbff;
+            box-shadow: 8px 8px 0 #071016;
+        }
+
+        .skin-punk .faq-question {
+            font-family: Bangers, Trevor, sans-serif;
+            font-size: 1.45rem;
+            letter-spacing: 0.05em;
+        }
+
+        .skin-punk .faq-icon {
+            background: #e6574f;
+            color: #fff6b0;
+        }
+
+        .skin-punk .faq-answer-inner {
+            border-top: 3px dashed #071016;
+            font-weight: 700;
+        }
+
+        .skin-dossier::before {
+            background:
+                linear-gradient(rgba(7,16,22,0.16), rgba(7,16,22,0.24)),
+                repeating-linear-gradient(90deg, transparent 0 38px, rgba(7,16,22,0.08) 38px 40px);
+        }
+
+        .skin-dossier .current-title {
+            font-family: "Special Elite", Trevor, serif;
+            color: #1c1712;
+            background: #ecd6ad;
+            border-color: #1c1712;
+            box-shadow: 8px 8px 0 #7d342e;
+            letter-spacing: 0.03em;
+        }
+
+        .skin-dossier .current-title::before {
+            background: #7d342e;
+        }
+
+        .skin-dossier .faq-item {
+            color: #1c1712;
+            background: #ecd6ad;
+            border: 2px solid #1c1712;
+            box-shadow: 6px 6px 0 rgba(28,23,18,0.72);
+        }
+
+        .skin-dossier .faq-trigger {
+            padding-left: 58px;
+            position: relative;
+        }
+
+        .skin-dossier .faq-trigger::before {
+            content: "F" counter(item);
+            counter-increment: item;
+            position: absolute;
+            left: 16px;
+            top: 17px;
+            font: 800 0.78rem Montserrat, sans-serif;
+            letter-spacing: 0.08em;
+            color: #7d342e;
+        }
+
+        .skin-dossier .faq-list {
+            counter-reset: item;
+        }
+
+        .skin-dossier .faq-question {
+            font-family: "Special Elite", Trevor, serif;
+            font-size: 1.08rem;
+            letter-spacing: 0.02em;
+        }
+
+        .skin-dossier .faq-answer-inner {
+            border-top: 1px dashed #7d342e;
+        }
+
+        .skin-sticker::before {
+            background:
+                radial-gradient(circle at 15% 20%, rgba(230,87,79,0.42) 0 3px, transparent 4px),
+                radial-gradient(circle at 82% 62%, rgba(242,227,94,0.44) 0 3px, transparent 4px),
+                radial-gradient(circle at 55% 38%, rgba(43,184,205,0.42) 0 3px, transparent 4px);
+            background-size: 92px 92px, 118px 118px, 74px 74px;
+        }
+
+        .skin-sticker .current-title {
+            font-family: Bangers, Trevor, sans-serif;
+            color: #071016;
+            background: #dfffff;
+            border-color: #071016;
+            box-shadow: -7px 8px 0 #f2e35e, 7px -7px 0 #e6574f;
+        }
+
+        .skin-sticker .current-title::before {
+            background: #071016;
+            border-color: #dfffff;
+        }
+
+        .skin-sticker .faq-item {
+            color: #071016;
+            background: #dfffff;
+            border: 3px solid #071016;
+            border-radius: 8px 8px 3px 8px;
+            box-shadow: 7px 7px 0 #f2e35e;
+        }
+
+        .skin-sticker .faq-item:nth-child(even) {
+            border-radius: 3px 8px 8px 3px;
+            box-shadow: 7px 7px 0 #2bb8cd;
+        }
+
+        .skin-sticker .faq-question {
+            font-family: Bangers, Trevor, sans-serif;
+            font-size: 1.36rem;
+            letter-spacing: 0.05em;
+        }
+
+        .skin-sticker .faq-icon {
+            color: #071016;
+            background: #e6574f;
+        }
+
+        .skin-sticker .faq-answer-inner {
+            border-top: 2px dashed #071016;
+        }
+
+        .variant-case {
+            position: relative;
+            padding: clamp(28px, 5vw, 56px);
+            overflow: hidden;
+            background:
+                linear-gradient(90deg, rgba(7,16,22,0.86), rgba(7,16,22,0.68)),
+                url("assets/imagenes/congreso.png") center / cover;
+            border: 3px solid rgba(224,247,250,0.42);
+        }
+
+        .case-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 180px;
+            gap: 18px;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .case-title,
+        .crt-title,
+        .table-title,
+        .wall-title {
+            font-family: Trevor, Montserrat, sans-serif;
+            font-size: clamp(2rem, 5vw, 4.4rem);
+            line-height: 0.94;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .case-stamp {
+            justify-self: end;
+            padding: 16px;
+            border: 5px solid var(--red);
+            color: var(--red);
+            transform: rotate(8deg);
+            font-weight: 900;
+            text-align: center;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            background: rgba(224,247,250,0.86);
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 0.95fr) minmax(280px, 1.05fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .case-file {
+            min-height: 360px;
+            padding: 28px;
+            background: var(--paper);
+            border: 3px solid var(--ink);
+            color: var(--ink);
+            box-shadow: 10px 10px 0 rgba(0,0,0,0.75);
+            transform: rotate(-1deg);
+        }
+
+        .case-file p {
+            margin-top: 14px;
+            line-height: 1.7;
+            font-weight: 700;
+        }
+
+        .case .faq-item {
+            background: var(--paper);
+            border: 3px solid var(--ink);
+            box-shadow: 6px 6px 0 var(--cyan);
+        }
+
+        .case .faq-trigger { padding: 16px 18px; }
+        .case .faq-question { font-size: 1rem; }
+        .case .faq-answer-inner { padding: 0 18px 16px; border-top: 2px solid var(--ink); }
+
+        .variant-crt {
+            padding: clamp(24px, 5vw, 54px);
+            background:
+                radial-gradient(circle at 50% 0%, rgba(43,184,205,0.28), transparent 40%),
+                linear-gradient(180deg, #031116, #0a1a24 58%, #020506);
+            border: 3px solid #143746;
+            box-shadow: inset 0 0 80px rgba(43,184,205,0.16);
+        }
+
+        .crt-frame {
+            position: relative;
+            padding: 28px;
+            border: 8px solid #071016;
+            background:
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 4px),
+                linear-gradient(180deg, rgba(34,211,238,0.18), rgba(2,5,6,0.75));
+            box-shadow: 0 0 0 3px var(--cyan), 0 24px 80px rgba(0,0,0,0.65);
+        }
+
+        .crt-title {
+            margin-bottom: 20px;
+            color: var(--cyan-soft);
+            text-shadow: 0 0 16px rgba(43,184,205,0.8);
+        }
+
+        .crt-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .crt-meta span {
+            padding: 7px 9px;
+            border: 1px solid rgba(185,247,255,0.55);
+            color: var(--cyan-soft);
+            background: rgba(7,16,22,0.62);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .crt .faq-list {
+            gap: 0;
+            border: 2px solid rgba(185,247,255,0.55);
+        }
+
+        .crt .faq-item {
+            color: var(--cyan-soft);
+            background: rgba(2, 14, 18, 0.72);
+            border-bottom: 1px solid rgba(185,247,255,0.28);
+        }
+
+        .crt .faq-trigger { padding: 18px; }
+        .crt .faq-question { font-size: 1rem; }
+        .crt .faq-icon { border-color: var(--cyan); color: var(--cyan); }
+        .crt .faq-answer-inner { padding: 0 18px 18px; color: #e6feff; border-top: 1px dashed rgba(185,247,255,0.4); }
+
+        .variant-table {
+            position: relative;
+            overflow: hidden;
+            padding: clamp(28px, 5vw, 56px);
+            background:
+                linear-gradient(rgba(4,27,21,0.88), rgba(4,27,21,0.92)),
+                url("assets/imagenes/fondotruco1.png") center / cover;
+            border: 3px solid rgba(224,247,250,0.36);
+        }
+
+        .table-layout {
+            display: grid;
+            grid-template-columns: 280px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .table-side {
+            position: sticky;
+            top: 96px;
+        }
+
+        .table-title {
+            color: #f8fff6;
+            text-shadow: 4px 4px 0 #041b15;
+        }
+
+        .card-stack {
+            height: 230px;
+            margin-top: 24px;
+            position: relative;
+        }
+
+        .playing-card {
+            position: absolute;
+            width: 150px;
+            height: 210px;
+            border: 3px solid var(--ink);
+            background: var(--paper);
+            color: var(--ink);
+            display: grid;
+            place-items: center;
+            font-family: Trevor, Montserrat, sans-serif;
+            font-size: 3.2rem;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
+        }
+
+        .playing-card:nth-child(1) { left: 0; top: 10px; transform: rotate(-11deg); }
+        .playing-card:nth-child(2) { left: 54px; top: 0; transform: rotate(3deg); color: var(--red); }
+        .playing-card:nth-child(3) { left: 104px; top: 18px; transform: rotate(13deg); }
+
+        .table .faq-list {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .table .faq-item {
+            min-height: 162px;
+            padding: 16px;
+            background: var(--paper);
+            border: 3px solid var(--ink);
+            box-shadow: 7px 7px 0 rgba(0,0,0,0.62);
+        }
+
+        .table .faq-trigger {
+            min-height: 72px;
+            padding: 0;
+            align-items: flex-start;
+        }
+
+        .table .faq-question { font-size: 1.05rem; }
+        .table .faq-icon { color: var(--red); }
+        .table .faq-answer-inner {
+            padding-top: 12px;
+            border-top: 2px dashed rgba(7,16,22,0.45);
+        }
+
+        .variant-wall {
+            position: relative;
+            overflow: hidden;
+            padding: clamp(28px, 5vw, 56px);
+            background:
+                linear-gradient(rgba(7,16,22,0.8), rgba(7,16,22,0.88)),
+                url("assets/imagenes/play2mesa.png") center / cover;
+            border: 3px solid rgba(224,247,250,0.34);
+        }
+
+        .wall-marquee {
+            display: flex;
+            gap: 20px;
+            width: max-content;
+            margin: -12px 0 28px;
+            animation: slide 18s linear infinite;
+            color: var(--cyan-soft);
+            font-family: Trevor, Montserrat, sans-serif;
+            font-size: clamp(1.2rem, 4vw, 2.4rem);
+            letter-spacing: 0.08em;
+            white-space: nowrap;
+            text-shadow: 3px 3px 0 var(--ink);
+        }
+
+        @keyframes slide {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        .wall-title {
+            max-width: 780px;
+            margin-bottom: 22px;
+            color: var(--paper);
+            text-shadow: 5px 5px 0 var(--ink), 0 0 28px rgba(43,184,205,0.5);
+        }
+
+        .wall .faq-list {
+            grid-template-columns: repeat(5, minmax(160px, 1fr));
+            align-items: stretch;
+        }
+
+        .wall .faq-item {
+            min-height: 370px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(224,247,250,0.94);
+            border: 3px solid var(--ink);
+            box-shadow: 8px 8px 0 var(--cyan);
+            transform: rotate(var(--r, 0deg));
+        }
+
+        .wall .faq-item:nth-child(1) { --r: -2deg; }
+        .wall .faq-item:nth-child(2) { --r: 1deg; }
+        .wall .faq-item:nth-child(3) { --r: -1deg; }
+        .wall .faq-item:nth-child(4) { --r: 2deg; }
+        .wall .faq-item:nth-child(5) { --r: -1.5deg; }
+        .wall .faq-trigger {
+            min-height: 126px;
+            padding: 18px;
+            align-items: flex-start;
+        }
+        .wall .faq-question { font-size: 1rem; }
+        .wall .faq-answer {
+            grid-template-rows: 1fr;
+        }
+        .wall .faq-answer-inner {
+            padding: 0 18px 18px;
+            font-size: 0.86rem;
+        }
+
+        @media (max-width: 920px) {
+            .intro,
+            .case-grid,
+            .table-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .table-side {
+                position: static;
+            }
+
+            .table .faq-list,
+            .wall .faq-list {
+                grid-template-columns: 1fr;
+            }
+
+            .wall .faq-item {
+                min-height: 0;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .page {
+                width: min(100% - 22px, 1240px);
+                padding-top: 18px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+            }
+
+            .brand {
+                width: 132px;
+            }
+
+            .tabs {
+                grid-template-columns: 1fr;
+                position: static;
+            }
+
+            .research-note {
+                transform: none;
+            }
+
+            .case-header {
+                grid-template-columns: 1fr;
+            }
+
+            .case-stamp {
+                justify-self: start;
+            }
+
+            .current-shell,
+            .variant-case,
+            .variant-crt,
+            .variant-table,
+            .variant-wall {
+                padding: 24px 14px;
+            }
+
+            .current-title {
+                margin-left: 0;
+                padding: 14px 18px;
+                letter-spacing: 0.07em;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <header class="topbar">
+            <img src="assets/imagenes/logoretruco.png" alt="ReTruco" class="brand">
+            <a href="index.html#faq" class="back-link">Volver al index</a>
+        </header>
+
+        <section class="intro" aria-labelledby="page-title">
+            <div>
+                <p class="eyebrow">Exploración visual del FAQ</p>
+                <h1 id="page-title">Sistema FAQ ReTruco</h1>
+            </div>
+            <p class="research-note">
+                Research local: tomé como ADN visual el cyan sobre concreto, papel recortado, sombras duras, sprites, carteles under, fondos ilustrados y humor de videojuego satírico argentino.
+            </p>
+        </section>
+
+        <nav class="tabs" aria-label="Variantes de FAQ" role="tablist">
+            <button class="tab-button" id="tab-current" role="tab" aria-selected="true" aria-controls="panel-current" data-panel="panel-current">Actual</button>
+            <button class="tab-button" id="tab-neon" role="tab" aria-selected="false" aria-controls="panel-neon" data-panel="panel-neon">Neón roto</button>
+            <button class="tab-button" id="tab-punk" role="tab" aria-selected="false" aria-controls="panel-punk" data-panel="panel-punk">Fanzine</button>
+            <button class="tab-button" id="tab-dossier" role="tab" aria-selected="false" aria-controls="panel-dossier" data-panel="panel-dossier">Expediente</button>
+            <button class="tab-button" id="tab-sticker" role="tab" aria-selected="false" aria-controls="panel-sticker" data-panel="panel-sticker">Sticker</button>
+        </nav>
+
+        <section id="panel-current" class="variant-panel active current" role="tabpanel" aria-labelledby="tab-current">
+            <span class="panel-label">La que ya tenemos</span>
+            <div class="current-shell">
+                <div class="current-inner">
+                    <h2 class="current-title">Preguntas frecuentes</h2>
+                    <div class="faq-list" data-faq-list></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="panel-neon" class="variant-panel current" role="tabpanel" aria-labelledby="tab-neon">
+            <span class="panel-label">Variante 1</span>
+            <div class="current-shell skin-shell skin-neon">
+                <div class="current-inner">
+                    <h2 class="current-title">Preguntas frecuentes</h2>
+                    <div class="faq-list" data-faq-list></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="panel-punk" class="variant-panel current" role="tabpanel" aria-labelledby="tab-punk">
+            <span class="panel-label">Variante 2</span>
+            <div class="current-shell skin-shell skin-punk">
+                <div class="current-inner">
+                    <h2 class="current-title">Preguntas frecuentes</h2>
+                    <div class="faq-list" data-faq-list></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="panel-dossier" class="variant-panel current" role="tabpanel" aria-labelledby="tab-dossier">
+            <span class="panel-label">Variante 3</span>
+            <div class="current-shell skin-shell skin-dossier">
+                <div class="current-inner">
+                    <h2 class="current-title">Preguntas frecuentes</h2>
+                    <div class="faq-list" data-faq-list></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="panel-sticker" class="variant-panel current" role="tabpanel" aria-labelledby="tab-sticker">
+            <span class="panel-label">Variante 4</span>
+            <div class="current-shell skin-shell skin-sticker">
+                <div class="current-inner">
+                    <h2 class="current-title">Preguntas frecuentes</h2>
+                    <div class="faq-list" data-faq-list></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const faqs = [
+            {
+                q: "¿Qué es ReTruco?",
+                a: "ReTruco es una aventura distinta a cualquier otra. Te sumerge en una versión loca, satírica y bien argenta de Buenos Aires, donde la política, las situaciones cómicas del día a día y el humor absurdo están a la orden del día.<br><br>El proyecto toma mucha inspiración del espíritu artístico de South Park, mezclado con mecánicas clásicas de Run & Gun, Beat 'Em Up y RPG, para dispararte nostalgia retro directo al cerebro.<br><br>Es acción, sátira, barrio, política y delirio en formato videojuego."
+            },
+            {
+                q: "¿Hay demo disponible?",
+                a: "¡Sí! Ya podés jugar una demo gratuita y probar el delirio de ReTruco antes de que salga completo."
+            },
+            {
+                q: "¿El juego es gratis?",
+                a: "ReTruco va a ser 100% gratuito para toda la comunidad. Por eso necesitamos tu colaboración: tu aporte nos ayuda a cubrir la publicación del juego en Steam, gastos de producción y costos de distribución.<br><br>No estás pagando el juego: estás ayudando a que el proyecto exista y llegue más lejos."
+            },
+            {
+                q: "¿Cómo puedo apoyar el proyecto?",
+                a: "Apoyá el proyecto y entrá al juego:<br><br>Donación de $5.000 ARS → Tu nombre en los créditos del juego<br>Donación de $10.000 ARS → Aparecés como NPC dentro del videojuego<br><br>Convertite en parte del lore de ReTruco."
+            },
+            {
+                q: "¿Puedo crear mi propio personaje?",
+                a: "¡Sí! Usá nuestro creador de personajes para armar tu avatar con distintos tonos de piel, pelos, ropa y accesorios."
+            }
+        ];
+
+        function renderFaqs(list) {
+            list.innerHTML = faqs.map((faq, index) => `
+                <article class="faq-item${index === 0 ? " open" : ""}">
+                    <button class="faq-trigger" type="button" aria-expanded="${index === 0 ? "true" : "false"}">
+                        <span class="faq-question">${faq.q}</span>
+                        <span class="faq-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">${faq.a}</div>
+                    </div>
+                </article>
+            `).join("");
+        }
+
+        document.querySelectorAll("[data-faq-list]").forEach(renderFaqs);
+
+        document.addEventListener("click", (event) => {
+            const trigger = event.target.closest(".faq-trigger");
+            if (!trigger) return;
+
+            const item = trigger.closest(".faq-item");
+            const isOpen = item.classList.toggle("open");
+            trigger.setAttribute("aria-expanded", String(isOpen));
+        });
+
+        const tabButtons = Array.from(document.querySelectorAll(".tab-button"));
+        const panels = Array.from(document.querySelectorAll(".variant-panel"));
+
+        tabButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const panelId = button.dataset.panel;
+
+                tabButtons.forEach((tab) => tab.setAttribute("aria-selected", String(tab === button)));
+                panels.forEach((panel) => panel.classList.toggle("active", panel.id === panelId));
+            });
+        });
+    </script>
+</body>
+</html>

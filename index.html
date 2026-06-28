@@ -3436,22 +3436,6 @@
     </section>
 
     <style>
-        /* ESCAPE SECTION */
-        .escape-section {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .escape-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         /* OST SECTION */
         .ost-section {
             background: linear-gradient(180deg, var(--concrete-1) 0%, var(--concrete-2) 100%);
@@ -4099,11 +4083,6 @@
         </div>
     </section>
 
-    <!-- ESCAPE Section (movido al fondo) -->
-    <section id="escape" class="escape-section">
-        <img src="assets/imagenes/ESCAPE1.png" alt="Escape" class="escape-img" id="escapeSprite">
-    </section>
-
     <!-- EN CONSTRUCCION -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <style>
@@ -4549,20 +4528,6 @@
             }, 150);
         })();
 
-        // Escape Animation Loop (1-2-1-2...)
-        (function() {
-            const escapeSprite = document.getElementById('escapeSprite');
-            if (!escapeSprite) return;
-
-            const frames = [1, 2];
-            let index = 0;
-
-            setInterval(() => {
-                escapeSprite.src = `assets/imagenes/ESCAPE${frames[index]}.png`;
-                index = (index + 1) % frames.length;
-            }, 500);
-        })();
-
         // Destello Animation on Logo Hover (1-9-1 ping-pong) - sigue el cursor
         (function() {
             const logoContainer = document.querySelector('.hero-logo-container');
@@ -4999,6 +4964,114 @@
         })();
     </script>
 
+    <!-- ============================================================
+         MOBILE FIXES - bloque consolidado, scoped 100% a mobile.
+         No toca desktop (todo dentro de media queries).
+         Ejes: B Tipografia · C Imagenes/Media · D Interaccion
+         ============================================================ -->
+    <style>
+    @media (max-width: 900px) {
+        /* ---------- C · DaroTV + Soundtrack potables en mobile ---------- */
+        .section-darotv,
+        .section-soundtrack {
+            display: block;
+        }
+
+        /* DaroTV: contenedor más alto para que el video del TV sea usable */
+        .section-darotv {
+            padding-bottom: 75%;
+        }
+
+        /* Soundtrack: layout absoluto de desktop -> vertical limpio.
+           Ocultamos fondo y lista dibujada (arte desktop) y mostramos
+           la lista clickeable + el disco. */
+        .section-soundtrack {
+            height: auto;
+            padding-bottom: 0;
+            min-height: 0;
+            padding: 36px 20px 44px;
+            background: linear-gradient(160deg, #1a1208, #0a0a0a);
+            overflow: visible;
+        }
+        .section-soundtrack .soundtrack-bg,
+        .section-soundtrack .soundtrack-lista {
+            display: none;
+        }
+        .section-soundtrack .soundtrack-overlay {
+            position: relative;
+            top: auto;
+            left: auto;
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+        .section-soundtrack .soundtrack-disco-wrapper {
+            position: relative;
+            right: auto;
+            top: auto;
+            left: auto;
+            transform: none;
+            width: 150px;
+            max-width: 40vw;
+            margin: 0 auto;
+        }
+        .section-soundtrack .soundtrack-songs {
+            position: relative;
+            left: auto;
+            top: auto;
+            transform: none;
+            width: 100%;
+            max-width: 340px;
+            text-align: left;
+        }
+
+        /* ---------- B · Tipografia: lista de canciones legible en mobile ---------- */
+        .section-soundtrack .soundtrack-songs li {
+            font-size: 1.15rem;
+            color: #e8c87a;
+            padding: 11px 6px;
+            border-bottom: 1px solid rgba(232, 200, 122, 0.15);
+            text-shadow: none;
+            /* D · touch target */
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+        .section-soundtrack .soundtrack-songs li:hover {
+            transform: none; /* el translateX(10px) de desktop no aporta en touch */
+        }
+
+        /* ---------- D · Touch targets >= 44px ---------- */
+        .nav-social .social-link {
+            width: 44px;
+            height: 44px;
+        }
+        .scroll-indicator {
+            padding: 6px;
+        }
+    }
+
+    /* Preloader: el personaje (600px) no se corta en pantallas angostas */
+    @media (max-width: 768px) {
+        .preloader-character {
+            max-width: 92vw;
+            max-height: 92vw;
+        }
+    }
+
+    /* btn-crear: el bloque <=600 propio define posicion; aca solo garantizamos tap target >=44px */
+    @media (max-width: 600px) {
+        .btn-crear {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+    </style>
 
 </body>
 </html>
