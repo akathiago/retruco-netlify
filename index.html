@@ -9,13 +9,13 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Retruco">
     <meta property="og:description" content="Una historia bien criolla.">
-    <meta property="og:image" content="https://retruco.xyz/assets/imagenes/hero-01.png">
+    <meta property="og:image" content="https://retruco.xyz/assets/imagenes/trailer-miniatura.png">
     <meta property="og:url" content="https://retruco.xyz">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Retruco">
     <meta name="twitter:description" content="Una historia bien criolla.">
-    <meta name="twitter:image" content="https://retruco.xyz/assets/imagenes/hero-01.png">
+    <meta name="twitter:image" content="https://retruco.xyz/assets/imagenes/trailer-miniatura.png">
     <!-- Canonical -->
     <link rel="canonical" href="https://retruco.xyz">
     <!-- Theme Color -->
@@ -38,7 +38,7 @@
         "name": "ReTruco",
         "description": "Una aventura satírica y bien argenta en Buenos Aires. Acción, humor y delirio en formato videojuego.",
         "url": "https://retruco.xyz",
-        "image": "https://retruco.xyz/assets/imagenes/hero-01.png",
+        "image": "https://retruco.xyz/assets/imagenes/trailer-miniatura.png",
         "genre": ["Run and Gun", "Beat Em Up", "RPG"],
         "gamePlatform": "PC",
         "operatingSystem": "Windows",
@@ -288,7 +288,7 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            background: url('assets/imagenes/hero-01.png') center center / cover no-repeat;
+            background: url('assets/imagenes/trailer-miniatura.png') center center / cover no-repeat;
         }
 
         /* Prison bars effect - hidden on desktop, shown on mobile */
@@ -730,6 +730,10 @@
         }
 
         /* BANNER YA DISPONIBLE */
+        #banner-disponible[hidden] {
+            display: none !important;
+        }
+
         #banner-disponible {
             width: 100%;
             background: var(--concrete-1);
@@ -1913,9 +1917,9 @@
                 display: none;
             }
 
-            /* Hero mobile: hero-01.png como fondo */
+            /* Hero mobile: trailer-miniatura.png como fondo */
             #hero {
-                background: url('assets/imagenes/hero-01.png') center center / cover no-repeat;
+                background: url('assets/imagenes/trailer-miniatura.png') center center / cover no-repeat;
                 min-height: 100vh;
                 align-items: flex-start;
                 justify-content: center;
@@ -2293,6 +2297,10 @@
         }
 
         /* SECTION DAROTV */
+        .section-darotv[hidden] {
+            display: none !important;
+        }
+
         .section-darotv {
             position: relative;
             width: 100%;
@@ -2553,7 +2561,7 @@
             <div class="hero-left">
                 <div class="hero-mobile-images">
                     <img src="assets/imagenes/logotp.png" alt="Logo ReTruco" class="hero-logo-tp" width="400" height="160" decoding="async">
-                    <img src="assets/imagenes/hero-01.png" alt="César, protagonista de ReTruco" class="hero-img-mobile" width="600" height="800" decoding="async">
+                    <img src="assets/imagenes/trailer-miniatura.png" alt="César, protagonista de ReTruco" class="hero-img-mobile" width="600" height="800" decoding="async">
                 </div>
                 <div class="prison-note">
                     <div class="note-header">
@@ -2656,7 +2664,7 @@
     </div>
 
     <!-- BANNER YA DISPONIBLE -->
-    <section id="banner-disponible">
+    <section id="banner-disponible" hidden aria-hidden="true">
         <img src="assets/imagenes/YaDisponible.png" alt="Ya Disponible" class="banner-disponible-img" loading="lazy">
         <a href="https://undergroundd.itch.io/retruco" target="_blank" class="btn-descargar">DESCARGAR</a>
     </section>
@@ -2779,7 +2787,7 @@
     </section>
 
     <!-- SECTION DAROTV -->
-    <section class="section-darotv">
+    <section class="section-darotv" hidden aria-hidden="true">
         <iframe
             class="darotv-video"
             src="https://www.youtube.com/embed/xhI3DA2SXg8?rel=0&modestbranding=1"
@@ -4972,9 +4980,13 @@
     <style>
     @media (max-width: 900px) {
         /* ---------- C · DaroTV + Soundtrack potables en mobile ---------- */
-        .section-darotv,
-        .section-soundtrack {
+        .section-darotv {
             display: block;
+        }
+
+        /* El soundtrack se conserva en desktop y se oculta en mobile. */
+        .section-soundtrack {
+            display: none;
         }
 
         /* DaroTV: contenedor más alto para que el video del TV sea usable */
