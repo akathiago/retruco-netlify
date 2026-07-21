@@ -514,7 +514,7 @@ const OPPONENTS = {
         // Visuales
         portrait: string,        // path a imagen
         color: string,          // hex color
-        background: string,     // path a imagen
+        background?: string,    // opcional: path a imagen de fondo del tablero
 
         // Lore
         lore: string,           // Una línea
@@ -545,7 +545,6 @@ abraham: {
     portrait: '../assets/imagenes/abraham.png',
     placeholderPortrait: true,
     color: '#8B7355',
-    background: '../assets/imagenes/fondotruco1.png',
 
     lore: 'Viejo zorro del pabellón. Lleva 30 años jugando truco y nunca perdió una partida importante.',
 

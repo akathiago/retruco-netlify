@@ -1896,6 +1896,84 @@
             );
         }
 
+        /* AVISO MOBILE — misma estetica de hoja de cuaderno que .char-modal */
+        .mobile-aviso {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 12000;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .mobile-aviso.active {
+            display: flex;
+        }
+
+        .mobile-aviso-content {
+            background: #ffffff;
+            max-width: 420px;
+            width: 100%;
+            position: relative;
+            transform: rotate(-1.5deg);
+            box-shadow: 12px 12px 30px rgba(0,0,0,0.5);
+            background-image: linear-gradient(#e8e8e8 1px, transparent 1px);
+            background-size: 100% 28px;
+            background-position: 0 76px;
+            animation: modalIn 0.3s ease-out;
+            padding: 26px 24px 30px 46px;
+        }
+
+        .mobile-aviso-content::before {
+            content: '';
+            position: absolute;
+            left: 28px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(200, 80, 80, 0.3);
+        }
+
+        .mobile-aviso-title {
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.45rem;
+            line-height: 1.15;
+            color: #1a1a1a;
+            letter-spacing: 1px;
+            margin: 0 0 18px;
+        }
+
+        .mobile-aviso-text {
+            font-family: 'TrashHand', sans-serif;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            color: #333;
+            margin: 0 0 14px;
+        }
+
+        .mobile-aviso-btn {
+            display: block;
+            width: 100%;
+            margin-top: 22px;
+            padding: 14px;
+            font-family: 'Trevor', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: #fff;
+            background: #1a1a1a;
+            border: none;
+            cursor: pointer;
+            transform: rotate(0.8deg);
+            transition: background 0.2s ease;
+        }
+
+        .mobile-aviso-btn:hover,
+        .mobile-aviso-btn:focus-visible {
+            background: #333;
+        }
+
         /* RESPONSIVE */
         @media (max-width: 1100px) {
             .characters-grid {
@@ -2313,7 +2391,7 @@
         .darotv-video {
             position: absolute;
             z-index: 1;
-            top: 46%;
+            top: 43.5%;
             left: 48%;
             transform: translate(-50%, -50%);
             width: 46%;
@@ -2343,6 +2421,9 @@
             padding-bottom: 56.25%; /* 16:9 aspect ratio */
             background: #0a0a0a;
             overflow: hidden;
+            /* Los overlays escalan contra el ancho de la seccion (cqw), igual
+               que el fondo, asi no se desincronizan al cambiar la anchura. */
+            container-type: inline-size;
         }
 
         .soundtrack-bg {
@@ -2369,10 +2450,10 @@
             left: 8%;
             top: 48%;
             transform: translateY(-50%);
-            width: 45%;
-            max-width: 700px;
+            /* 700px sobre 1905px de seccion = proporcion del diseno a 1920 */
+            width: 36.75cqw;
             height: auto;
-            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 0.52cqw 1.57cqw rgba(0,0,0,0.5));
         }
 
         .soundtrack-disco-wrapper {
@@ -2380,8 +2461,8 @@
             right: 8.5%;
             top: 71.5%;
             transform: translateY(-50%);
-            width: 25%;
-            max-width: 350px;
+            /* 350px sobre 1905px de seccion = proporcion del diseno a 1920 */
+            width: 18.37cqw;
             z-index: 2;
         }
 
@@ -2406,17 +2487,18 @@
 
         .soundtrack-songs li {
             font-family: 'TrashHand', sans-serif;
-            font-size: clamp(1.93rem, 4vw, 3.22rem);
+            /* 51.52px sobre 1905px de seccion = proporcion del diseno a 1920 */
+            font-size: 2.7cqw;
             color: #685030;
             cursor: pointer;
-            padding: 8px 0;
+            padding: 0.42cqw 0;
             transition: all 0.2s ease;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            text-shadow: 0.05cqw 0.05cqw 0.1cqw rgba(0,0,0,0.2);
         }
 
         .soundtrack-songs li:hover {
             color: #8B6914;
-            transform: translateX(10px);
+            transform: translateX(0.52cqw);
         }
 
         .soundtrack-songs li.active {
@@ -2664,7 +2746,7 @@
     </div>
 
     <!-- BANNER YA DISPONIBLE -->
-    <section id="banner-disponible" hidden aria-hidden="true">
+    <section id="banner-disponible">
         <img src="assets/imagenes/YaDisponible.png" alt="Ya Disponible" class="banner-disponible-img" loading="lazy">
         <a href="https://undergroundd.itch.io/retruco" target="_blank" class="btn-descargar">DESCARGAR</a>
     </section>
@@ -2787,10 +2869,11 @@
     </section>
 
     <!-- SECTION DAROTV -->
-    <section class="section-darotv" hidden aria-hidden="true">
+    <section class="section-darotv">
         <iframe
             class="darotv-video"
-            src="https://www.youtube.com/embed/xhI3DA2SXg8?rel=0&modestbranding=1"
+            src="https://www.youtube.com/embed/wnWrvQE_gjA?rel=0&modestbranding=1"
+            title="Video de Daro TV"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen>
@@ -2831,6 +2914,89 @@
             <div class="char-modal-tear"></div>
         </div>
     </div>
+
+    <!-- AVISO MOBILE -->
+    <div class="mobile-aviso" id="mobileAviso" role="dialog" aria-modal="true" aria-labelledby="mobileAvisoTitle">
+        <div class="mobile-aviso-content">
+            <h2 class="mobile-aviso-title" id="mobileAvisoTitle">ANDA, PERO ANDA MEJOR EN LA COMPU</h2>
+            <p class="mobile-aviso-text">Esto funciona igual, tranqui.</p>
+            <p class="mobile-aviso-text">Pero ReTruco se hizo para pantalla grande. Si podés, entrá desde la PC.</p>
+            <button class="mobile-aviso-btn" id="mobileAvisoBtn" type="button">DALE, SIGO</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const BREAKPOINT = 900;
+            const aviso = document.getElementById('mobileAviso');
+            const btn = document.getElementById('mobileAvisoBtn');
+            const preloader = document.getElementById('preloader');
+            if (!aviso || !btn) return;
+
+            let overflowPrevio = '';
+
+            function abrir() {
+                if (aviso.classList.contains('active')) return;
+                overflowPrevio = document.body.style.overflow;
+                aviso.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                btn.focus({ preventScroll: true });
+            }
+
+            function cerrar() {
+                if (!aviso.classList.contains('active')) return;
+                aviso.classList.remove('active');
+                document.body.style.overflow = overflowPrevio;
+            }
+
+            // El preloader restaura body.overflow al terminar y tarda 0.5s en
+            // desvanecerse, asi que hay que esperarlo: si no, pisa el bloqueo
+            // de scroll y el aviso aparece encima del contador de carga.
+            function alTerminarPreloader(cb) {
+                if (!preloader) return cb();
+
+                const FADE = 600; // 0.5s de transition + margen
+                let disparado = false;
+                let obs = null;
+                let seguro = null;
+
+                function listo() {
+                    if (disparado) return;
+                    disparado = true;
+                    if (obs) obs.disconnect();
+                    clearTimeout(seguro);
+                    setTimeout(cb, FADE);
+                }
+
+                obs = new MutationObserver(function() {
+                    if (preloader.style.opacity === '0') listo();
+                });
+                obs.observe(preloader, { attributes: true, attributeFilter: ['style'] });
+
+                // El preloader tiene su propio tope de 15s; este es el colchon.
+                seguro = setTimeout(listo, 20000);
+
+                // Por si ya habia terminado antes de montar el observer
+                if (preloader.style.opacity === '0') listo();
+            }
+
+            alTerminarPreloader(function() {
+                if (window.innerWidth <= BREAKPOINT) abrir();
+            });
+
+            btn.addEventListener('click', cerrar);
+            aviso.addEventListener('click', function(e) {
+                if (e.target === aviso) cerrar();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') cerrar();
+            });
+            // Si pasa a desktop (rotacion o resize) ya no aplica el aviso
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > BREAKPOINT) cerrar();
+            });
+        })();
+    </script>
 
     <!-- GALLERY LIGHTBOX -->
     <div class="gallery-lightbox" id="galleryLightbox">
