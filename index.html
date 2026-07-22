@@ -126,7 +126,11 @@
             transform: translateX(-50%);
             z-index: 100;
             cursor: pointer;
-            animation: bounce-arrow 2s infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
             transition: opacity 0.3s ease;
         }
 
@@ -134,11 +138,34 @@
             opacity: 0.7;
         }
 
+        .scroll-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--paper);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            animation: pulse-label 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-label {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
         .scroll-indicator svg {
             width: 40px;
             height: 40px;
             fill: var(--paper);
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            animation: bounce-chevron 2s infinite;
+        }
+
+        @keyframes bounce-chevron {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(12px); }
+            60% { transform: translateY(6px); }
         }
 
         * {
@@ -275,20 +302,23 @@
             transition: all 0.3s ease;
         }
 
-        /* HERO */
+        /* HERO — solo el flyer, el div respeta la proporción de la imagen */
         #hero {
-            min-height: 100vh;
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: block;
             overflow: hidden;
         }
 
+        .hero-flyer {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Overlays viejos apagados: el flyer ya trae todo compuesto */
+        .hero-content,
         .hero-bg {
-            position: absolute;
-            inset: 0;
-            background: url('assets/imagenes/flyer1bfondo.png') center center / cover no-repeat;
+            display: none;
         }
 
         /* Prison bars effect - hidden on desktop, shown on mobile */
@@ -620,8 +650,9 @@
             border-radius: 8px;
         }
 
-        /* Logo TP en Hero - Desktop */
+        /* Logo TP en Hero - Desktop (apagado: el logo ya viene en Flyer1B.png) */
         .hero-logo-container {
+            display: none;
             position: absolute;
             top: 195px;
             right: 9%;
@@ -1985,40 +2016,15 @@
         }
 
         @media (max-width: 900px) {
-            .hero-bg {
-                background: #87CEEB;
-            }
-
+            /* Hero mobile: mismo criterio que desktop, solo el flyer completo */
+            .hero-logo-container,
             .prison-bars,
             .concrete-texture {
-                display: block;
-            }
-
-            .hero-logo-container {
-                display: none;
-            }
-
-            /* Hero mobile: flyer1bfondo.png como fondo */
-            #hero {
-                background: url('assets/imagenes/flyer1bfondo.png') center center / cover no-repeat;
-                min-height: 100vh;
-                align-items: flex-start;
-                justify-content: center;
-                padding-top: 70px;
-            }
-
-            #hero .hero-bg,
-            #hero .prison-bars,
-            #hero .concrete-texture {
                 display: none;
             }
 
             .hero-mobile-images {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: flex-start;
-                padding-top: 20px;
+                display: none;
             }
 
             .hero-img-mobile {
@@ -2026,34 +2032,12 @@
             }
 
             .hero-logo-tp {
+                display: none;
                 max-width: 420px;
                 width: 95%;
                 filter: drop-shadow(4px 4px 15px rgba(0, 0, 0, 0.6));
             }
 
-            .hero-content {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                padding: 0;
-            }
-
-            .hero-left {
-                display: flex;
-                align-items: flex-start;
-                justify-content: center;
-                width: 100%;
-            }
-
-            /* Ocultar elementos en mobile */
-            .hero-left .prison-note {
-                display: none;
-            }
-
-            .hero-right {
-                display: none;
-            }
 
             .about-grid {
                 grid-template-columns: 1fr;
@@ -2633,7 +2617,9 @@
 
     <!-- HERO -->
     <section id="hero">
-        <div class="hero-bg"></div>
+        <img src="assets/imagenes/Flyer1B.png" alt="ReTruco - Una Historia Bien Criolla" class="hero-flyer" width="5334" height="3000" fetchpriority="high" decoding="async">
+
+        <!-- Overlays viejos (apagados vía CSS, se conservan por si se quieren reactivar) -->
         <div class="prison-bars"></div>
         <div class="concrete-texture"></div>
 
@@ -2674,7 +2660,8 @@
             </div>
         </div>
 
-        <a href="#about" class="scroll-indicator" aria-label="Scroll hacia abajo">
+        <a href="#about" class="scroll-indicator" aria-label="Scrolleá hacia abajo">
+            <span class="scroll-label">Scrolleá</span>
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
             </svg>

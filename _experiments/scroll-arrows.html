@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReTruco · Opciones de flecha de scroll</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --rust:#2bb8cd;
+        --rust-dark:#1a8fa5;
+        --paper:#e0f7fa;
+        --cyan-bright:#22d3ee;
+        --ink:#0a1a24;
+        --concrete-2:#0f2535;
+        --concrete-3:#1a3545;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+        font-family:'Montserrat',sans-serif;
+        background:
+            radial-gradient(circle at 20% 10%, rgba(43,184,205,.08), transparent 40%),
+            radial-gradient(circle at 80% 90%, rgba(43,184,205,.06), transparent 40%),
+            var(--ink);
+        color:var(--paper);
+        min-height:100vh;
+        padding:48px 24px 80px;
+    }
+    header{max-width:1100px;margin:0 auto 40px;text-align:center}
+    header h1{
+        font-size:clamp(1.6rem,4vw,2.4rem);
+        font-weight:800;
+        letter-spacing:.02em;
+        margin-bottom:10px;
+    }
+    header h1 span{color:var(--cyan-bright)}
+    header p{opacity:.7;font-weight:500;max-width:560px;margin:0 auto;line-height:1.5}
+    .grid{
+        max-width:1100px;
+        margin:0 auto;
+        display:grid;
+        grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+        gap:20px;
+    }
+    .card{
+        position:relative;
+        background:linear-gradient(160deg,var(--concrete-2),var(--concrete-3));
+        border:1px solid rgba(43,184,205,.22);
+        border-radius:14px;
+        min-height:230px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        overflow:hidden;
+        transition:transform .25s ease, border-color .25s ease;
+    }
+    .card:hover{transform:translateY(-4px);border-color:rgba(43,184,205,.55)}
+    .card .num{
+        position:absolute;top:12px;left:14px;
+        font-size:.72rem;font-weight:700;letter-spacing:.14em;
+        color:var(--rust);opacity:.75;
+    }
+    .card .name{
+        position:absolute;bottom:12px;left:0;right:0;
+        text-align:center;font-size:.74rem;font-weight:600;
+        letter-spacing:.08em;text-transform:uppercase;opacity:.55;
+    }
+    .stage{flex:1;display:flex;align-items:center;justify-content:center;width:100%}
+
+    /* ---------- primitives ---------- */
+    .cy{color:var(--rust)}
+    .lbl{
+        font-size:.7rem;font-weight:700;letter-spacing:.28em;
+        text-transform:uppercase;color:var(--paper);
+    }
+    svg{display:block;fill:none;stroke:var(--rust);stroke-width:2.4;
+        stroke-linecap:round;stroke-linejoin:round}
+
+    /* ---------- 1. Chevron simple (actual) ---------- */
+    @keyframes bounce{0%,20%,50%,80%,100%{transform:translateY(0)}40%{transform:translateY(12px)}60%{transform:translateY(6px)}}
+    .a1{animation:bounce 2s infinite}
+
+    /* ---------- 2. Doble chevron ---------- */
+    .a2{display:flex;flex-direction:column;gap:-6px}
+    .a2 svg:nth-child(2){margin-top:-14px;opacity:.55}
+    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+    .a2{animation:bob 1.6s ease-in-out infinite}
+
+    /* ---------- 3. Chevron + SCROLLEÁ debajo ---------- */
+    .a3{display:flex;flex-direction:column;align-items:center;gap:14px}
+    .a3 .lbl{animation:pulse 2s ease-in-out infinite}
+    .a3 svg{animation:bounce 2s infinite}
+    @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+    /* ---------- 4. Círculo con chevron ---------- */
+    .a4{display:flex;flex-direction:column;align-items:center;gap:14px}
+    .a4 .ring{
+        width:58px;height:58px;border-radius:50%;
+        border:2px solid var(--rust);
+        display:flex;align-items:center;justify-content:center;
+        animation:ringpulse 2.2s ease-out infinite;
+    }
+    .a4 .ring svg{animation:bounce 2s infinite}
+    @keyframes ringpulse{
+        0%{box-shadow:0 0 0 0 rgba(43,184,205,.45)}
+        70%{box-shadow:0 0 0 14px rgba(43,184,205,0)}
+        100%{box-shadow:0 0 0 0 rgba(43,184,205,0)}
+    }
+
+    /* ---------- 5. Mouse wheel + SCROLLEÁ ---------- */
+    .a5{display:flex;flex-direction:column;align-items:center;gap:16px}
+    .mouse{
+        width:30px;height:50px;border:2.4px solid var(--rust);
+        border-radius:16px;position:relative;
+    }
+    .mouse::after{
+        content:"";position:absolute;top:8px;left:50%;
+        width:4px;height:9px;border-radius:2px;background:var(--rust);
+        transform:translateX(-50%);
+        animation:wheel 1.6s ease-in-out infinite;
+    }
+    @keyframes wheel{0%{opacity:0;transform:translate(-50%,0)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,16px)}}
+    .a5 .lbl{font-size:.64rem;letter-spacing:.24em;opacity:.75}
+
+    /* ---------- 6. SCROLLEÁ + línea que baja ---------- */
+    .a6{display:flex;flex-direction:column;align-items:center;gap:14px}
+    .a6 .lbl{writing-mode:vertical-rl;letter-spacing:.3em;font-size:.66rem}
+    .a6 .track{width:2px;height:46px;background:rgba(43,184,205,.2);position:relative;overflow:hidden;border-radius:2px}
+    .a6 .track::after{content:"";position:absolute;top:0;left:0;width:100%;height:40%;background:var(--rust);animation:drop 1.7s ease-in-out infinite}
+    @keyframes drop{0%{transform:translateY(-120%)}100%{transform:translateY(320%)}}
+
+    /* ---------- 7. Flecha larga + SCROLLEÁ arriba ---------- */
+    .a7{display:flex;flex-direction:column;align-items:center;gap:12px}
+    .a7 .lbl{font-size:.68rem;letter-spacing:.26em;opacity:.8}
+    .a7 .longarrow{position:relative;height:54px;display:flex;justify-content:center}
+    .a7 .longarrow .line{width:2px;height:100%;background:linear-gradient(var(--rust),rgba(43,184,205,.15))}
+    .a7 svg{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);animation:slidedown 1.8s ease-in-out infinite}
+    @keyframes slidedown{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+    /* ---------- 8. Triple estela de puntos + SCROLLEÁ ---------- */
+    .a8{display:flex;flex-direction:column;align-items:center;gap:14px}
+    .a8 .dots{display:flex;flex-direction:column;gap:7px}
+    .a8 .dots span{width:7px;height:7px;border-radius:50%;background:var(--rust)}
+    .a8 .dots span:nth-child(1){animation:fade 1.4s infinite 0s}
+    .a8 .dots span:nth-child(2){animation:fade 1.4s infinite .2s}
+    .a8 .dots span:nth-child(3){animation:fade 1.4s infinite .4s}
+    @keyframes fade{0%,100%{opacity:.2}50%{opacity:1}}
+    .a8 .lbl{font-size:.66rem;letter-spacing:.24em;opacity:.75}
+</style>
+</head>
+<body>
+    <header>
+        <h1>Flechas de <span>scroll</span> — opciones</h1>
+        <p>Todas en la paleta del sitio (cyan sobre concreto). Pasá el mouse sobre cada card. Decime el número que te gusta y lo dejo en el hero.</p>
+    </header>
+
+    <div class="grid">
+        <!-- 1 -->
+        <div class="card">
+            <span class="num">01</span>
+            <div class="stage">
+                <svg class="a1" width="40" height="40" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <span class="name">Chevron simple (actual)</span>
+        </div>
+
+        <!-- 2 -->
+        <div class="card">
+            <span class="num">02</span>
+            <div class="stage">
+                <div class="a2">
+                    <svg width="38" height="38" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                    <svg width="38" height="38" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <span class="name">Doble chevron</span>
+        </div>
+
+        <!-- 3 -->
+        <div class="card">
+            <span class="num">03</span>
+            <div class="stage">
+                <div class="a3">
+                    <span class="lbl">Scrolleá</span>
+                    <svg width="34" height="34" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <span class="name">Texto + chevron</span>
+        </div>
+
+        <!-- 4 -->
+        <div class="card">
+            <span class="num">04</span>
+            <div class="stage">
+                <div class="a4">
+                    <div class="ring">
+                        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+            </div>
+            <span class="name">Círculo con pulso</span>
+        </div>
+
+        <!-- 5 -->
+        <div class="card">
+            <span class="num">05</span>
+            <div class="stage">
+                <div class="a5">
+                    <div class="mouse"></div>
+                    <span class="lbl">Scrolleá</span>
+                </div>
+            </div>
+            <span class="name">Mouse + texto</span>
+        </div>
+
+        <!-- 6 -->
+        <div class="card">
+            <span class="num">06</span>
+            <div class="stage">
+                <div class="a6">
+                    <span class="lbl">Scrolleá</span>
+                    <div class="track"></div>
+                </div>
+            </div>
+            <span class="name">Texto vertical + línea</span>
+        </div>
+
+        <!-- 7 -->
+        <div class="card">
+            <span class="num">07</span>
+            <div class="stage">
+                <div class="a7">
+                    <span class="lbl">Scrolleá</span>
+                    <div class="longarrow">
+                        <div class="line"></div>
+                        <svg width="26" height="26" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+            </div>
+            <span class="name">Flecha larga + texto</span>
+        </div>
+
+        <!-- 8 -->
+        <div class="card">
+            <span class="num">08</span>
+            <div class="stage">
+                <div class="a8">
+                    <div class="dots"><span></span><span></span><span></span></div>
+                    <span class="lbl">Scrolleá</span>
+                </div>
+            </div>
+            <span class="name">Estela de puntos + texto</span>
+        </div>
+    </div>
+</body>
+</html>
