@@ -369,3 +369,4 @@ Si encuentras errores o quieres agregar información:
 **Versión:** 1.0 - MVP
 
 **Estado:** Documentación completa ✅
+> **Aviso (22 de julio de 2026):** el minijuego de Truco descrito en este documento ya no forma parte del sitio. `/truco/` es una pantalla temporal y el material restante sobre el juego anterior es histórico.

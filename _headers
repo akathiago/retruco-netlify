@@ -4,21 +4,28 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   X-XSS-Protection: 1; mode=block
+  Cache-Control: public, max-age=0, must-revalidate
 
-/assets/imagenes/*
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/imagenes/optimized/*
   Cache-Control: public, max-age=31536000, immutable
 
 /assets/fuentes/*
   Cache-Control: public, max-age=31536000, immutable
 
+/assets/imagenes/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
 /assets/songs/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
 
 /favicon/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
 
 /retrucocharacter/assets/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/retrucocharacter/fuentes/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400

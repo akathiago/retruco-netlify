@@ -337,3 +337,4 @@ Cualquiera puede:
 ---
 
 **GET IT quick:** [README.md](./README.md) → [docs/INDEX.md](./docs/INDEX.md) → Play at [retruco.xyz](https://retruco.xyz)
+> **Aviso (22 de julio de 2026):** el minijuego de Truco documentado aquí fue retirado y reemplazado temporalmente por `/truco/index.html`. Las referencias a `juego.html`, `shared.js`, audio, cartas e IA se conservan solo como documentación histórica.

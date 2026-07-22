@@ -26,13 +26,27 @@
     <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
     <link rel="manifest" href="../favicon/site.webmanifest">
     <link rel="shortcut icon" href="../favicon/favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
     <style>
         @font-face {
+            font-family: 'Montserrat';
+            src: url('../assets/fuentes/Montserrat-latin.woff2') format('woff2');
+            font-weight: 400 700;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Anton';
+            src: url('../assets/fuentes/Anton-latin.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
             font-family: 'Trevor';
-            src: url('../assets/fuentes/TREVOR.TTF') format('truetype');
+            src: url('../assets/fuentes/Trevor.ttf') format('truetype');
             font-weight: bold;
             font-style: normal;
+            font-display: swap;
         }
 
         :root {
@@ -1285,7 +1299,11 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url('assets/fondo/fondocarga.png');
+            background-image: url('../assets/imagenes/fondocarga.png');
+            background-image: image-set(
+                url('../assets/imagenes/optimized/loader-bg-1600.webp') type('image/webp'),
+                url('../assets/imagenes/fondocarga.png') type('image/png')
+            );
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -1294,7 +1312,11 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.25s ease;
+        }
+
+        .preloader[hidden] {
+            display: none !important;
         }
 
         .preloader-content {
@@ -1585,12 +1607,12 @@
 </head>
 <body>
     <!-- PRELOADER -->
-    <div id="preloader" class="preloader">
+    <div id="preloader" class="preloader" aria-hidden="true">
         <div class="preloader-content">
             <p id="counter" class="preloader-counter">0%</p>
             <div class="preloader-character">
-                <img id="cesarOjos" src="../assets/imagenes/cesarojosabiertos.png" alt="César cargando" class="cesar-eyes">
-                <img id="cesarPestanea" src="../assets/imagenes/cesarpestañando.png" alt="César pestañeando" class="cesar-blink">
+                <img id="cesarOjos" src="../assets/imagenes/optimized/loader-eyes-1200.webp" alt="" class="cesar-eyes" width="1200" height="675" decoding="async" onerror="this.onerror=null;this.src='../assets/imagenes/cesarojosabiertos.png'">
+                <img id="cesarPestanea" src="../assets/imagenes/optimized/loader-blink-1200.webp" alt="" class="cesar-blink" width="1200" height="675" decoding="async" onerror="this.onerror=null;this.src='../assets/imagenes/cesarpestañando.png'">
             </div>
         </div>
     </div>
@@ -1609,7 +1631,12 @@
         <div class="viewport-wrapper fade-in-up stagger-1">
             <div class="viewport-container">
                 <div class="camera" id="camera">
-                    <div class="viewport-fondo" id="viewportFondo"></div>
+                    <div class="viewport-fondo" id="viewportFondo">
+                        <picture>
+                            <source srcset="assets/fondo/fondopersonajes.webp" type="image/webp">
+                            <img src="assets/fondo/fondopersonajes.png" alt="fondo" width="936" height="1081" fetchpriority="high">
+                        </picture>
+                    </div>
                     <div class="character-stage" id="characterStage">
                         <!-- Layers inserted by JS -->
                     </div>
@@ -1689,7 +1716,7 @@
         <div class="modal-content">
             <div class="modal-preview-section">
                 <div class="preview-frame">
-                    <img id="modalPreview" src="" alt="Preview">
+                    <img id="modalPreview" alt="Preview">
                 </div>
             </div>
             <div class="modal-controls">
@@ -1797,7 +1824,7 @@
         } catch (e) {}
         if (!selections) {
             selections = {
-                fondo: randomItem(ASSETS.fondo.items),
+                fondo: 'fondopersonajes',
                 tonos: randomItem(ASSETS.tonos.items),
                 cabeza: randomItem(ASSETS.cabeza.items),
                 ojos: randomItem(ASSETS.ojos.items),
@@ -1841,6 +1868,10 @@
             try { localStorage.setItem('retruco-character', JSON.stringify(selections)); } catch(e) {}
         }
 
+        function webpSource(src) {
+            return src.replace(/\.png$/i, '.webp');
+        }
+
         function updateCharacter(changedPart = null) {
             saveSelections();
             const tono = selections.tonos;
@@ -1850,7 +1881,10 @@
             if (selections.fondo === 'ninguno') {
                 viewportFondo.innerHTML = '';
             } else {
-                viewportFondo.innerHTML = `<img src="assets/fondo/${selections.fondo}.png" alt="fondo">`;
+                viewportFondo.innerHTML = `<picture>
+                    <source srcset="assets/fondo/${selections.fondo}.webp" type="image/webp">
+                    <img src="assets/fondo/${selections.fondo}.png" alt="fondo" width="936" height="1081" fetchpriority="high">
+                </picture>`;
             }
 
             updateLayer('cuerpo', `assets/tonos/tono${tono}_cuerpo.png`, false);
@@ -1889,7 +1923,7 @@
                 extrasLayer.innerHTML = '';
             } else {
                 extrasLayer.innerHTML = selections.extras.map(extra =>
-                    `<img src="assets/extras/${extra}.png" alt="${extra}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">`
+                    `<img src="assets/extras/${extra}.webp" data-fallback="assets/extras/${extra}.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="${extra}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;">`
                 ).join('');
                 if (changedPart === 'extras') {
                     extrasLayer.classList.add('changing');
@@ -1905,7 +1939,7 @@
                     layer.classList.add('changing');
                     setTimeout(() => layer.classList.remove('changing'), 400);
                 }
-                layer.innerHTML = `<img src="${src}" alt="${layerId}">`;
+                layer.innerHTML = `<img src="${webpSource(src)}" data-fallback="${src}" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="${layerId}">`;
             }
         }
 
@@ -1948,7 +1982,7 @@
                     return `
                         <div class="option-card ${isSelected ? 'selected' : ''}"
                              data-value="${item}">
-                            <img src="${imgSrc}" alt="${currentCategory} ${item}">
+                            <img src="${webpSource(imgSrc)}" data-fallback="${imgSrc}" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="${currentCategory} ${item}" loading="lazy" decoding="async">
                         </div>
                     `;
                 }).join('');
@@ -1970,7 +2004,7 @@
                     return `
                         <div class="option-card ${selections[currentCategory] === item ? 'selected' : ''}"
                              data-value="${item}">
-                            <img src="${imgSrc}" alt="${currentCategory} ${item}">
+                            <img src="${webpSource(imgSrc)}" data-fallback="${imgSrc}" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="${currentCategory} ${item}" loading="lazy" decoding="async">
                         </div>
                     `;
                 }).join('');
@@ -2474,89 +2508,61 @@
         }
 
         // ===== PRELOADER =====
-        (function() {
-            // Bloquear scroll mientras carga
-            document.body.style.overflow = 'hidden';
-
+        // Espera solamente las capas que forman el personaje visible.
+        (function initPreloader() {
             const counterElement = document.getElementById('counter');
             const preloader = document.getElementById('preloader');
             const cesarCharacter = document.querySelector('.preloader-character');
+            const criticalImages = Array.from(document.querySelectorAll('#viewportFondo img'));
+            let completed = false;
+            let blinkTimer = null;
+            let loaded = 0;
 
-            let currentProgress = 0;
-            let targetProgress = 0;
-            let loadingComplete = false;
+            if (!preloader || !counterElement) return;
 
-            // Función para pestañear
-            function cesarBlink() {
+            function updateCounter() {
+                const total = Math.max(criticalImages.length, 1);
+                counterElement.textContent = `${Math.min(95, Math.round((loaded / total) * 95))}%`;
+            }
+
+            function blink() {
+                if (!cesarCharacter || completed) return;
                 cesarCharacter.classList.add('cesar-blinking');
-                setTimeout(() => {
-                    cesarCharacter.classList.remove('cesar-blinking');
-                }, 800);
+                setTimeout(() => cesarCharacter.classList.remove('cesar-blinking'), 350);
+                blinkTimer = setTimeout(blink, 600 + Math.random() * 900);
             }
 
-            // Pestañear cada 1-2.5 segundos aleatorio
-            function scheduleNextBlink() {
-                const randomDelay = 500 + Math.random() * 1000;
-                setTimeout(() => {
-                    if (!loadingComplete) {
-                        cesarBlink();
-                        scheduleNextBlink();
-                    }
-                }, randomDelay);
-            }
-            scheduleNextBlink();
-
-            // Obtener todas las imágenes (excluyendo las del preloader)
-            const images = Array.from(document.querySelectorAll('img:not(.cesar-eyes):not(.cesar-blink)'));
-            const totalResources = images.length + 1; // +1 para window load
-            let loadedResources = 0;
-
-            function updateProgress() {
-                targetProgress = Math.min(Math.round((loadedResources / totalResources) * 100), 100);
+            function imageReady(img) {
+                const loadedPromise = img.complete
+                    ? Promise.resolve()
+                    : new Promise(resolve => {
+                        img.addEventListener('load', resolve, { once: true });
+                        img.addEventListener('error', resolve, { once: true });
+                    });
+                return loadedPromise
+                    .then(() => typeof img.decode === 'function' ? img.decode().catch(() => {}) : undefined)
+                    .finally(() => {
+                        loaded++;
+                        updateCounter();
+                    });
             }
 
-            function animateCounter() {
-                if (currentProgress < targetProgress) {
-                    currentProgress++;
-                    counterElement.textContent = `${currentProgress}%`;
-                }
-
-                if (currentProgress >= 100) {
-                    loadingComplete = true;
-                    preloader.style.opacity = '0';
-                    preloader.style.pointerEvents = 'none';
-                    document.body.style.overflow = '';
-                    return;
-                }
-
-                requestAnimationFrame(animateCounter);
+            function dismiss() {
+                if (completed) return;
+                completed = true;
+                clearTimeout(blinkTimer);
+                counterElement.textContent = '100%';
+                preloader.style.opacity = '0';
+                preloader.style.pointerEvents = 'none';
+                setTimeout(() => { preloader.hidden = true; }, 280);
             }
 
-            animateCounter();
+            updateCounter();
+            blinkTimer = setTimeout(blink, 500);
+            Promise.allSettled(criticalImages.map(imageReady)).then(dismiss);
 
-            // Track image loading
-            images.forEach(img => {
-                if (img.complete) {
-                    loadedResources++;
-                    updateProgress();
-                } else {
-                    img.addEventListener('load', () => { loadedResources++; updateProgress(); });
-                    img.addEventListener('error', () => { loadedResources++; updateProgress(); });
-                }
-            });
-
-            // Window load como recurso final
-            window.addEventListener('load', () => {
-                loadedResources++;
-                targetProgress = 100;
-            });
-
-            // Fallback: máximo 10 segundos de espera
-            setTimeout(() => {
-                if (!loadingComplete) {
-                    targetProgress = 100;
-                }
-            }, 10000);
+            // Un error de red nunca puede dejar bloqueada la aplicación.
+            setTimeout(dismiss, 900);
         })();
     </script>
 </body>

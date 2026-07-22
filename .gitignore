@@ -1,2 +1,4 @@
 .claude/settings.local.json
 **/tmpclaude-*
+dist/
+node_modules/

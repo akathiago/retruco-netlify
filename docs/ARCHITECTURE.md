@@ -708,3 +708,4 @@ if (trucoWinner === 'player') {
 3. **Service Workers:** Soporte offline completo
 4. **Backend API:** Para leaderboards y replays
 5. **WebSocket:** Para juego online
+> **Aviso (22 de julio de 2026):** la arquitectura del antiguo minijuego de Truco ya fue retirada. `/truco/` contiene únicamente una pantalla temporal hasta integrar su reemplazo.

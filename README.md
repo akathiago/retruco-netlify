@@ -1,5 +1,7 @@
 # ReTruco 🎴
 
+> **Estado actual (22 de julio de 2026):** el minijuego de Truco anterior fue retirado junto con sus cartas y scripts. `/truco/` muestra una pantalla temporal hasta integrar el reemplazo. Las secciones históricas de este README que describen su IA, audio o gameplay ya no representan el código desplegado.
+
 > Una historia bien criolla. Acción, sátira, barrio y delirio en formato videojuego.
 
 ReTruco es una aventura satírica y bien argenta en Buenos Aires inspirada en South Park. Mezcla **Run & Gun**, **Beat 'Em Up** y **RPG** con humor absurdo, política criolla y nostalgia retro. Completamente gratuito. 100% online.
@@ -22,20 +24,10 @@ ReTruco es una aventura satírica y bien argenta en Buenos Aires inspirada en So
 
 ## ✨ Características
 
-### Minijuego: La Torre - Truco de Cartas
+### Truco
 
-- **10 personajes únicos** del universo ReTruco, cada uno con su propia personalidad, lore y estrategia de IA
-- **Sistema de inteligencia artificial** adaptativa que aprende de tu estilo de juego
-- **Animaciones estilo Flash** con efectos visuales dinámicos y partículas
-- **Sistema de audio completo** con música de fondo y efectos sonoros inmersivos
-- **Reglas auténticas del Truco** argentino:
-  - Truco, Retruco, Vale Cuatro
-  - Envido, Real Envido, Falta Envido
-  - Sistema de poder de cartas correcto
-  - Cálculo de Envido exacto
-- **Interfaz responsive** optimizada para desktop y móvil
-- **Persistencia de datos** (volumen, preferencias de audio)
-- **Tutorial interactivo** con explicación de reglas y estrategias
+- El minijuego anterior fue retirado para evitar mantener y desplegar código que será reemplazado.
+- `/truco/` conserva una pantalla temporal; las URLs antiguas de juego y tutorial redirigen allí.
 
 ### Landing Page
 
@@ -80,14 +72,8 @@ retruco_netlify/
 │   ├── fuentes/            # Tipografías (TREVOR.TTF, RoodrigueZ ornament.ttf, TrashHand.TTF)
 │   └── songs/              # Soundtrack (.mp3 / .m4a)
 │
-├── truco/                  # Minijuego: La Torre (juego de cartas, vanilla JS)
-│   ├── index.html          # Selección de rivales (La Torre)
-│   ├── juego.html          # Pantalla principal del juego
-│   ├── tutorial.html       # Tutorial interactivo
-│   ├── shared.js           # Lógica compartida, constantes, IA
-│   ├── js/                 # audio.js · animations.js · particles.js
-│   ├── css/                # animations.css
-│   └── cartas/             # Imágenes de cartas PNG
+├── truco/                  # Pantalla temporal para el futuro reemplazo
+│   └── index.html
 │
 ├── retrucocharacter/       # Character creator — "armá tu personaje" (vanilla JS)
 │   ├── indexcharacter.html # App de página única
@@ -103,7 +89,7 @@ retruco_netlify/
 
 ## 🧭 Notas para quien recibe el proyecto
 
-Sitio **estático** (HTML/CSS/JS vanilla, sin build ni `node_modules`). Se sirve tal cual desde Netlify.
+Sitio **estático** (HTML/CSS/JS vanilla) con un build de Node sin dependencias de runtime. `npm run build` genera `dist/`, versiona los assets por contenido y valida las referencias antes del deploy.
 
 **Convención de assets:** todo lo multimedia vive en `assets/` (`imagenes/`, `fuentes/`, `songs/`).
 - Desde la raíz (`index.html`, `404.html`) se referencia como `assets/imagenes/...`
@@ -112,12 +98,9 @@ Sitio **estático** (HTML/CSS/JS vanilla, sin build ni `node_modules`). Se sirve
 
 **Carpetas especiales:**
 - `_experiments/` → prototipos viejos de animación, NO forman parte del sitio. Referencia/inspiración, descartables.
-- `docs/roadmap/` → guión y gameplay de un juego de acción **que no está construido**. Es diseño a futuro, no refleja lo que hoy existe (solo hay landing + minijuego de truco + character creator).
+- `docs/roadmap/` → guión y gameplay de un juego de acción **que no está construido**. Es diseño a futuro, no refleja lo que hoy existe (landing + character creator + pantalla temporal de Truco).
 
-**Issues conocidos (assets faltantes, pre-existentes — falta el arte/audio fuente):**
-- `truco/shared.js`: faltan 6 retratos de rivales → `assets/imagenes/{abraham,aliado,momo,littleboogie,wachin,chino}.png`
-- `index.html`: referencia `assets/songs/Ciudad Porteña -Double T.mp3` pero solo existe `…-Vava.m4a`
-- `retrucocharacter/fuentes/Trevor.ttf` quedó sin uso (el character creator usa la fuente de `assets/fuentes/`).
+**Comandos actuales:** `npm run check` valida el código fuente y `npm run build` produce el sitio listo para publicar en `dist/`.
 
 ---
 
