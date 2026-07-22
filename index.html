@@ -288,7 +288,7 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            background: url('assets/imagenes/trailer-miniatura.png') center center / cover no-repeat;
+            background: url('assets/imagenes/flyer1bfondo.png') center center / cover no-repeat;
         }
 
         /* Prison bars effect - hidden on desktop, shown on mobile */
@@ -623,17 +623,16 @@
         /* Logo TP en Hero - Desktop */
         .hero-logo-container {
             position: absolute;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            max-width: 550px;
-            width: 90%;
+            top: 195px;
+            right: 9%;
+            max-width: 720px;
+            width: 58%;
             z-index: 20;
             transition: transform 0.4s ease, filter 0.4s ease;
         }
 
         .hero-logo-container:hover {
-            transform: translateX(-50%) scale(1.05);
+            transform: scale(1.05);
         }
 
         .hero-logo-container:hover .hero-logo-desktop {
@@ -642,6 +641,8 @@
 
         .hero-logo-desktop {
             width: 100%;
+            height: auto;
+            display: block;
             filter: drop-shadow(4px 4px 15px rgba(0, 0, 0, 0.5));
             transition: filter 0.4s ease;
         }
@@ -670,6 +671,8 @@
         .hero-logo-tp {
             max-width: 300px;
             width: 85%;
+            height: auto;
+            display: block;
             margin-bottom: 25px;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
                         filter 0.4s ease;
@@ -1995,9 +1998,9 @@
                 display: none;
             }
 
-            /* Hero mobile: trailer-miniatura.png como fondo */
+            /* Hero mobile: flyer1bfondo.png como fondo */
             #hero {
-                background: url('assets/imagenes/trailer-miniatura.png') center center / cover no-repeat;
+                background: url('assets/imagenes/flyer1bfondo.png') center center / cover no-repeat;
                 min-height: 100vh;
                 align-items: flex-start;
                 justify-content: center;
@@ -2635,14 +2638,14 @@
         <div class="concrete-texture"></div>
 
         <div class="hero-logo-container">
-            <img src="assets/imagenes/logotp.png" alt="Logo ReTruco - Una Historia Bien Criolla" class="hero-logo-desktop" width="500" height="200" decoding="async">
+            <img src="assets/imagenes/flyer1blogo.png" alt="Logo ReTruco - Una Historia Bien Criolla" class="hero-logo-desktop" width="1993" height="1204" decoding="async">
             <img src="assets/imagenes/destello1.png" alt="" class="destello-sprite" id="destelloSprite">
         </div>
 
         <div class="hero-content">
             <div class="hero-left">
                 <div class="hero-mobile-images">
-                    <img src="assets/imagenes/logotp.png" alt="Logo ReTruco" class="hero-logo-tp" width="400" height="160" decoding="async">
+                    <img src="assets/imagenes/flyer1blogo.png" alt="Logo ReTruco" class="hero-logo-tp" width="1993" height="1204" decoding="async">
                     <img src="assets/imagenes/trailer-miniatura.png" alt="César, protagonista de ReTruco" class="hero-img-mobile" width="600" height="800" decoding="async">
                 </div>
                 <div class="prison-note">
