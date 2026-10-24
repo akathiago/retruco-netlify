@@ -6,7 +6,7 @@ const root = process.cwd();
 const output = path.join(root, 'dist');
 const productionEntries = [
     'index.html', '404.html', 'faq-variantes.html', 'robots.txt', 'sitemap.xml',
-    '_headers', '_redirects', 'assets', 'favicon', 'retrucocharacter', 'truco'
+    '_headers', '_redirects', 'assets', 'favicon', 'retrucocharacter'
 ];
 const hashedRoots = [
     'assets/css',
@@ -14,6 +14,8 @@ const hashedRoots = [
     'assets/imagenes/optimized',
     'assets/fuentes'
 ];
+// Served by another Netlify site through _redirects, not present in dist.
+const proxiedPrefixes = ['/truco/'];
 const textExtensions = new Set(['.html', '.css', '.js', '.json', '.xml', '.webmanifest', '.txt']);
 
 const toPosix = value => value.split(path.sep).join('/');
@@ -117,7 +119,7 @@ async function assertLocalReferencesExist() {
         } else {
             for (const match of contents.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/gi)) references.push(match[1]);
         }
-        for (const reference of references) {
+        for (const reference of references.filter(ref => !proxiedPrefixes.some(prefix => ref.startsWith(prefix)))) {
             const target = localTarget(reference, absolute);
             if (!target || !target.startsWith(output)) continue;
             try {

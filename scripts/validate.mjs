@@ -23,14 +23,14 @@ async function checkHtml(relative) {
     }
     for (const raw of references) {
         const clean = decodeURIComponent(raw.split(/[?#]/)[0]);
-        if (!clean || clean.includes('${') || /^(?:https?:|data:|mailto:|tel:|javascript:|#)/.test(clean)) continue;
+        if (!clean || clean.startsWith('/truco/') || clean.includes('${') || /^(?:https?:|data:|mailto:|tel:|javascript:|#)/.test(clean)) continue;
         const target = clean.startsWith('/') ? clean.slice(1) : path.join(path.dirname(relative), clean);
         if (!await exists(target)) errors.push(`${relative}: missing ${raw}`);
     }
 }
 
 execFileSync(process.execPath, ['--check', path.join(root, 'assets/js/site.js')], { stdio: 'inherit' });
-for (const html of ['index.html', '404.html', 'faq-variantes.html', 'retrucocharacter/indexcharacter.html', 'truco/index.html']) {
+for (const html of ['index.html', '404.html', 'faq-variantes.html', 'retrucocharacter/indexcharacter.html']) {
     await checkHtml(html);
 }
 
